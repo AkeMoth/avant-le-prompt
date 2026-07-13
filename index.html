@@ -955,21 +955,38 @@ const EPI={id:"epilogue",
  tag:"Les mêmes six étapes, des ordres différents : voilà toute l'histoire des modèles de développement.",
  notions:[
   {t:"Un modèle, c'est un ordre",body:[
-   "Les six chantiers que tu viens de parcourir sont les mêmes partout, dans une startup comme dans une banque. Ce qui change d'une équipe à l'autre, c'est l'ordre et le rythme dans lesquels on les enchaîne. C'est exactement ça, un modèle de cycle de vie. Il en existe des dizaines (cascade, V, incrémental, spirale, prototypage, et toute la famille agile), et aucun n'est moderne ou ringard : chacun répond à un contexte. La bonne question reste toujours la même : à quel point les besoins vont-ils bouger en cours de route ?"
+   "Les six chantiers que tu viens de parcourir sont les mêmes partout, dans une startup comme dans une banque. Ce qui change d'une équipe à l'autre, c'est l'ordre et le rythme dans lesquels on les enchaîne. C'est exactement ça, un modèle de cycle de vie. Il en existe des dizaines (cascade, V, incrémental, spirale, prototypage, et toute la famille agile), et aucun n'est moderne ou ringard : chacun répond à un contexte.",
+   "Trois paramètres orientent le choix : à quel point les besoins vont bouger, ce que coûte une erreur, et à quelle distance se tient le client. Selon leurs réponses, tel modèle devient le bon. Aucun ne gagne dans l'absolu, et les exemples qui suivent le montrent."
   ]},
   {t:"La cascade",fig:"cascade",body:[
    "Le plus ancien et le plus intuitif : chaque étape se termine et se valide avant que la suivante démarre, comme l'eau descend. Idéal quand les besoins sont stables et le terrain connu. Sa limite porte un nom : l'effet tunnel. Le client ne voit rien pendant des mois, puis découvre à la livraison un logiciel parfaitement conforme au cahier des charges... d'il y a un an."
+  ],cases:[
+   "Un logiciel déjà construit dix fois, sur un terrain connu : migration de paie, portage d'un système maîtrisé. La cascade brille quand on est quasi certain que les besoins ne bougeront pas.",
+   "Un cahier des charges figé par contrat ou par la loi : marché public, sous-traitance à prix fixe, où la trace écrite de chaque étape fait foi.",
+   "L'embarqué à spécification gelée : la puce d'une machine à laver ne se corrige pas après la sortie d'usine."
   ]},
   {t:"Le cycle en V",fig:"vmodel",body:[
    "Une cascade repliée sur elle-même : chaque étape de construction, en descendant, prépare l'étape de vérification qui lui répondra en remontant. Les besoins préparent la recette, la conception prépare les tests d'intégration. Tu l'as déjà croisé au chantier Conception : des critères d'acceptation qui deviennent des scénarios de test, c'est très exactement cet esprit."
+  ],cases:[
+   "Le critique et le réglementé, où une erreur coûte des vies ou une lourde amende : dispositif médical, avionique, ferroviaire, cœur d'un système bancaire.",
+   "Tout contexte où chaque exigence doit rester traçable jusqu'à un test, pour passer les audits et la validation réglementaire.",
+   "Plutôt les grandes structures, avec une assurance qualité formelle et des rôles de test dédiés."
   ]},
   {t:"L'itératif",fig:"iteratif",body:[
    "Plutôt que tout construire d'un coup, on boucle : un petit tour complet (besoins, conception, code, recette), une livraison utilisable, des retours d'usage, et on repart. Chaque tour livre un produit qui marche, chaque usage affine le suivant. La spirale de Boehm en est une variante pilotée par les risques. Et la V1 puis la V2 du portail suivent ce modèle à la lettre : de l'itératif au sens des manuels, pratiqué sans le nommer."
+  ],cases:[
+   "Un outil interne qu'on affine à l'usage : votre portail, V1 puis V2, en est l'exemple direct.",
+   "Le MVP d'une startup : livrer un cœur utilisable, puis laisser les retours décider de la suite. Peu de risque à se tromper tôt, beaucoup à trop attendre.",
+   "La spirale de Boehm pour les gros projets chers et risqués (défense, grande plateforme) : à chaque tour, on analyse les risques avant d'avancer."
   ]},
   {t:"Agile, Scrum et compagnie",fig:"agiletree",body:[
    "D'abord lever le malentendu le plus répandu : agile est une posture avant d'être une méthode. Le mot naît en 2001, quand dix-sept développeurs publient un manifeste de quatre valeurs : les individus et leurs interactions plutôt que les processus et les outils, un logiciel qui fonctionne plutôt qu'une documentation exhaustive, la collaboration avec le client plutôt que la négociation de contrat, et la réponse au changement plutôt que le suivi d'un plan. La nuance qui change tout : « plutôt que » ne signifie pas « à la place de ». Le plan et la documentation gardent leur valeur, ils cèdent juste la priorité.",
    "Les méthodes viennent ensuite, pour incarner cette posture. Scrum, la plus connue : le travail se découpe en sprints, des tours de une à quatre semaines qui livrent chacun un incrément utilisable (l'itératif du schéma précédent, avec un métronome), autour d'un backlog priorisé, d'un point quotidien de quinze minutes et d'une rétrospective à chaque fin de sprint pour améliorer la façon de travailler elle-même. Kanban préfère le flux continu : tout le travail visible en colonnes (à faire, en cours, fait) et l'en-cours limité, pour finir avant de commencer. XP, enfin, pousse l'exigence côté code : écrire le test avant le code, relire en permanence.",
    "Et le piège que tout le monde a croisé : adopter les rituels sans la posture. Des réunions debout tous les matins ne rendent personne agile, pas plus qu'un backlog ne remplace l'écoute du client. Ce travers a des noms (agilité de façade, culte du cargo), et un antidote simple, trois questions : livre-t-on souvent, apprend-on de chaque livraison, et le plan a-t-il le droit de changer ?"
+  ],cases:[
+   "Produits web et mobile, startups et scale-ups : les besoins évoluent vite et le client reste dans la boucle.",
+   "Scrum quand l'équipe gagne à avoir un rythme (des sprints) et une vision produit qui s'ajuste ; Kanban quand le travail arrive au fil de l'eau (support, maintenance, exploitation).",
+   "XP quand la qualité du code est vitale et que ça change beaucoup : le test avant le code, la relecture en continu."
   ]},
   {t:"La réponse aux promesses en une heure",fig:"dk",body:[
    "« Ton site en une heure », « ton SaaS en trois semaines » : ces promesses reposent, sans le savoir, sur une courbe décrite par Dunning et Kruger en 1999. Le premier résultat arrive vite et la confiance monte en flèche, précisément parce qu'on ignore encore l'étendue de ce qu'on ignore. Puis le monde réel répond : un premier bug chez un vrai utilisateur, une question de sécurité, une donnée perdue. La confiance dégringole : bienvenue dans la vallée.",
@@ -1203,7 +1220,8 @@ function notionCards(c){
   return c.notions.map(n=>{
     const f=n.fig&&SVGS[n.fig]?`<div class="fig">${SVGS[n.fig].svg}<div class="figcap">${esc(SVGS[n.fig].cap)}</div></div>`:"";
     const ak=n.ask?`<div class="askbox"><div class="askt">Les questions à se poser</div><ul>${n.ask.map(q=>`<li>${esc(q)}</li>`).join("")}</ul></div>`:"";
-    return `<div class="card"><h3>${esc(n.t)}</h3>${n.body.map(p=>`<p>${esc(p)}</p>`).join("")}${ak}${f}</div>`;
+    const cs=n.cases?`<div class="askbox"><div class="askt">Où ce modèle est pertinent</div><ul>${n.cases.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:"";
+    return `<div class="card"><h3>${esc(n.t)}</h3>${n.body.map(p=>`<p>${esc(p)}</p>`).join("")}${ak}${f}${cs}</div>`;
   }).join("");
 }
 

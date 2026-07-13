@@ -133,6 +133,20 @@ body.anim .btn:not(:disabled):active{transform:translate(2px,2px)}
 .tsec ul{margin-left:18px}
 .tsec li{font-size:14px;margin-bottom:6px}
 .tsec .none{font-family:var(--fm);font-size:12px;color:var(--muted)}
+/* mémo visuel : encart clair, lisible dans les trois mondes */
+.tmemo{border:var(--bd);background:var(--bg);border-radius:var(--radius);padding:11px 12px 8px;margin:4px 0 12px}
+.tmemo-l{font-family:var(--fm);font-size:9.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.tmemo svg{width:100%;height:auto;display:block}
+.tmemo-c{font-family:var(--fm);font-size:11px;color:var(--muted);margin-top:6px}
+.tpoints{margin-left:18px;margin-bottom:2px}
+.tpoints li{font-size:14px;margin-bottom:7px;line-height:1.5}
+.timage{list-style:none;margin-left:-18px;margin-top:9px;border-left:3px solid var(--accent);padding:2px 0 2px 11px}
+.timage .tim-l{font-family:var(--fm);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:2px}
+body.designed .timage{border-left:none;padding-left:0;background:none}
+body.designed .timage{font-family:var(--fs);font-size:18px;line-height:1.3}
+body.designed .tmemo{background:#fbf6ee;border:2px solid #242038;box-shadow:3px 3px 0 rgba(36,32,56,.85);--ink:#242038;--muted:#6d6782;--accent:#ba0675;--primary:#006e7c;--good:#006e7c}
+body.designed[data-view="trame"] .tmemo-l{color:#6d6782}
+body.designed[data-view="trame"] .timage .tim-l{color:var(--cyan)}
 pre{font-family:var(--fm);font-size:12px;white-space:pre-wrap;word-break:break-word;background:var(--bg);border:var(--bd);padding:12px;margin-top:10px;max-height:300px;overflow:auto}
 
 /* ---------- journal ---------- */
@@ -519,24 +533,91 @@ const CH=[
 ];
 
 const TRAME=[
- {t:"Introduction",at:"0:00",dur:"4 min",ch:null,
-  desc:"Rappel de l'épisode précédent (le portail, du problème à la maquette) et promesse du jour : les grandes étapes d'un développement logiciel, celles qui tiennent dans une grande boîte comme avec une IA. Parce que non, rien ne se fait au petit bonheur la chance. L'idée à installer chez qui nous écoute : un logiciel se construit, se vérifie, vit et vieillit. Le développement est une étape du cycle, pas le cycle."},
- {t:"Recueil des besoins",at:"0:04",dur:"7 min",ch:"besoins",
-  desc:"Poser le principe fondateur (le coût des erreurs explose avec le temps), puis relier au vécu : PRD, user stories et critères d'acceptation de l'épisode précédent, traduits en vocabulaire de génie logiciel. Et le concret : entretiens, observation, étude de l'existant, plus les quatre questions du recueil."},
- {t:"Conception",at:"0:11",dur:"7 min",ch:"conception",
-  desc:"Du quoi au comment : architecture, cohésion et couplage, et la surprise du cycle en V (les tests se préparent dès la conception). Côté méthode : plusieurs variantes, un choix assumé, et isoler ce qui changera."},
- {t:"Développement et versionnage",at:"0:18",dur:"9 min",ch:"dev",
-  desc:"Le codage et l'intégration, puis Git : commits, branches, conflits, pull request et revue de code. Pourquoi une équipe ne travaille jamais sans. Plus les pratiques universelles : lisibilité, petits pas, erreurs pensées d'avance."},
- {t:"Tests",at:"0:27",dur:"9 min",ch:"tests",
-  desc:"La chaîne erreur, défaut, défaillance (Ariane 5), les trois étages, la grande famille des tests (dont la régression et son filet automatisé), écrire un bon cas de test avec partitions et valeurs limites, le cahier de recettes, et vérification contre validation."},
- {t:"Mise en production",at:"0:36",dur:"7 min",ch:"deploiement",
-  desc:"Les environnements (dev, staging, prod), la checklist de mise en prod, le rollback, les numéros de version."},
- {t:"Maintenance et vieillissement",at:"0:43",dur:"7 min",ch:"maintenance",
-  desc:"Corrective, adaptative, perfective (le jardinage), la dette technique, le legacy, les migrations, et la retraite d'un logiciel."},
- {t:"Et l'ordre dans tout ça ?",at:"0:50",dur:"6 min",ch:"epilogue",
-  desc:"Synthèse : cascade, cycle en V, itératif, puis la famille agile (le manifeste et ses quatre valeurs, Scrum, Kanban, et le piège de l'agilité de façade). Les mêmes étapes dans des ordres différents, et le modèle que vous pratiquez déjà sans le nommer (la V1 puis la V2 du portail). Et la courbe de Dunning-Kruger en réponse aux promesses du site en une heure."},
- {t:"Mot de la fin",at:"0:56",dur:"3 min",ch:null,
-  desc:"Piste : toutes ces étapes existent parce que des fusées ont explosé et des week-ends ont brûlé. L'IA ne les supprime pas, elle les rend juste plus rapides à parcourir. Teaser : au prochain épisode, le développement du portail, étape par étape."}
+ {t:"Introduction",at:"0:00",dur:"4 min",ch:null,fig:"memo_cycle",
+  desc:"Poser le décor : un logiciel se construit, se vérifie, vit et vieillit. Le développement est une étape du cycle, pas le cycle.",
+  points:[
+   "Rappeler l'épisode précédent : le portail du Dernier Clic, du problème à la maquette, en prod depuis un mois et demi.",
+   "Planter la tension du jour : on voit fleurir les « ton site en une heure », « ton SaaS en trois semaines ». On va montrer ce que ces promesses passent sous silence.",
+   "Le fil rouge : les mêmes grandes étapes tiennent dans une grande boîte comme avec une IA. L'outil change, la démarche reste.",
+   {img:"Coder, c'est poser les briques. Mais personne ne juge une maison à la vitesse du maçon : restent les fondations, les plans, la plomberie et le contrôle avant d'emménager."}
+  ]},
+ {t:"Recueil des besoins",at:"0:04",dur:"7 min",ch:"besoins",fig:"cost",
+  desc:"Tout commence par un problème, jamais par une solution. Et plus une erreur est trouvée tard, plus elle coûte cher.",
+  points:[
+   "Le principe qui commande tout le reste : une exigence corrigée au stade du besoin, c'est une phrase à réécrire ; la même en production, c'est du code à défaire et des utilisateurs à rassurer.",
+   "Le chiffre à citer : un défaut d'exigence trouvé tard coûte 50 à 200 fois plus qu'au moment où on l'a écrit (estimation McConnell).",
+   "Relier au vécu : le PRD, les user stories et les critères d'acceptation de l'épisode précédent, c'est du génie logiciel classique avec un vocabulaire moderne.",
+   "Le concret du recueil : entretiens, observation, étude de l'existant. Notre phase bricolage avant le portail en était, sans le nom.",
+   "Séparer le fonctionnel (ce que le système fait) du non fonctionnel (comment : rapide, accessible, sécurisé, conforme).",
+   {img:"C'est le devis et les plans avant les travaux. Un trait qu'on déplace sur le plan coûte un coup de gomme ; un mur déjà monté qu'on abat coûte le mur."}
+  ]},
+ {t:"Conception",at:"0:11",dur:"7 min",ch:"conception",fig:"lego",
+  desc:"Du quoi au comment, sans écrire une ligne de code. On dessine le plan de construction.",
+  points:[
+   "Traduire les besoins en architecture : quelles briques, comment elles se parlent, où vivent les données.",
+   "Cohésion forte, couplage faible : chaque brique fait une seule chose, et dépend le moins possible des autres.",
+   "La surprise du cycle en V : les plans de test s'écrivent dès la conception, pas après le code.",
+   "Le réflexe rentable : repérer ce qui changera souvent (le taux de TVA, le fournisseur d'emails) et l'isoler derrière une interface stable.",
+   {img:"Du Lego plutôt que de la soudure. Deux briques Lego se déclipsent et se remplacent ; deux pièces soudées, il faut le chalumeau, et on abîme les deux."}
+  ]},
+ {t:"Développement et versionnage",at:"0:18",dur:"9 min",ch:"dev",fig:"git",
+  desc:"Coder, assembler, et surtout ne jamais perdre l'historique.",
+  points:[
+   "Le codage traduit la conception, puis l'intégration assemble les briques et vérifie qu'elles se parlent vraiment.",
+   "Git, le journal de bord : chaque commit est une photo datée et commentée, à laquelle on peut toujours revenir.",
+   "Branches et merge : chacun travaille sur sa copie, Git fusionne, et s'arrête poliment quand deux personnes touchent la même ligne.",
+   "La revue de code : personne ne fusionne son propre travail en douce. Ça attrape des bugs et ça diffuse la connaissance, y compris face à une IA.",
+   "Les pratiques qui valent dans tous les langages : des noms clairs, des petits pas, les erreurs pensées d'avance.",
+   {img:"Git, c'est la sauvegarde d'un jeu vidéo. Tu tentes un truc risqué, et si ça tourne mal tu recharges la dernière partie au lieu de tout recommencer depuis le début."}
+  ]},
+ {t:"Tests",at:"0:27",dur:"9 min",ch:"tests",fig:"pyramide",
+  desc:"Chercher les défauts, pas prouver qu'il n'y en a pas.",
+  points:[
+   "La chaîne à remonter : une erreur humaine glisse un défaut dans le code, qui dort jusqu'à la défaillance visible. Ariane 5, 1996 : 370 millions de dollars en quarante secondes.",
+   "Trois étages : unitaire (chaque brique), intégration (l'assemblage), recette (le tout, avec de vrais yeux et de vraies données).",
+   "La régression, la plus utile pour un logiciel qui vit : rejouer après chaque changement les tests d'hier, et l'automatiser. Le filet permanent.",
+   "Choisir ses cas de test : partitions d'équivalence et valeurs limites. Tester 0, 1, 100 et 101 couvre dix mille valeurs.",
+   "Vérification (construit-on correctement ?) face à validation (construit-on le bon produit ?). On peut réussir l'une et rater l'autre.",
+   {img:"Les utilisateurs sont ces joueurs qui cassent un jeu la semaine de sa sortie : ils cliqueront partout, dans le désordre, comme personne ne l'avait prévu. Tester, c'est jouer contre soi-même avant eux."}
+  ]},
+ {t:"Mise en production",at:"0:36",dur:"7 min",ch:"deploiement",fig:"pipeline",
+  desc:"Le jour où le logiciel rencontre le monde réel.",
+  points:[
+   "Trois scènes : le développement (l'atelier), le staging (la répétition générale), la production (la scène, vrais utilisateurs). On ne teste jamais directement en prod.",
+   "La checklist avant le bouton : recette validée, sauvegarde récente, et surtout un plan de retour arrière.",
+   "Le rollback : pouvoir revenir à la version d'avant en quelques minutes, pas en quelques heures.",
+   "Le versionnage sémantique : majeur.mineur.correctif. Le numéro raconte une histoire, les notes de release la commentent.",
+   {img:"Déployer sans rollback, c'est sauter en parachute sans vérifier le pliage. Et le vendredi à 18 h, c'est sauter quand le club vient de fermer : plus personne en bas pour t'aider."}
+  ]},
+ {t:"Maintenance et vieillissement",at:"0:43",dur:"7 min",ch:"maintenance",fig:"cycle",
+  desc:"Un logiciel vivant se jardine. Un logiciel figé pourrit.",
+  points:[
+   "Trois gestes : corrective (réparer), adaptative (suivre un monde qui change, nouveau taux de TVA), perfective (améliorer sans nouvelle fonction).",
+   "Détail des manuels : la plupart des corrections introduisent de nouvelles erreurs. Le jardinage n'est jamais fini.",
+   "La dette technique, un emprunt avec intérêts : chaque raccourci d'aujourd'hui ralentit les évolutions de demain. Le seuil qui alerte : quand la maintenance dépasse le quart du coût du reste, on envisage de refaire.",
+   "Le legacy et la migration : le code que plus personne n'ose toucher, et le déménagement des données sans rien casser.",
+   "La retraite : un logiciel a une fin, et elle se planifie. Sinon il devient le legacy de quelqu'un d'autre.",
+   {img:"Un logiciel, c'est un jardin, pas une statue. Sans jardinier il ne reste pas figé, il se fait manger par les ronces."}
+  ]},
+ {t:"Et l'ordre dans tout ça ?",at:"0:50",dur:"6 min",ch:"epilogue",fig:"memo_models",
+  desc:"Les mêmes six étapes, des ordres différents : voilà toute l'histoire des modèles.",
+  points:[
+   "Un modèle, c'est un ordre et un rythme sur les mêmes six étapes. La question qui les départage : à quel point les besoins vont-ils bouger ?",
+   "Cascade : chaque étape validée avant la suivante. Rassurant, mais l'effet tunnel guette, le client ne voit rien pendant des mois.",
+   "Cycle en V : la cascade repliée, chaque étape de construction prépare le test qui lui répond.",
+   "Itératif et agile : on boucle, on livre, on ajuste. Vigilance sur l'agilité de façade, les rituels sans la posture.",
+   "Le modèle qu'on pratique déjà : la V1 puis la V2 du portail, de l'itératif sans le nommer.",
+   "Pour l'auditeur, la courbe de Dunning-Kruger : le site fait en une heure hisse au sommet du mont Stupide, le premier bug ouvre la vallée, et la remontée porte le nom de ces six étapes.",
+   {img:"Mêmes ingrédients, recettes différentes. La cascade, c'est le menu gastronomique commandé à l'avance ; l'agile, c'est les tapas, on goûte et on ajuste au fur et à mesure."}
+  ]},
+ {t:"Mot de la fin",at:"0:56",dur:"3 min",ch:null,fig:"dk",
+  desc:"L'IA ne supprime pas les étapes, elle les rend plus rapides à parcourir.",
+  points:[
+   "La vraie raison d'être de tout ça : ces étapes existent parce que des fusées ont explosé et des week-ends ont brûlé.",
+   "Ce qui reste entre nos mains : le problème à cadrer, les choix à assumer, la responsabilité de ce qu'on met entre les mains des gens.",
+   "Teaser du prochain épisode : le développement du portail, étape par étape.",
+   {img:"L'IA, c'est le téléphérique posé sur la montagne. Il t'épargne la montée, mais c'est toujours à toi de savoir où tu vas, et de regarder le vide."}
+  ]}
 ];
 
 const VERSIONS=["v0.1.0","v0.2.0","v0.3.0","v0.4.0","v0.9.0","v1.0.0","v1.1.0"];
@@ -815,6 +896,39 @@ dk:{cap:"La confiance grimpe avant l'expérience : la courbe qui répond aux pro
 <text x="134" y="32" text-anchor="start" font-family="var(--fm)" font-size="10" fill="var(--ink)">« mon site en une heure »</text>
 <text x="254" y="176" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">premier bug en prod</text>
 <text x="430" y="48" text-anchor="end" font-family="var(--fm)" font-size="10" fill="var(--ink)">le cycle de vie</text>
+</svg>`},
+memo_cycle:{cap:"Six étapes, un cycle. Le développement n'en est qu'une.",svg:`<svg viewBox="0 0 460 128" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Les six étapes du cycle, le développement surligné">
+<path d="M40,34 C40,14 420,14 420,34" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<path d="M420,34 l-6,-7 M420,34 l-9,-1" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
+<text x="230" y="12" text-anchor="middle" font-family="var(--fm)" font-size="9.5" fill="var(--muted)">et ça recommence</text>
+<line x1="40" y1="60" x2="420" y2="60" stroke="var(--muted)" stroke-width="1.5"/>
+<g font-family="var(--fm)" font-size="10" fill="var(--ink)" text-anchor="middle">
+<circle cx="40" cy="60" r="4" fill="var(--muted)"/><text x="40" y="82">Besoins</text>
+<circle cx="116" cy="60" r="4" fill="var(--muted)"/><text x="116" y="82">Concep.</text>
+<circle cx="192" cy="60" r="7" fill="var(--accent)"/><text x="192" y="84" font-weight="bold" fill="var(--accent)">Dév.</text>
+<circle cx="268" cy="60" r="4" fill="var(--muted)"/><text x="268" y="82">Tests</text>
+<circle cx="344" cy="60" r="4" fill="var(--muted)"/><text x="344" y="82">Prod</text>
+<circle cx="420" cy="60" r="4" fill="var(--muted)"/><text x="420" y="82">Maint.</text>
+</g>
+<text x="192" y="108" text-anchor="middle" font-family="var(--fm)" font-size="9.5" fill="var(--accent)">une étape parmi six</text>
+</svg>`},
+memo_models:{cap:"Mêmes étapes, ordres différents : trois façons d'enchaîner.",svg:`<svg viewBox="0 0 460 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cascade, cycle en V et itératif comparés">
+<text x="14" y="20" font-family="var(--fm)" font-size="11" fill="var(--ink)">Cascade</text>
+<path d="M150,14 h50 v11 h50 v11 h50 v11 h50 v11 h46" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<text x="300" y="60" text-anchor="end" font-family="var(--fm)" font-size="9" fill="var(--muted)">l'effet tunnel</text>
+<line x1="14" y1="70" x2="446" y2="70" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="14" y="92" font-family="var(--fm)" font-size="11" fill="var(--ink)">Cycle en V</text>
+<path d="M170,84 L215,120 L260,84" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path d="M290,84 L335,120 L380,84" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".4"/>
+<text x="215" y="134" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">construire, vérifier</text>
+<line x1="14" y1="146" x2="446" y2="146" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="14" y="164" font-family="var(--fm)" font-size="11" fill="var(--ink)">Itératif</text>
+<circle cx="215" cy="160" r="0" fill="none"/>
+<path d="M200,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path d="M206,163 l-5,1 l2,-5" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path d="M255,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".6"/>
+<path d="M310,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".35"/>
+<text x="446" y="164" text-anchor="end" font-family="var(--fm)" font-size="9" fill="var(--muted)">on boucle, on ajuste</text>
 </svg>`}
 };
 const EPI={id:"epilogue",
@@ -1237,6 +1351,10 @@ function trameMd(){
   md+="Objectif : vulgariser les grandes étapes d'un développement logiciel, valables quel que soit l'outil (IA comprise).\n\n";
   TRAME.forEach(sec=>{
     md+=`## ${sec.at} · ${sec.t} (${sec.dur})\n${sec.desc}\n`;
+    if(sec.fig&&SVGS[sec.fig])md+="Mémo : "+SVGS[sec.fig].cap+"\n";
+    if(sec.points){
+      sec.points.forEach(p=>{md+=(typeof p==="string"?"- "+p:"- Image : "+p.img)+"\n";});
+    }
     if(sec.ch){
       const pinned=anglesFor(sec.ch).filter(a=>S.pinned[a.id]);
       if(pinned.length){md+="Angles épinglés :\n"+pinned.map(a=>`- ${a.txt}`).join("\n")+"\n";}
@@ -1262,7 +1380,12 @@ function trameView(){
   <button class="btn ghost" data-a="md" style="margin-top:4px">${S.showMd?"Masquer le texte":"Voir le texte"}</button>
   ${S.showMd?`<pre>${esc(trameMd())}</pre>`:""}</div>`;
   TRAME.forEach(sec=>{
-    out+=`<div class="tsec"><div class="ttime">${sec.at} · ${sec.dur}</div><h3>${esc(sec.t)}</h3><div class="tdesc">${esc(sec.desc)}</div>${trameLines(sec)}</div>`;
+    const memo=sec.fig&&SVGS[sec.fig]?`<div class="tmemo"><div class="tmemo-l">Mémo</div>${SVGS[sec.fig].svg}<div class="tmemo-c">${esc(SVGS[sec.fig].cap)}</div></div>`:"";
+    let pts="";
+    if(sec.points){
+      pts=`<ul class="tpoints">${sec.points.map(p=>typeof p==="string"?`<li>${esc(p)}</li>`:`<li class="timage"><span class="tim-l">l'image</span> ${esc(p.img)}</li>`).join("")}</ul>`;
+    }
+    out+=`<div class="tsec"><div class="ttime">${sec.at} · ${sec.dur}</div><h3>${esc(sec.t)}</h3><div class="tdesc">${esc(sec.desc)}</div>${memo}${pts}${trameLines(sec)}</div>`;
   });
   return out;
 }

@@ -18,7 +18,8 @@
 body.designed{
   --bg:#f3ede4; --paper:#fdfaf4; --ink:#242038; --muted:#6d6782;
   --primary:#006e7c; --accent:#ba0675; --good:#006e7c; --bad:#ba0675;
-  --bd:2px solid #242038; --shadow:4px 4px 0 #242038; --radius:3px;
+  --bd:1px solid rgba(36,32,56,.16); --shadow:0 1px 2px rgba(36,32,56,.08),0 16px 40px -16px rgba(36,32,56,.25); --radius:18px;
+  --glass:rgba(253,250,244,.66); --glassline:rgba(255,255,255,.6);
   --fd:'Cormorant Garamond',Georgia,serif;
   --fb:'Lora',Georgia,serif;
   --fm:'IBM Plex Mono',ui-monospace,Menlo,monospace;
@@ -33,8 +34,12 @@ body{
 }
 #scroller{grid-row:1;grid-column:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain}
 body.designed{
-  background-image:radial-gradient(circle at 1px 1px, rgba(36,32,56,.06) 1px, transparent 0);
-  background-size:22px 22px;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(36,32,56,.05) 1px, transparent 0),
+    radial-gradient(120% 90% at 85% -10%, rgba(0,110,124,.16), transparent 55%),
+    radial-gradient(110% 80% at -12% 110%, rgba(186,6,117,.12), transparent 55%),
+    linear-gradient(180deg,#f6f0e7,#eee5d8);
+  background-size:22px 22px,100% 100%,100% 100%,100% 100%;
 }
 .wrap{max-width:520px;margin:0 auto;padding:0 14px}
 
@@ -182,6 +187,27 @@ body:not(.designed) .hook{color:var(--muted)}
 .askbox li{font-size:14px;margin-bottom:5px}
 .askbox li:last-child{margin-bottom:0}
 hr.sep{border:none;border-top:var(--bd);margin:14px 0}
+
+/* ---------- designed : verre et parchemin ---------- */
+body.designed header{background:rgba(253,250,244,.72);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4)}
+body.designed nav{background:rgba(253,250,244,.72);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);box-shadow:0 -10px 26px -18px rgba(36,32,56,.3)}
+body.designed .card,body.designed .tsec{background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5);box-shadow:var(--shadow),inset 0 1px 0 var(--glassline)}
+body.designed .toast{background:rgba(36,32,56,.78);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);border:1px solid rgba(255,255,255,.14);box-shadow:0 12px 32px -12px rgba(36,32,56,.5)}
+body.designed .qbox{background:rgba(36,32,56,.05)}
+body.designed .opt:not(.sel):not(.correct):not(.wrong),body.designed .ckitem{background:rgba(255,255,255,.6)}
+body.designed .chip{border-radius:999px}
+body.designed .progress,body.designed .progress > div,body.designed .meter .mbar,body.designed .meter .mbar>div{border-radius:999px}
+body.designed .progress > div{background:linear-gradient(90deg,var(--primary),var(--accent))}
+body.designed .btn{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 2px 6px -2px rgba(36,32,56,.35)}
+body.designed .backbtn{text-decoration:none;background:rgba(255,255,255,.55);border:var(--bd);padding:7px 12px;border-radius:999px}
+body.designed.anim .btn,body.designed.anim .chcard,body.designed.anim .opt,body.designed.anim .pinbtn,body.designed.anim .ckitem{transition:transform .18s cubic-bezier(.2,.8,.3,1.3),box-shadow .18s ease,background .18s ease}
+body.designed.anim .btn:not(:disabled):active{transform:scale(.97)}
+body.designed.anim .chcard:active{transform:scale(.985);box-shadow:0 1px 2px rgba(36,32,56,.1),0 10px 26px -14px rgba(36,32,56,.28)}
+body.designed.anim .opt:not(:disabled):active,body.designed.anim .ckitem:active,body.designed.anim .pinbtn:active{transform:scale(.98)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  body.designed header,body.designed nav,body.designed .card,body.designed .tsec{background:#fdfaf4}
+  body.designed .toast{background:#242038}
+}
 @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
 </style>
 </head>

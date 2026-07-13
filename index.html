@@ -8,8 +8,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#e9e9e9; --paper:#f7f7f7; --ink:#3d3d3d; --muted:#8a8a8a;
-  --primary:#5f5f5f; --accent:#6a6a6a; --good:#5f5f5f; --bad:#7a7a7a;
+  --bg:#e9e9e9; --paper:#f7f7f7; --ink:#3d3d3d; --muted:#696969;
+  --primary:#5f5f5f; --accent:#6a6a6a; --good:#5f5f5f; --bad:#6f6f6f;
   --bd:2px dashed #a3a3a3; --shadow:none; --radius:2px;
   --fd:ui-monospace,'SFMono-Regular',Menlo,monospace;
   --fb:ui-monospace,'SFMono-Regular',Menlo,monospace;
@@ -24,13 +24,14 @@ body.designed{
   --fm:'IBM Plex Mono',ui-monospace,Menlo,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;height:100%}
 body{
   background:var(--bg); color:var(--ink);
   font-family:var(--fb); font-size:16px; line-height:1.55;
-  padding-bottom:calc(76px + env(safe-area-inset-bottom));
-  min-height:100vh;
+  height:100%; overflow:hidden;
+  display:grid; grid-template-rows:1fr auto; grid-template-columns:100%;
 }
+#scroller{grid-row:1;grid-column:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain}
 body.designed{
   background-image:radial-gradient(circle at 1px 1px, rgba(36,32,56,.06) 1px, transparent 0);
   background-size:22px 22px;
@@ -52,7 +53,7 @@ body.anim .progress > div{transition:width .5s ease}
 .plabel{font-family:var(--fm);font-size:11px;color:var(--muted);margin-top:5px;display:flex;justify-content:space-between}
 
 /* ---------- cards ---------- */
-main{padding-top:16px}
+main{padding:16px 0 28px}
 .card{background:var(--paper);border:var(--bd);box-shadow:var(--shadow);border-radius:var(--radius);padding:16px;margin-bottom:14px}
 .card h2{font-family:var(--fd);font-size:23px;line-height:1.15;margin-bottom:8px;font-weight:700}
 body:not(.designed) .card h2{font-size:17px;font-weight:500}
@@ -140,19 +141,20 @@ pre{font-family:var(--fm);font-size:12px;white-space:pre-wrap;word-break:break-w
 .ticket .tid{font-family:var(--fm);font-size:11px;color:var(--accent)}
 
 /* ---------- nav ---------- */
-nav{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:var(--bd);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+nav{grid-row:2;grid-column:1;background:var(--paper);border-top:var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom)}
 nav button{flex:1;background:none;border:none;padding:13px 4px 11px;font-family:var(--fm);font-size:12px;color:var(--muted);border-top:3px solid transparent}
 nav button.on{color:var(--ink);border-top-color:var(--accent);font-weight:500}
 nav .badge{display:inline-block;min-width:17px;padding:1px 4px;background:var(--accent);color:#fff;font-size:10px;margin-left:3px;border-radius:8px}
+nav .badge[hidden]{display:none}
 
 /* ---------- toast ---------- */
-#toasts{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom));left:12px;right:12px;z-index:99;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+#toasts{grid-row:1;grid-column:1;align-self:end;z-index:99;margin:0 12px 10px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{background:var(--ink);color:var(--paper);font-family:var(--fm);font-size:13px;padding:12px 14px;border-radius:var(--radius);box-shadow:var(--shadow);opacity:0;transform:translateY(8px)}
 .toast.show{opacity:1;transform:translateY(0)}
 body.anim .toast{transition:opacity .3s,transform .3s}
 
 .stampdone{display:inline-block;font-family:var(--fm);font-size:12px;letter-spacing:1.5px;border:2px solid var(--primary);color:var(--primary);padding:4px 10px;transform:rotate(-2deg);text-transform:uppercase;font-weight:500}
-#apptitle,#version{cursor:pointer}
+#apptitle,#version{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .meters{display:flex;flex-direction:column;gap:9px}
 .meter{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:11px}
 .meter .ml{width:128px;flex-shrink:0;color:var(--muted)}
@@ -184,6 +186,7 @@ hr.sep{border:none;border-top:var(--bd);margin:14px 0}
 </style>
 </head>
 <body>
+<div id="scroller">
 <header>
   <div class="wrap">
     <div class="hrow">
@@ -199,8 +202,9 @@ hr.sep{border:none;border-top:var(--bd);margin:14px 0}
   </div>
 </header>
 <main><div class="wrap" id="app"></div></main>
-<div id="toasts"></div>
-<nav>
+</div>
+<div id="toasts" role="status" aria-live="polite"></div>
+<nav aria-label="Navigation principale">
   <button data-a="nav" data-id="home" id="nav-home">Chantiers</button>
   <button data-a="nav" data-id="simu" id="nav-simu">Simu</button>
   <button data-a="nav" data-id="trame" id="nav-trame">Trame<span class="badge" id="pincount" hidden>0</span></button>
@@ -1186,7 +1190,8 @@ function simView(){
 
 /* ---------- Rendu global ---------- */
 function render(toTop){
-  const y=window.scrollY||0;
+  const sc=$("scroller");
+  const y=sc.scrollTop||0;
   const cu=S.done.besoins;
   document.body.classList.toggle("designed",!!S.done.conception);
   document.body.classList.toggle("anim",!!S.done.dev);
@@ -1199,9 +1204,13 @@ function render(toTop){
   $("plabel").textContent=`${count()}/6 chantiers bouclés`;
   const np=Object.keys(S.pinned).filter(k=>S.pinned[k]).length;
   $("pincount").hidden=!np;$("pincount").textContent=np;
-  ["home","simu","trame","journal"].forEach(v=>$("nav-"+v).classList.toggle("on",S.view===v||(v==="home"&&(S.view==="ch"||S.view==="epi"))));
+  ["home","simu","trame","journal"].forEach(v=>{
+    const b=$("nav-"+v),on=S.view===v||(v==="home"&&(S.view==="ch"||S.view==="epi"));
+    b.classList.toggle("on",on);
+    if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
+  });
   app().innerHTML=S.view==="home"?homeView():S.view==="ch"?chView(S.chantier):S.view==="epi"?epiView():S.view==="simu"?simView():S.view==="trame"?trameView():journalView();
-  if(toTop)window.scrollTo(0,0);else window.scrollTo(0,y);
+  if(toTop)sc.scrollTo(0,0);else sc.scrollTo(0,y);
 }
 
 /* ---------- Actions ---------- */
@@ -1347,14 +1356,23 @@ const A={
 };
 function fallbackCopy(txt){
   try{
-    const ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";
+    const ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";ta.style.fontSize="16px";ta.setAttribute("readonly","");
     document.body.appendChild(ta);ta.select();const ok=document.execCommand("copy");ta.remove();return ok;
   }catch(e){return false;}
 }
 
 document.addEventListener("click",e=>{
   const t=e.target.closest("[data-a]");if(!t)return;
-  const fn=A[t.dataset.a];if(fn)fn(t.dataset.id,t);
+  const ds=t.dataset,hadFocus=document.activeElement===t;
+  const fn=A[ds.a];if(fn)fn(ds.id,t);
+  if(hadFocus&&document.activeElement===document.body){
+    let q='[data-a="'+ds.a+'"]';
+    if(ds.id)q+='[data-id="'+ds.id+'"]';
+    if(ds.o!=null)q+='[data-o="'+ds.o+'"]';
+    if(ds.ch)q+='[data-ch="'+ds.ch+'"]';
+    const el=document.querySelector(q);
+    if(el&&!el.disabled)el.focus({preventScroll:true});
+  }
 });
 
 /* ---------- Démarrage ---------- */

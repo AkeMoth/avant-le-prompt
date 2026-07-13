@@ -270,6 +270,13 @@ body.designed[data-view="journal"] .eyebrow{color:var(--cyan)}
 body.designed[data-view="journal"] .logline{border-bottom-color:rgba(242,236,226,.35)}
 body.designed hr.sep{border:none;height:14px;margin:16px 0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='14'%3E%3Cg fill='%236d6782'%3E%3Crect x='2' y='5' width='2' height='4'/%3E%3Crect x='8' y='3' width='2' height='8'/%3E%3Crect x='14' y='1' width='2' height='12'/%3E%3Crect x='20' y='4' width='2' height='6'/%3E%3Crect x='26' y='2' width='2' height='10'/%3E%3Crect x='32' y='5' width='2' height='4'/%3E%3Crect x='38' y='3' width='2' height='8'/%3E%3C/g%3E%3C/svg%3E") repeat-x center/auto 14px}
 body.designed::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:98;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* ---------- animation des schémas (après le chantier Développement) ---------- */
+@media (prefers-reduced-motion: no-preference){
+  body.anim .fig svg,body.anim .tmemo svg{opacity:0;transform:translateY(10px);transition:opacity .55s ease,transform .55s ease}
+  body.anim .fig svg.drawn,body.anim .tmemo svg.drawn{opacity:1;transform:none}
+  body.anim .fig svg .dr,body.anim .tmemo svg .dr{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.05s ease .25s}
+  body.anim .fig svg.drawn .dr,body.anim .tmemo svg.drawn .dr{stroke-dashoffset:0}
+}
 @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
 </style>
 </head>
@@ -669,7 +676,7 @@ cost:{cap:"La même erreur, cinq moments pour la trouver : la courbe qui justifi
 <text x="44" y="24" font-family="var(--fm)" font-size="11" fill="var(--muted)">coût de correction d'une même erreur</text>
 <line x1="44" y1="34" x2="44" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
 <line x1="44" y1="160" x2="444" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
-<path d="M74,152 C120,150 140,148 164,146 C210,142 230,136 254,130 C290,120 320,108 344,96 C375,81 400,66 424,52" fill="none" stroke="var(--accent)" stroke-width="3"/>
+<path class="dr" pathLength="1" d="M74,152 C120,150 140,148 164,146 C210,142 230,136 254,130 C290,120 320,108 344,96 C375,81 400,66 424,52" fill="none" stroke="var(--accent)" stroke-width="3"/>
 <circle cx="74" cy="152" r="4.5" fill="var(--accent)"/><circle cx="164" cy="146" r="4.5" fill="var(--accent)"/><circle cx="254" cy="130" r="4.5" fill="var(--accent)"/><circle cx="344" cy="96" r="4.5" fill="var(--accent)"/><circle cx="424" cy="52" r="4.5" fill="var(--accent)"/>
 <text x="74" y="140" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">×1</text>
 <text x="164" y="134" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">×5</text>
@@ -709,10 +716,10 @@ lego:{cap:"Deux façons d'assembler les mêmes briques. Une seule se laisse modi
 git:{cap:"Deux branches, deux merges : le second touche la même ligne, un humain tranche.",svg:`<svg viewBox="0 0 460 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Branches Git et résolution de conflit">
 <text x="440" y="24" text-anchor="end" font-family="var(--fm)" font-size="10" fill="var(--accent)">au 2e merge : conflit, tranché par un humain</text>
 <line x1="402" y1="30" x2="388" y2="104" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
-<line x1="26" y1="115" x2="440" y2="115" stroke="var(--ink)" stroke-width="2.5"/>
+<line class="dr" pathLength="1" x1="26" y1="115" x2="440" y2="115" stroke="var(--ink)" stroke-width="2.5"/>
 <text x="26" y="103" font-family="var(--fm)" font-size="10" fill="var(--muted)">main</text>
-<path d="M110,115 C130,115 138,55 168,55 L232,55 C268,55 284,115 310,115" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
-<path d="M150,115 C170,115 178,175 208,175 L292,175 C330,175 352,115 385,115" fill="none" stroke="var(--primary)" stroke-width="2.5"/>
+<path class="dr" pathLength="1" d="M110,115 C130,115 138,55 168,55 L232,55 C268,55 284,115 310,115" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path class="dr" pathLength="1" d="M150,115 C170,115 178,175 208,175 L292,175 C330,175 352,115 385,115" fill="none" stroke="var(--primary)" stroke-width="2.5"/>
 <circle cx="60" cy="115" r="4.5" fill="var(--ink)"/><circle cx="110" cy="115" r="4.5" fill="var(--ink)"/><circle cx="150" cy="115" r="4.5" fill="var(--ink)"/><circle cx="310" cy="115" r="4.5" fill="var(--ink)"/><circle cx="430" cy="115" r="4.5" fill="var(--ink)"/>
 <circle cx="185" cy="55" r="4.5" fill="var(--accent)"/><circle cx="220" cy="55" r="4.5" fill="var(--accent)"/>
 <circle cx="230" cy="175" r="4.5" fill="var(--primary)"/><circle cx="265" cy="175" r="4.5" fill="var(--primary)"/>
@@ -756,12 +763,12 @@ pipeline:{cap:"Trois scènes pour un même logiciel. La flèche en pointillés e
 <text x="78" y="62" text-anchor="middle" font-family="var(--fm)" font-size="13" font-weight="bold" fill="var(--ink)">DEV</text>
 <text x="78" y="80" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">l'atelier</text>
 <text x="78" y="116" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">on peut tout casser</text>
-<line x1="138" y1="67" x2="162" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-pi)"/>
+<line class="dr" pathLength="1" x1="138" y1="67" x2="162" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-pi)"/>
 <rect x="168" y="36" width="124" height="62" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="230" y="62" text-anchor="middle" font-family="var(--fm)" font-size="13" font-weight="bold" fill="var(--ink)">STAGING</text>
 <text x="230" y="80" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">la répétition</text>
 <text x="230" y="116" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">copie conforme de la prod</text>
-<line x1="292" y1="67" x2="314" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-pi)"/>
+<line class="dr" pathLength="1" x1="292" y1="67" x2="314" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-pi)"/>
 <rect x="320" y="36" width="122" height="62" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
 <text x="381" y="62" text-anchor="middle" font-family="var(--fm)" font-size="13" font-weight="bold" fill="#fff">PROD</text>
 <text x="381" y="80" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="#fff">la scène</text>
@@ -771,9 +778,9 @@ pipeline:{cap:"Trois scènes pour un même logiciel. La flèche en pointillés e
 </svg>`},
 cycle:{cap:"Trois gestes qui tournent en boucle autour du même logiciel : le jardinage.",svg:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cycle des trois maintenances">
 <defs><marker id="ah-cy" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
-<path d="M304,44 C352,54 378,86 374,122" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
-<line x1="280" y1="151" x2="180" y2="151" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
-<path d="M84,122 C80,70 110,40 152,30" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
+<path class="dr" pathLength="1" d="M304,44 C352,54 378,86 374,122" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
+<line class="dr" pathLength="1" x1="280" y1="151" x2="180" y2="151" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
+<path class="dr" pathLength="1" d="M84,122 C80,70 110,40 152,30" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
 <rect x="160" y="14" width="140" height="44" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="230" y="33" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">CORRECTIVE</text>
 <text x="230" y="49" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">réparer les défauts</text>
@@ -889,7 +896,7 @@ dk:{cap:"La confiance grimpe avant l'expérience : la courbe qui répond aux pro
 <line x1="44" y1="160" x2="444" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
 <text x="52" y="28" font-family="var(--fm)" font-size="10" fill="var(--muted)">confiance</text>
 <text x="444" y="178" text-anchor="end" font-family="var(--fm)" font-size="10" fill="var(--muted)">expérience</text>
-<path d="M54,150 C80,80 100,44 122,44 C150,44 162,98 198,128 C222,148 242,152 264,148 C322,138 382,96 430,62" fill="none" stroke="var(--accent)" stroke-width="3"/>
+<path class="dr" pathLength="1" d="M54,150 C80,80 100,44 122,44 C150,44 162,98 198,128 C222,148 242,152 264,148 C322,138 382,96 430,62" fill="none" stroke="var(--accent)" stroke-width="3"/>
 <circle cx="122" cy="44" r="4.5" fill="var(--accent)"/>
 <circle cx="254" cy="149" r="4.5" fill="var(--ink)"/>
 <circle cx="430" cy="62" r="4.5" fill="var(--good)"/>
@@ -901,7 +908,7 @@ memo_cycle:{cap:"Six étapes, un cycle. Le développement n'en est qu'une.",svg:
 <path d="M40,34 C40,14 420,14 420,34" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 4"/>
 <path d="M420,34 l-6,-7 M420,34 l-9,-1" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
 <text x="230" y="12" text-anchor="middle" font-family="var(--fm)" font-size="9.5" fill="var(--muted)">et ça recommence</text>
-<line x1="40" y1="60" x2="420" y2="60" stroke="var(--muted)" stroke-width="1.5"/>
+<line class="dr" pathLength="1" x1="40" y1="60" x2="420" y2="60" stroke="var(--muted)" stroke-width="1.5"/>
 <g font-family="var(--fm)" font-size="10" fill="var(--ink)" text-anchor="middle">
 <circle cx="40" cy="60" r="4" fill="var(--muted)"/><text x="40" y="82">Besoins</text>
 <circle cx="116" cy="60" r="4" fill="var(--muted)"/><text x="116" y="82">Concep.</text>
@@ -914,12 +921,12 @@ memo_cycle:{cap:"Six étapes, un cycle. Le développement n'en est qu'une.",svg:
 </svg>`},
 memo_models:{cap:"Mêmes étapes, ordres différents : trois façons d'enchaîner.",svg:`<svg viewBox="0 0 460 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cascade, cycle en V et itératif comparés">
 <text x="14" y="20" font-family="var(--fm)" font-size="11" fill="var(--ink)">Cascade</text>
-<path d="M150,14 h50 v11 h50 v11 h50 v11 h50 v11 h46" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path class="dr" pathLength="1" d="M150,14 h50 v11 h50 v11 h50 v11 h50 v11 h46" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
 <text x="300" y="60" text-anchor="end" font-family="var(--fm)" font-size="9" fill="var(--muted)">l'effet tunnel</text>
 <line x1="14" y1="70" x2="446" y2="70" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
 <text x="14" y="92" font-family="var(--fm)" font-size="11" fill="var(--ink)">Cycle en V</text>
-<path d="M170,84 L215,120 L260,84" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
-<path d="M290,84 L335,120 L380,84" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".4"/>
+<path class="dr" pathLength="1" d="M170,84 L215,120 L260,84" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path class="dr" pathLength="1" d="M290,84 L335,120 L380,84" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".4"/>
 <text x="215" y="134" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">construire, vérifier</text>
 <line x1="14" y1="146" x2="446" y2="146" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
 <text x="14" y="164" font-family="var(--fm)" font-size="11" fill="var(--ink)">Itératif</text>
@@ -1548,6 +1555,26 @@ function render(toTop){
   app().innerHTML=S.view==="home"?homeView():S.view==="ch"?chView(S.chantier):S.view==="epi"?epiView():S.view==="simu"?simView():S.view==="trame"?trameView():S.view==="intrusion"?intrusionView():journalView();
   if($("tbar")&&!sortTimer)sortTimer=setInterval(sortTick,250);
   if(toTop)sc.scrollTo(0,0);else sc.scrollTo(0,y);
+  armSchemaAnim();
+}
+let schemaScrollBound=false;
+function revealSchemas(){
+  const sc=$("scroller");if(!sc)return;
+  const h=sc.clientHeight;
+  document.querySelectorAll(".fig svg:not(.drawn),.tmemo svg:not(.drawn)").forEach(s=>{
+    if(s.getBoundingClientRect().top<h*0.9)s.classList.add("drawn");
+  });
+}
+function armSchemaAnim(){
+  const sc=$("scroller");if(!sc)return;
+  if(!schemaScrollBound){
+    sc.addEventListener("scroll",revealSchemas,{passive:true});
+    window.addEventListener("load",revealSchemas);
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(revealSchemas);
+    schemaScrollBound=true;
+  }
+  requestAnimationFrame(revealSchemas);
+  setTimeout(revealSchemas,160);setTimeout(revealSchemas,520);
 }
 
 /* ---------- Actions ---------- */

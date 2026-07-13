@@ -276,6 +276,19 @@ body.designed::after{content:"";position:fixed;inset:0;pointer-events:none;z-ind
   body.anim .fig svg.drawn,body.anim .tmemo svg.drawn{opacity:1;transform:none}
   body.anim .fig svg .dr,body.anim .tmemo svg .dr{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.05s ease .25s}
   body.anim .fig svg.drawn .dr,body.anim .tmemo svg.drawn .dr{stroke-dashoffset:0}
+  /* boucles ambiantes, lancees une fois le schema revele */
+  body.anim .drawn .ants{animation:svgants 2.6s linear infinite}
+  body.anim .drawn .pulse{animation:svgpulse 2.9s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+  body.anim .drawn .breathe{animation:svgbreathe 3.6s ease-in-out infinite}
+  body.anim .drawn .blink{animation:svgblink 1.9s steps(1,end) infinite}
+  body.anim .drawn .spin{animation:svgspin 16s linear infinite;transform-box:fill-box;transform-origin:center}
+  body.anim .drawn .wob{animation:svgwob 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+  @keyframes svgants{to{stroke-dashoffset:-18}}
+  @keyframes svgpulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.55);opacity:.45}}
+  @keyframes svgbreathe{0%,100%{opacity:1}50%{opacity:.5}}
+  @keyframes svgblink{0%,55%{opacity:1}56%,100%{opacity:.2}}
+  @keyframes svgspin{to{transform:rotate(360deg)}}
+  @keyframes svgwob{0%,100%{transform:rotate(0)}25%{transform:rotate(-1.6deg)}75%{transform:rotate(1.6deg)}}
 }
 @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
 </style>
@@ -677,7 +690,7 @@ cost:{cap:"La même erreur, cinq moments pour la trouver : la courbe qui justifi
 <line x1="44" y1="34" x2="44" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
 <line x1="44" y1="160" x2="444" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
 <path class="dr" pathLength="1" d="M74,152 C120,150 140,148 164,146 C210,142 230,136 254,130 C290,120 320,108 344,96 C375,81 400,66 424,52" fill="none" stroke="var(--accent)" stroke-width="3"/>
-<circle cx="74" cy="152" r="4.5" fill="var(--accent)"/><circle cx="164" cy="146" r="4.5" fill="var(--accent)"/><circle cx="254" cy="130" r="4.5" fill="var(--accent)"/><circle cx="344" cy="96" r="4.5" fill="var(--accent)"/><circle cx="424" cy="52" r="4.5" fill="var(--accent)"/>
+<circle cx="74" cy="152" r="4.5" fill="var(--accent)"/><circle cx="164" cy="146" r="4.5" fill="var(--accent)"/><circle cx="254" cy="130" r="4.5" fill="var(--accent)"/><circle cx="344" cy="96" r="4.5" fill="var(--accent)"/><circle class="pulse" cx="424" cy="52" r="4.5" fill="var(--accent)"/>
 <text x="74" y="140" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">×1</text>
 <text x="164" y="134" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">×5</text>
 <text x="254" y="118" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">×10</text>
@@ -692,7 +705,7 @@ cost:{cap:"La même erreur, cinq moments pour la trouver : la courbe qui justifi
 lego:{cap:"Deux façons d'assembler les mêmes briques. Une seule se laisse modifier sans trembler.",svg:`<svg viewBox="0 0 460 205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Couplage fort contre couplage faible">
 <line x1="230" y1="14" x2="230" y2="196" stroke="var(--muted)" stroke-dasharray="4 4"/>
 <text x="110" y="26" text-anchor="middle" font-family="var(--fm)" font-size="12" fill="var(--ink)">La soudure</text>
-<line x1="75" y1="66" x2="165" y2="88" stroke="var(--accent)" stroke-width="1.5"/>
+<g class="wob"><line x1="75" y1="66" x2="165" y2="88" stroke="var(--accent)" stroke-width="1.5"/>
 <line x1="75" y1="66" x2="107" y2="136" stroke="var(--accent)" stroke-width="1.5"/>
 <line x1="165" y1="88" x2="107" y2="136" stroke="var(--accent)" stroke-width="1.5"/>
 <line x1="45" y1="70" x2="195" y2="130" stroke="var(--accent)" stroke-width="1.5"/>
@@ -700,7 +713,7 @@ lego:{cap:"Deux façons d'assembler les mêmes briques. Une seule se laisse modi
 <line x1="110" y1="82" x2="140" y2="120" stroke="var(--accent)" stroke-width="1.5"/>
 <rect x="40" y="50" width="70" height="32" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <rect x="130" y="72" width="70" height="32" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
-<rect x="72" y="120" width="70" height="32" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<rect x="72" y="120" width="70" height="32" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/></g>
 <text x="110" y="190" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--accent)">couplage fort · tout tient à tout</text>
 <text x="350" y="26" text-anchor="middle" font-family="var(--fm)" font-size="12" fill="var(--ink)">Le Lego</text>
 <line x1="360" y1="76" x2="360" y2="96" stroke="var(--primary)" stroke-width="2"/>
@@ -723,7 +736,7 @@ git:{cap:"Deux branches, deux merges : le second touche la même ligne, un humai
 <circle cx="60" cy="115" r="4.5" fill="var(--ink)"/><circle cx="110" cy="115" r="4.5" fill="var(--ink)"/><circle cx="150" cy="115" r="4.5" fill="var(--ink)"/><circle cx="310" cy="115" r="4.5" fill="var(--ink)"/><circle cx="430" cy="115" r="4.5" fill="var(--ink)"/>
 <circle cx="185" cy="55" r="4.5" fill="var(--accent)"/><circle cx="220" cy="55" r="4.5" fill="var(--accent)"/>
 <circle cx="230" cy="175" r="4.5" fill="var(--primary)"/><circle cx="265" cy="175" r="4.5" fill="var(--primary)"/>
-<circle cx="385" cy="115" r="8" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="385" cy="115" r="4.5" fill="var(--ink)"/>
+<circle class="pulse" cx="385" cy="115" r="8" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="385" cy="115" r="4.5" fill="var(--ink)"/>
 <text x="200" y="42" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--accent)">branche de Lulu</text>
 <text x="308" y="100" text-anchor="end" font-family="var(--fm)" font-size="9" fill="var(--muted)">merge</text>
 <text x="250" y="196" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--primary)">branche de Manu</text>
@@ -731,17 +744,17 @@ git:{cap:"Deux branches, deux merges : le second touche la même ligne, un humai
 chain:{cap:"Toute défaillance remonte à une erreur humaine. Les tests existent pour couper la chaîne avant la production.",svg:`<svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chaîne de l'erreur humaine à la défaillance">
 <defs><marker id="ah-ch" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
 <text x="310" y="20" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--primary)">les tests coupent la chaîne ici</text>
-<line x1="310" y1="28" x2="310" y2="100" stroke="var(--primary)" stroke-width="2" stroke-dasharray="5 4"/>
+<line class="ants" x1="310" y1="28" x2="310" y2="100" stroke="var(--primary)" stroke-width="2" stroke-dasharray="5 4"/>
 <rect x="16" y="44" width="108" height="46" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="70" y="63" text-anchor="middle" font-family="var(--fm)" font-size="11" fill="var(--ink)">Erreur</text>
 <text x="70" y="78" text-anchor="middle" font-family="var(--fm)" font-size="11" fill="var(--ink)">humaine</text>
 <text x="70" y="110" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">formule mal transcrite</text>
-<line x1="124" y1="67" x2="150" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ch)"/>
+<line class="dr" pathLength="1" x1="124" y1="67" x2="150" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ch)"/>
 <rect x="156" y="44" width="126" height="46" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="219" y="63" text-anchor="middle" font-family="var(--fm)" font-size="11" fill="var(--ink)">Défaut</text>
 <text x="219" y="78" text-anchor="middle" font-family="var(--fm)" font-size="11" fill="var(--ink)">dans le code</text>
 <text x="219" y="110" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">invisible des années</text>
-<line x1="282" y1="67" x2="332" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ch)"/>
+<line class="dr" pathLength="1" x1="282" y1="67" x2="332" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ch)"/>
 <rect x="338" y="44" width="106" height="46" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
 <text x="391" y="72" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="#fff">Défaillance</text>
 <text x="391" y="110" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">Ariane 5 · 370 M$</text>
@@ -749,7 +762,7 @@ chain:{cap:"Toute défaillance remonte à une erreur humaine. Les tests existent
 pyramide:{cap:"Trois étages : on teste beaucoup de petites choses, un peu d'assemblage, et le besoin en dernier.",svg:`<svg viewBox="0 0 460 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pyramide des trois niveaux de tests">
 <polygon points="60,170 400,170 340,126 120,126" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <polygon points="120,122 340,122 290,78 170,78" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
-<polygon points="170,74 290,74 258,30 202,30" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+<polygon class="breathe" points="170,74 290,74 258,30 202,30" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
 <text x="230" y="147" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">Tests unitaires</text>
 <text x="230" y="161" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">chaque brique isolément</text>
 <text x="230" y="97" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">Intégration</text>
@@ -773,14 +786,14 @@ pipeline:{cap:"Trois scènes pour un même logiciel. La flèche en pointillés e
 <text x="381" y="62" text-anchor="middle" font-family="var(--fm)" font-size="13" font-weight="bold" fill="#fff">PROD</text>
 <text x="381" y="80" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="#fff">la scène</text>
 <text x="381" y="116" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">vraies données, vrais gens</text>
-<path d="M366,100 C 366,150 252,156 218,106" fill="none" stroke="var(--primary)" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-rb)"/>
+<path class="ants" d="M366,100 C 366,150 252,156 218,106" fill="none" stroke="var(--primary)" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-rb)"/>
 <text x="296" y="168" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--primary)">rollback : retour arrière en minutes</text>
 </svg>`},
 cycle:{cap:"Trois gestes qui tournent en boucle autour du même logiciel : le jardinage.",svg:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cycle des trois maintenances">
 <defs><marker id="ah-cy" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
-<path class="dr" pathLength="1" d="M304,44 C352,54 378,86 374,122" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
-<line class="dr" pathLength="1" x1="280" y1="151" x2="180" y2="151" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
-<path class="dr" pathLength="1" d="M84,122 C80,70 110,40 152,30" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
+<path class="ants" stroke-dasharray="7 5" d="M304,44 C352,54 378,86 374,122" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
+<line class="ants" stroke-dasharray="7 5" x1="280" y1="151" x2="180" y2="151" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
+<path class="ants" stroke-dasharray="7 5" d="M84,122 C80,70 110,40 152,30" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
 <rect x="160" y="14" width="140" height="44" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="230" y="33" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">CORRECTIVE</text>
 <text x="230" y="49" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">réparer les défauts</text>
@@ -801,24 +814,24 @@ regression:{cap:"Le même jeu de tests, rejoué après chaque changement : quand
 <text x="38" y="92" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ annuler</text>
 <text x="38" y="112" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ payer</text>
 <text x="38" y="132" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ planning</text>
-<line x1="182" y1="87" x2="266" y2="87" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-rg)"/>
+<line class="dr" pathLength="1" x1="182" y1="87" x2="266" y2="87" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-rg)"/>
 <text x="224" y="76" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--muted)">une modification</text>
 <rect x="276" y="30" width="160" height="114" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="290" y="50" font-family="var(--fm)" font-size="10" font-weight="bold" fill="var(--muted)">v1.1 · aujourd'hui</text>
 <text x="290" y="72" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ réserver</text>
-<text x="290" y="92" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--accent)">✗ annuler</text>
+<text class="blink" x="290" y="92" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--accent)">✗ annuler</text>
 <text x="290" y="112" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ payer</text>
 <text x="290" y="132" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ planning</text>
 <text x="230" y="170" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--accent)">la régression : personne n'a touché à « annuler », et pourtant</text>
 </svg>`},
 agiletree:{cap:"La confusion la plus répandue, démêlée : agile désigne la posture, Scrum et les autres sont des méthodes qui l'incarnent.",svg:`<svg viewBox="0 0 460 195" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agile et les méthodes qui l'incarnent">
 <defs><marker id="ah-ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
-<rect x="110" y="14" width="240" height="52" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+<rect class="breathe" x="110" y="14" width="240" height="52" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
 <text x="230" y="36" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="#fff">MANIFESTE AGILE · 2001</text>
 <text x="230" y="53" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="#fff">quatre valeurs, une posture</text>
-<line x1="230" y1="66" x2="88" y2="114" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ag)"/>
-<line x1="230" y1="66" x2="230" y2="114" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ag)"/>
-<line x1="230" y1="66" x2="372" y2="114" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ag)"/>
+<line class="dr" pathLength="1" x1="230" y1="66" x2="88" y2="114" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ag)"/>
+<line class="dr" pathLength="1" x1="230" y1="66" x2="230" y2="114" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ag)"/>
+<line class="dr" pathLength="1" x1="230" y1="66" x2="372" y2="114" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ag)"/>
 <rect x="16" y="120" width="140" height="44" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="86" y="139" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">SCRUM</text>
 <text x="86" y="155" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">sprints, rituels, backlog</text>
@@ -834,19 +847,19 @@ cascade:{cap:"Chaque marche se valide avant la suivante. Entre la première et l
 <defs><marker id="ah-ca" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
 <rect x="16" y="16" width="78" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="55" y="35" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Besoins</text>
-<line x1="94" y1="40" x2="112" y2="54" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
+<line class="dr" pathLength="1" x1="94" y1="40" x2="112" y2="54" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
 <rect x="96" y="50" width="78" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="135" y="69" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Conception</text>
-<line x1="174" y1="74" x2="192" y2="88" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
+<line class="dr" pathLength="1" x1="174" y1="74" x2="192" y2="88" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
 <rect x="176" y="84" width="78" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="215" y="103" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Code</text>
-<line x1="254" y1="108" x2="272" y2="122" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
+<line class="dr" pathLength="1" x1="254" y1="108" x2="272" y2="122" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
 <rect x="256" y="118" width="78" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
 <text x="295" y="137" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Tests</text>
-<line x1="334" y1="142" x2="352" y2="156" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
+<line class="dr" pathLength="1" x1="334" y1="142" x2="352" y2="156" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
 <rect x="336" y="152" width="78" height="30" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
 <text x="375" y="171" text-anchor="middle" font-family="var(--fm)" font-size="10" font-weight="bold" fill="#fff">Prod</text>
-<line x1="30" y1="192" x2="330" y2="192" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="ants" x1="30" y1="192" x2="330" y2="192" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"/>
 <text x="230" y="203" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--accent)">effet tunnel : le client ne voit rien pendant tout ce temps</text>
 </svg>`},
 vmodel:{cap:"La cascade repliée : chaque étape de gauche prépare le test qui lui répond à droite.",svg:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cycle en V">
@@ -861,20 +874,20 @@ vmodel:{cap:"La cascade repliée : chaque étape de gauche prépare le test qui 
 <text x="317" y="93" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Intégration</text>
 <rect x="304" y="18" width="130" height="34" fill="var(--paper)" stroke="var(--primary)" stroke-width="2"/>
 <text x="369" y="39" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Recette</text>
-<line x1="108" y1="52" x2="132" y2="72" stroke="var(--ink)" stroke-width="2"/>
-<line x1="162" y1="106" x2="212" y2="152" stroke="var(--ink)" stroke-width="2"/>
-<line x1="248" y1="152" x2="298" y2="106" stroke="var(--ink)" stroke-width="2"/>
-<line x1="328" y1="72" x2="352" y2="52" stroke="var(--ink)" stroke-width="2"/>
-<line x1="160" y1="35" x2="298" y2="35" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-vm)"/>
+<line class="dr" pathLength="1" x1="108" y1="52" x2="132" y2="72" stroke="var(--ink)" stroke-width="2"/>
+<line class="dr" pathLength="1" x1="162" y1="106" x2="212" y2="152" stroke="var(--ink)" stroke-width="2"/>
+<line class="dr" pathLength="1" x1="248" y1="152" x2="298" y2="106" stroke="var(--ink)" stroke-width="2"/>
+<line class="dr" pathLength="1" x1="328" y1="72" x2="352" y2="52" stroke="var(--ink)" stroke-width="2"/>
+<line class="ants" x1="160" y1="35" x2="298" y2="35" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-vm)"/>
 <text x="229" y="28" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--primary)">prépare</text>
-<line x1="212" y1="89" x2="246" y2="89" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-vm)"/>
+<line class="ants" x1="212" y1="89" x2="246" y2="89" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-vm)"/>
 </svg>`},
 iteratif:{cap:"Un tour complet, une livraison, des retours, on repart. La V1 puis la V2 du portail, c'est ce dessin.",svg:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modèle itératif">
 <defs><marker id="ah-it" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--primary)"/></marker></defs>
-<circle cx="130" cy="95" r="56" fill="none" stroke="var(--ink)" stroke-width="2"/>
+<g class="spin"><circle cx="130" cy="95" r="56" fill="none" stroke="var(--ink)" stroke-width="2"/>
 <polygon points="124,33 124,45 138,39" fill="var(--ink)"/>
 <polygon points="182,88 194,88 188,101" fill="var(--ink)"/>
-<polygon points="136,145 136,157 122,151" fill="var(--ink)"/>
+<polygon points="136,145 136,157 122,151" fill="var(--ink)"/></g>
 <text x="130" y="24" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">besoins</text>
 <text x="196" y="112" font-family="var(--fm)" font-size="9" fill="var(--muted)">code</text>
 <text x="130" y="172" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">recette</text>
@@ -897,7 +910,7 @@ dk:{cap:"La confiance grimpe avant l'expérience : la courbe qui répond aux pro
 <text x="52" y="28" font-family="var(--fm)" font-size="10" fill="var(--muted)">confiance</text>
 <text x="444" y="178" text-anchor="end" font-family="var(--fm)" font-size="10" fill="var(--muted)">expérience</text>
 <path class="dr" pathLength="1" d="M54,150 C80,80 100,44 122,44 C150,44 162,98 198,128 C222,148 242,152 264,148 C322,138 382,96 430,62" fill="none" stroke="var(--accent)" stroke-width="3"/>
-<circle cx="122" cy="44" r="4.5" fill="var(--accent)"/>
+<circle class="pulse" cx="122" cy="44" r="4.5" fill="var(--accent)"/>
 <circle cx="254" cy="149" r="4.5" fill="var(--ink)"/>
 <circle cx="430" cy="62" r="4.5" fill="var(--good)"/>
 <text x="134" y="32" text-anchor="start" font-family="var(--fm)" font-size="10" fill="var(--ink)">« mon site en une heure »</text>
@@ -905,7 +918,7 @@ dk:{cap:"La confiance grimpe avant l'expérience : la courbe qui répond aux pro
 <text x="430" y="48" text-anchor="end" font-family="var(--fm)" font-size="10" fill="var(--ink)">le cycle de vie</text>
 </svg>`},
 memo_cycle:{cap:"Six étapes, un cycle. Le développement n'en est qu'une.",svg:`<svg viewBox="0 0 460 128" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Les six étapes du cycle, le développement surligné">
-<path d="M40,34 C40,14 420,14 420,34" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<path class="ants" d="M40,34 C40,14 420,14 420,34" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 4"/>
 <path d="M420,34 l-6,-7 M420,34 l-9,-1" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
 <text x="230" y="12" text-anchor="middle" font-family="var(--fm)" font-size="9.5" fill="var(--muted)">et ça recommence</text>
 <line class="dr" pathLength="1" x1="40" y1="60" x2="420" y2="60" stroke="var(--muted)" stroke-width="1.5"/>
@@ -931,10 +944,10 @@ memo_models:{cap:"Mêmes étapes, ordres différents : trois façons d'enchaîne
 <line x1="14" y1="146" x2="446" y2="146" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
 <text x="14" y="164" font-family="var(--fm)" font-size="11" fill="var(--ink)">Itératif</text>
 <circle cx="215" cy="160" r="0" fill="none"/>
-<path d="M200,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path class="breathe" d="M200,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
 <path d="M206,163 l-5,1 l2,-5" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
-<path d="M255,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".6"/>
-<path d="M310,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".35"/>
+<path class="breathe" d="M255,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".6"/>
+<path class="breathe" d="M310,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".35"/>
 <text x="446" y="164" text-anchor="end" font-family="var(--fm)" font-size="9" fill="var(--muted)">on boucle, on ajuste</text>
 </svg>`}
 };

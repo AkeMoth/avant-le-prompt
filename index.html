@@ -141,7 +141,7 @@ pre{font-family:var(--fm);font-size:12px;white-space:pre-wrap;word-break:break-w
 .logline .lmsg{color:var(--ink)}
 .logline .ldate{color:var(--muted);font-size:11px}
 .ticket{border:var(--bd);background:var(--paper);padding:10px 12px;margin-bottom:8px;font-size:14px}
-.ticket .tid{font-family:var(--fm);font-size:11px;color:var(--accent)}
+.ticket .tid{display:block;font-family:var(--fm);font-size:11px;color:var(--accent);margin-bottom:3px}
 
 /* ---------- nav ---------- */
 nav{grid-row:2;grid-column:1;background:var(--paper);border-top:var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom)}
@@ -187,17 +187,61 @@ body:not(.designed) .hook{color:var(--muted)}
 .askbox li:last-child{margin-bottom:0}
 hr.sep{border:none;border-top:var(--bd);margin:14px 0}
 
+/* ---------- tri à chaud ---------- */
+.sorthead{display:flex;align-items:baseline;gap:10px}
+.combo{font-family:var(--fm);font-size:11px;color:var(--accent);font-weight:500}
+.tleft{margin-left:auto;font-family:var(--fm);font-size:12px;color:var(--ink)}
+.timerbar{height:8px;border:var(--bd);background:var(--bg);margin-top:8px;overflow:hidden}
+.timerbar>div{height:100%;width:100%;background:var(--accent)}
+.opt.big{text-align:center;font-family:var(--fm);font-size:16px;padding:16px 12px}
+.sortrecap{margin-top:10px}
+.recapline{border:var(--bd);background:var(--paper);padding:8px 10px;margin-top:6px;font-size:13px}
+
+/* ---------- jenga du couplage ---------- */
+.jenga{display:flex;flex-direction:column;gap:14px;margin-top:4px}
+.jlbl{font-family:var(--fm);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.jset{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
+.jbrick{border:var(--bd);background:var(--paper);padding:12px 4px;font-family:var(--fm);font-size:11px;color:var(--ink);min-height:44px}
+.jset.soude .jbrick{transform:rotate(-.6deg)}
+.jset.soude .jbrick:nth-child(2n){transform:rotate(.8deg)}
+.weldnet{position:absolute;inset:2px;width:calc(100% - 4px);height:calc(100% - 4px);pointer-events:none}
+.jbrick.out{opacity:.25}
+body.anim .jbrick{transition:opacity .25s}
+.jset.shake{animation:shake .3s}
+
+/* ---------- triage du backlog ---------- */
+.ticket.cur{border-width:2px;font-size:15px}
+.cols{display:flex;gap:6px;margin-top:12px}
+.col{flex:1;border:var(--bd);background:var(--bg);padding:6px;min-height:74px}
+.collbl{display:block;font-family:var(--fm);font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:6px}
+.ticket.mini{font-size:10.5px;padding:5px 6px;margin-bottom:5px;line-height:1.35}
+
+/* ---------- mode intrusion ---------- */
+body.designed .chcard.intrus{background:#242038;color:#f2ece2;border-color:#242038}
+body.designed .chcard.intrus .num{color:rgba(242,236,226,.7)}
+body.designed .chcard.intrus .hook{color:var(--cyan)}
+body.designed .chcard.intrus .status{border-color:rgba(242,236,226,.45);color:#f2ece2;background:none}
+body.designed .chcard.intrus .status.done{background:var(--primary);border-color:var(--primary);color:#fff}
+body.designed[data-view="intrusion"]{
+  --bg:#242038; --paper:#2a2640; --ink:#f2ece2; --muted:rgba(242,236,226,.66);
+  --primary:#a3f8ff; --good:#a3f8ff;
+  --bd:1.5px solid rgba(242,236,226,.28); --shadow:none;
+  background-image:radial-gradient(85% 55% at 82% -8%, rgba(163,248,255,.07), transparent 60%);
+}
+body.designed[data-view="intrusion"] .eyebrow{color:var(--cyan)}
+body.designed[data-view="intrusion"] .melem.found::after{content:"FAILLE"}
+
 /* ---------- les trois mondes (DA Le Dernier Clic) ---------- */
 body.designed .hook{font-family:var(--fs);font-style:normal;font-size:20px;line-height:1.25}
 body.designed[data-view="journal"]{
-  --bg:#242038; --paper:#2a2640; --ink:#f2ece2; --muted:#b6afd0;
+  --bg:#242038; --paper:#2a2640; --ink:#f2ece2; --muted:rgba(242,236,226,.66);
   --primary:#a3f8ff; --good:#a3f8ff;
   --bd:1.5px solid rgba(242,236,226,.28); --shadow:none;
-  background-image:radial-gradient(85% 55% at 82% -8%, rgba(236,161,255,.09), transparent 60%);
+  background-image:radial-gradient(85% 55% at 82% -8%, rgba(125,207,182,.09), transparent 60%);
 }
-body.designed[data-view="journal"] .logline .hash{color:var(--lilas)}
+body.designed[data-view="journal"] .logline .hash{color:var(--cyan)}
 body.designed[data-view="journal"] .logline .ldate{color:var(--ambre)}
-body.designed[data-view="journal"] .ticket .tid{color:var(--lilas)}
+body.designed[data-view="journal"] .ticket .tid{color:var(--cyan)}
 body.designed[data-view="simu"],body.designed[data-view="trame"]{
   --bg:#006e7c; --paper:#00616d; --ink:#f2ece2; --muted:rgba(242,236,226,.75);
   --primary:#a3f8ff; --good:#a3f8ff;
@@ -208,7 +252,7 @@ body.designed[data-view="simu"] .btn:not(.ghost),body.designed[data-view="trame"
 body.designed[data-view="simu"] .opt.sel,body.designed[data-view="trame"] .opt.sel{color:#0d3a41}
 body.designed[data-view="simu"] .deltas,body.designed[data-view="trame"] .ttime{color:var(--cyan)}
 body.designed[data-view="simu"] .eyebrow,body.designed[data-view="trame"] .eyebrow{color:var(--cyan)}
-body.designed[data-view="journal"] .eyebrow{color:var(--lilas)}
+body.designed[data-view="journal"] .eyebrow{color:var(--cyan)}
 body.designed[data-view="journal"] .logline{border-bottom-color:rgba(242,236,226,.35)}
 body.designed hr.sep{border:none;height:14px;margin:16px 0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='14'%3E%3Cg fill='%236d6782'%3E%3Crect x='2' y='5' width='2' height='4'/%3E%3Crect x='8' y='3' width='2' height='8'/%3E%3Crect x='14' y='1' width='2' height='12'/%3E%3Crect x='20' y='4' width='2' height='6'/%3E%3Crect x='26' y='2' width='2' height='10'/%3E%3Crect x='32' y='5' width='2' height='4'/%3E%3Crect x='38' y='3' width='2' height='8'/%3E%3C/g%3E%3C/svg%3E") repeat-x center/auto 14px}
 body.designed::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:98;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -266,8 +310,8 @@ const CH=[
    "Autre point que les cours martèlent : les besoins changent inévitablement. Un cahier des charges se conçoit donc pour être modifié, jamais gravé dans le marbre."
   ]}
  ],
- inter:{type:"quiz",title:"À toi de jouer : fonctionnel ou non fonctionnel ?",
-  intro:"Cas d'école classique : un distributeur de tickets de transport. Classe chaque exigence.",
+ inter:{type:"sort",title:"À toi de jouer : le tri à chaud",
+  intro:"Gérard est au téléphone et il énumère. Trente secondes, six exigences d'un distributeur de tickets : fonctionnel ou non fonctionnel, tranche à la volée.",
   opts:["Fonctionnel","Non fonctionnel"],
   items:[
    {q:"Permettre aux voyageurs d'acheter des coupons",a:0,why:"Une action que le système doit rendre possible : fonctionnel."},
@@ -303,15 +347,12 @@ const CH=[
    "Surprise de la théorie : les plans de test s'écrivent pendant la conception, pas après le code. En dessinant chaque brique, on décrit déjà comment on vérifiera qu'elle fonctionne (le futur plan de tests unitaires) et comment on vérifiera que l'assemblage tient (le plan d'intégration). C'est l'idée du fameux cycle en V : chaque étape de construction prépare, en face d'elle, l'étape de vérification qui lui répondra."
   ]}
  ],
- inter:{type:"quiz",title:"À toi de jouer : bien découpé ou pas ?",
-  intro:"Juge ces choix de conception avec tes nouveaux réflexes cohésion / couplage.",
-  opts:["Bien découpé","Mal découpé"],
-  items:[
-   {q:"Une brique Épisode qui gère la création, la trame et les fichiers d'un épisode",a:0,why:"Tout tourne autour d'une seule entité métier : cohésion forte."},
-   {q:"Une fonction toutFaire() qui publie l'épisode, envoie la newsletter et régénère le site",a:1,why:"Trois responsabilités sans rapport : le jour où la newsletter change, la publication casse. Cohésion faible."},
-   {q:"Le module statistiques lit directement dans les fichiers internes du module audio",a:1,why:"Couplage fort : impossible de modifier l'un sans vérifier l'autre. Il leur faudrait une interface claire entre les deux."},
-   {q:"Le module de paiement expose deux portes d'entrée simples : payer(montant) et rembourser(montant)",a:0,why:"Les autres briques n'ont pas besoin de savoir comment ça marche à l'intérieur : couplage faible."}
-  ]},
+ inter:{type:"jenga",title:"À toi de jouer : le jenga du couplage",
+  intro:"Deux versions du même portail, six briques chacune. Tape les briques et regarde ce qui bouge : la leçon passe par les doigts.",
+  soude:["toutFaire()","newsletter","site web","stock","TVA","emails"],
+  lego:["Réservations","Clients","Planning","Paiement","Stats","Emails"],
+  weldWhy:"Tu visais une brique, tout l'ensemble a tremblé. Une fonction toutFaire() qui publie, envoie la newsletter et régénère le site coche toutes les mauvaises cases : le jour où la newsletter change, la publication casse avec. Cohésion faible, couplage fort.",
+  legoWhy:"La brique sort seule et les autres ne bronchent pas : des portes d'entrée claires, aucune fouille dans les fichiers internes des voisines. Couplage faible, modifications sans sueur."},
  angles:[
   {id:"a-c1",txt:"Cohésion forte, couplage faible : quatre mots qui expliquent pourquoi certaines apps évoluent sans douleur et d'autres cassent dès qu'on les touche."},
   {id:"a-c2",txt:"La conception ne produit aucune ligne de code, et c'est sa force : modifier un schéma coûte cent fois moins cher que modifier la prod."},
@@ -459,8 +500,8 @@ const CH=[
    "Le cycle de vie inclut une phase dont personne ne parle : le retrait. Prévenir les utilisateurs, archiver les données, faire tourner l'ancien et le nouveau en parallèle le temps de la transition, puis éteindre. Un logiciel dont on ne planifie jamais la fin devient le legacy de quelqu'un d'autre."
   ]}
  ],
- inter:{type:"quiz",title:"À toi de jouer : quelle maintenance ?",
-  intro:"Corrective, adaptative ou perfective ? Classe chaque intervention.",
+ inter:{type:"triage",title:"À toi de jouer : le triage du backlog",
+  intro:"Cinq tickets viennent d'arriver. Range chacun dans la bonne colonne ; un ticket mal rangé revient avec son explication.",
   opts:["Corrective","Adaptative","Perfective"],
   items:[
    {q:"Un bug fait planter l'export audio : on le corrige",a:0,why:"Réparer un défaut constaté : corrective."},
@@ -526,6 +567,21 @@ const TICKETS=[
  {id:"#13",typ:"adaptatif",txt:"Prévoir la compatibilité avec le prochain téléphone de Manu, quel qu'il soit."},
  {id:"#14",typ:"correctif · bloquant",txt:"Le lapin a de nouveau accès au studio pendant l'enregistrement."}
 ];
+const INTRU={
+ els:[
+  {label:"Cadenas https sur toutes les pages",kind:"ok",why:"Le transport est chiffré : personne ne lit les échanges au passage. Un point pour Jimmy."},
+  {label:"Clé API sk_live_gerard51 visible dans le code de la page",kind:"bug",why:"Un secret en clair côté navigateur : n'importe qui la copie et consomme le compte de Gérard. Les secrets vivent côté serveur. C'est la carte bancaire posée sur la boîte aux lettres. (OWASP : défaillances cryptographiques)"},
+  {label:"Recherche : taper <script> exécute le script",kind:"bug",why:"Entrée non validée : le champ avale du code et le rejoue chez les prochains visiteurs. Toute entrée utilisateur se vérifie et s'assainit. (OWASP : injection)"},
+  {label:"Bouton se déconnecter, session fermée derrière",kind:"ok",why:"Une session qui se termine vraiment : rien à signaler."},
+  {label:"/client/17 affiche la fiche de Josiane, et /client/18 marche aussi sans connexion",kind:"bug",why:"Contrôle d'accès cassé : changer un numéro dans l'adresse suffit à lire les données des autres. Chaque requête doit vérifier qui demande, pas seulement quoi. (OWASP : broken access control, numéro 1 du classement)"},
+  {label:"Mot de passe stocké tel quel : gerard123",kind:"bug",why:"Stockage en clair : à la première fuite de la base, tous les comptes tombent. Un mot de passe se hache. Et gerard123 mériterait de toute façon une conversation. (OWASP : défaillances cryptographiques)"},
+  {label:"jimmy-utils.js, dernière mise à jour il y a six ans",kind:"bug",why:"Dépendance à l'abandon : 70 à 90 % du code d'une app moderne vient de tiers, et chaque brique oubliée est une porte connue des attaquants. (OWASP : composants vulnérables et obsolètes)"}
+ ],total:5,
+ angles:[
+  {id:"a-s1",txt:"La sécurité se joue à chaque étape du cycle, jamais en couche finale : le Secure SDLC raconté avec le portail de Gérard."},
+  {id:"a-s2",txt:"La clé API en clair, faille signature de l'ère du vibe coding : la carte bancaire posée sur la boîte aux lettres."},
+  {id:"a-s3",txt:"L'OWASP Top 10, le palmarès des failles web : vulgarisable de bout en bout avec un salon de coiffure."}
+ ]};
 
 const SVGS={
 cost:{cap:"La même erreur, cinq moments pour la trouver : la courbe qui justifie tout le reste.",svg:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Courbe du coût de correction selon la phase">
@@ -908,11 +964,19 @@ function ist(id){
   if(!S.inter[id]){
     const t=chById(id).inter.type;
     if(t==="quiz")S.inter[id]={idx:0,score:0,ans:null,done:false};
+    if(t==="sort")S.inter[id]={idx:0,score:0,combo:0,bestCombo:0,deadline:null,res:[],done:false,over:false};
+    if(t==="jenga")S.inter[id]={taps:0,removed:{},weld:false,lego:false,done:false,msg:null};
+    if(t==="triage")S.inter[id]={idx:0,err:0,cols:{},done:false,msg:null};
     if(t==="order")S.inter[id]={placed:[],done:false,err:false};
     if(t==="check")S.inter[id]={sel:{},done:false,fb:null};
     if(t==="bugs")S.inter[id]={found:{},done:false,msg:null,taps:{},boom:false};
     if(t==="conflict")S.inter[id]={res:null,done:false,err:null,doneWhy:null};
   }
+  // migration douce : un état d'ancien quiz rencontre une nouvelle mécanique
+  const t2=chById(id).inter.type,st0=S.inter[id];
+  if(t2==="sort"&&st0.res===undefined)S.inter[id]={idx:0,score:st0.score||0,combo:0,bestCombo:0,deadline:st0.done?0:null,res:[],done:!!st0.done,over:false};
+  if(t2==="jenga"&&st0.removed===undefined)S.inter[id]={taps:0,removed:{},weld:!!st0.done,lego:!!st0.done,done:!!st0.done,msg:null};
+  if(t2==="triage"&&st0.cols===undefined){const cols={};if(st0.done)chById(id).inter.items.forEach((x,n)=>{(cols[x.a]=cols[x.a]||[]).push(n);});S.inter[id]={idx:st0.done?chById(id).inter.items.length:0,err:0,cols,done:!!st0.done,msg:null};}
   return S.inter[id];
 }
 const interDone=id=>!!(S.inter[id]&&S.inter[id].done);
@@ -927,6 +991,24 @@ function nextToast(){
   $("toasts").appendChild(d);
   requestAnimationFrame(()=>d.classList.add("show"));
   setTimeout(()=>{d.classList.remove("show");setTimeout(()=>{d.remove();nextToast();},350);},4200);
+}
+
+/* ---------- Tri à chaud : chrono ---------- */
+let sortTimer=null;
+function sortTick(){
+  const cid=(S.chantier&&chById(S.chantier)&&chById(S.chantier).inter.type==="sort")?S.chantier:"besoins";
+  const st=S.inter[cid];
+  if(!st||!st.deadline||st.done){clearInterval(sortTimer);sortTimer=null;return;}
+  const left=Math.max(0,st.deadline-Date.now());
+  const el=$("tbar"),tl=$("tleft");
+  if(el)el.style.width=(left/30000*100)+"%";
+  if(tl)tl.textContent=Math.ceil(left/1000)+" s";
+  if(left<=0){
+    clearInterval(sortTimer);sortTimer=null;
+    st.over=true;st.done=true;
+    save();render();
+    toast("Le chrono a sonné et Gérard a raccroché. Il rappelle, ceci dit : tu peux rejouer le tri.");
+  }
 }
 
 /* ---------- Vues ---------- */
@@ -971,6 +1053,15 @@ function homeView(){
       ?`<p class="hook">Où l'app analyse ton propre parcours et lui donne un nom de manuel.</p>`
       :`<p class="mut small">Se débloque après deux chantiers bouclés : les modèles n'ont de sens qu'une fois les étapes vécues.</p>`}
   </button>`;
+  if(count()===6){
+    const idone=S.intru&&S.intru.done;
+    out+=`<button class="card chcard intrus" data-a="open" data-id="intrusion">
+      <span class="status ${idone?"done":""}">${idone?"Audité ✓":"NOUVEAU"}</span>
+      <div class="num">Nouvelle partie + · Sécurité</div>
+      <h2>Mode intrusion</h2>
+      <p class="hook">Où l'on rejoue toute l'app avec les yeux de la personne qui attaque.</p>
+    </button>`;
+  }
   return out;
 }
 
@@ -1001,6 +1092,49 @@ function interView(c){
         <button class="btn ghost" style="margin-top:10px" data-a="qnext">${st.idx+1<it.items.length?"Question suivante":"Terminer"}</button>`;
       }
     }
+  }
+  if(it.type==="sort"){
+    if(st.done){
+      inner=`<div class="donebox">Tri terminé ✓ · Score : ${st.score}/${it.items.length}${st.bestCombo>1?` · Meilleure série : ${st.bestCombo}`:""}${st.over?" · Le chrono a eu le dernier mot.":""}</div>
+      <div class="sortrecap">${it.items.map(x=>`<div class="recapline"><strong>${esc(x.q)}</strong><br>${esc(it.opts[x.a])}. ${esc(x.why)}</div>`).join("")}</div>
+      <button class="btn ghost" style="margin-top:10px" data-a="sortstart">Rejouer le tri</button>`;
+    }else if(!st.deadline){
+      inner=`<p class="small" style="margin-bottom:10px">Un tap par exigence, le chrono ne t'attendra pas. Les explications arrivent après, au calme.</p>
+      <button class="btn acc wide" data-a="sortstart">Décrocher (30 s)</button>`;
+    }else{
+      const item=it.items[st.idx];
+      inner=`<div class="sorthead"><span class="score" style="margin-bottom:0">Exigence ${st.idx+1}/${it.items.length}</span>${st.combo>1?`<span class="combo">série ×${st.combo}</span>`:""}<span class="tleft" id="tleft"></span></div>
+      <div class="timerbar"><div id="tbar"></div></div>
+      <div class="qq" style="font-size:17px;margin-top:10px">${esc(item.q)}</div>
+      <div class="opts">${it.opts.map((o,i)=>`<button class="opt big" data-a="sorta" data-o="${i}">${esc(o)}</button>`).join("")}</div>`;
+    }
+  }
+  if(it.type==="jenga"){
+    const nrem=Object.keys(st.removed).length;
+    if(st.done)inner=`<div class="donebox">Interaction terminée ✓ · Cohésion forte, couplage faible : tu viens de le sentir sous les doigts.</div>`;
+    else inner=`<div class="score">${st.weld?"Soudure éprouvée ✓":"1. Tape une brique soudée"} · ${st.lego?"Lego éprouvé ✓":`2. Détache 3 briques Lego (${nrem}/3)`}</div>`;
+    inner+=`<div class="jenga">
+      <div class="jside"><span class="jlbl">La soudure</span>
+        <div class="jset soude">${it.soude.map((b,i)=>`<button class="jbrick" data-a="weld" data-o="${i}">${esc(b)}</button>`).join("")}<svg class="weldnet" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><path d="M10,12 L90,48 M10,48 L90,12 M50,6 L50,54 M10,30 L90,30" stroke="var(--bad)" stroke-width="1.3" stroke-dasharray="3 3" fill="none" opacity=".7"/></svg></div>
+      </div>
+      <div class="jside"><span class="jlbl">Le Lego</span>
+        <div class="jset">${it.lego.map((b,i)=>`<button class="jbrick ${st.removed[i]?"out":""}" data-a="lego" data-o="${i}" ${st.removed[i]?"disabled":""}>${esc(b)}</button>`).join("")}</div>
+      </div>
+    </div>`;
+    if(st.msg&&!st.done)inner+=`<div class="feedback">${esc(st.msg)}</div>`;
+  }
+  if(it.type==="triage"){
+    const total=it.items.length;
+    if(st.done){
+      inner=`<div class="donebox">Backlog trié ✓ · ${total} tickets rangés${st.err?` (${st.err} détour${st.err>1?"s":""}, chacun avec son explication)`:", sans un seul détour"}.</div>`;
+    }else{
+      const item=it.items[st.idx];
+      inner=`<div class="score">Ticket ${st.idx+1}/${total}</div>
+      <div class="ticket cur"><span class="tid">#2${st.idx+1} · NEW</span>${esc(item.q)}</div>
+      <div class="opts" style="margin-top:10px">${it.opts.map((o,i)=>`<button class="opt" data-a="tri" data-o="${i}">${esc(o)}</button>`).join("")}</div>`;
+      if(st.msg)inner+=`<div class="feedback">${esc(st.msg)}</div>`;
+    }
+    inner+=`<div class="cols">${it.opts.map((o,i)=>`<div class="col"><span class="collbl">${esc(o)}</span>${(st.cols[i]||[]).map(n=>`<div class="ticket mini"><span class="tid">#2${n+1} · CLOSED</span>${esc(it.items[n].q)}</div>`).join("")}</div>`).join("")}</div>`;
   }
   if(it.type==="order"){
     if(st.done){inner=`<div class="donebox">Interaction terminée ✓ · Le chemin complet : ${it.steps.join(" → ")}.</div>`;}
@@ -1091,6 +1225,10 @@ function trameLines(sec){
     if(D&&S.debates[sec.ch]!=null)out+=`<div class="small" style="margin-top:8px"><strong>Micro ouvert :</strong> ${esc(D.q)} Position de ${esc(playerName())} : « ${esc(D.o[S.debates[sec.ch]])} »</div>`;
   }
   if(sec.t==="Mot de la fin"&&S.sim&&S.sim.plays>0)out+=`<div class="small" style="margin-top:8px"><strong>Simulateur :</strong> meilleur score de ${esc(playerName())} : ${S.sim.best}. À comparer à l'antenne.</div>`;
+  if(sec.t==="Mot de la fin"){
+    const secu=INTRU.angles.filter(a=>S.pinned[a.id]);
+    if(secu.length)out+=`<div class="small" style="margin-top:8px"><strong>Teaser sécurité (épisode à venir) :</strong></div><ul>${secu.map(a=>`<li>${esc(a.txt)}</li>`).join("")}</ul>`;
+  }
   return out;
 }
 
@@ -1106,6 +1244,10 @@ function trameMd(){
       if(D&&S.debates[sec.ch]!=null)md+="Micro ouvert : "+D.q+" Position de "+playerName()+" : « "+D.o[S.debates[sec.ch]]+" »\n";
     }
     if(sec.t==="Mot de la fin"&&S.sim&&S.sim.plays>0)md+="Simulateur Coupé Court : meilleur score de "+playerName()+" : "+S.sim.best+". À comparer à l'antenne.\n";
+    if(sec.t==="Mot de la fin"){
+      const secu=INTRU.angles.filter(a=>S.pinned[a.id]);
+      if(secu.length)md+="Teaser sécurité (épisode à venir) :\n"+secu.map(a=>"- "+a.txt).join("\n")+"\n";
+    }
     md+="\n";
   });
   return md;
@@ -1141,6 +1283,27 @@ function journalView(){
   out+=`<div class="card"><div class="eyebrow">git log · historique de cette application</div>
   ${S.log.slice().reverse().map(l=>`<div class="logline"><span class="hash">${l.h}</span> <span class="lmsg">${esc(l.m)}</span><br><span class="ldate">${esc(l.d)}</span></div>`).join("")}
   <p class="mut small" style="margin-top:10px">Chaque commit : une photo datée et commentée. Tu viens de lire un vrai journal de bord.</p></div>`;
+  return out;
+}
+
+function intrusionView(){
+  const st=S.intru,found=Object.keys(st.found).length;
+  let out=`<button class="backbtn" data-a="nav" data-id="home">← Tous les chantiers</button>
+  <div class="eyebrow">Nouvelle partie + · sécurité</div>
+  <h2 style="font-family:var(--fd);font-size:26px;margin-bottom:4px">Mode intrusion</h2>
+  <p class="mut" style="margin-bottom:14px">Même cycle, nouveau regard : celui de la personne qui attaque.</p>`;
+  out+=`<div class="card"><h3>Le Secure SDLC en une idée</h3>
+  <p>La sécurité suit la même loi que les bugs : détectée tôt, elle coûte une conversation ; découverte en production, elle coûte des données, des utilisateurs et des nuits. Elle se joue donc à chaque étape du cycle, jamais en couche finale. Besoins (quelles données, qui y accède), conception (séparer les privilèges), code (valider les entrées, garder les secrets côté serveur), tests (essayer de casser), production (surveiller), maintenance (tenir les dépendances à jour).</p>
+  <p class="small mut">Jimmy a livré un portail à Gérard pendant le week-end. Audite-le : ${INTRU.total} failles s'y cachent.</p></div>`;
+  out+=`<div class="card"><div class="eyebrow">Interaction</div><h3>La chasse aux failles</h3>
+  <div class="score">${found}/${INTRU.total} failles trouvées</div>
+  <div class="mock"><div class="mtitle">Portail Coupé Court · livré par Jimmy, un dimanche 23 h</div>
+  ${INTRU.els.map((e,i)=>`<button class="melem ${st.found[i]?"found":""}" data-a="ibug" data-o="${i}">${esc(e.label)}</button>`).join("")}</div>
+  ${st.msg?`<div class="feedback">${esc(st.msg)}</div>`:""}
+  ${st.done?`<div class="donebox" style="margin-top:10px">Audit terminé ✓ · Cinq familles OWASP rencontrées sur une seule page. Jimmy apprend vite, précisons-le à sa décharge.</div>`:""}</div>`;
+  out+=`<div class="card"><div class="eyebrow">À l'antenne · teaser</div>
+  <p class="small mut" style="margin-bottom:12px">Matière pour un épisode sécurité à part entière. Épingle : ces angles rejoindront le Mot de la fin de la trame.</p>
+  ${INTRU.angles.map(a=>`<div class="angle"><p>${esc(a.txt)}</p><button class="pinbtn ${S.pinned[a.id]?"pinned":""}" data-a="pin" data-id="${a.id}">${S.pinned[a.id]?"Épinglé ✓ (retirer)":"Épingler pour la trame"}</button></div>`).join("")}</div>`;
   return out;
 }
 
@@ -1246,8 +1409,9 @@ function render(toTop){
   document.body.dataset.view=S.view;
   $("apptitle").textContent=cu?(S.done.tests?"Avant le prompt":"Avant le pormpt"):"[[nom_du_projet]]";
   $("baseline").textContent=cu?"Le cycle de vie d'un logiciel · Le Dernier Clic":"[[baseline_accrocheuse_v1]]";
-  $("version").textContent=VERSIONS[count()];
-  $("pmeta").textContent=PMETA[count()];
+  const secured=count()===6&&S.intru&&S.intru.done;
+  $("version").textContent=secured?"v1.2.0":VERSIONS[count()];
+  $("pmeta").textContent=secured?"sécurisée":PMETA[count()];
   $("prodchip").hidden=!S.done.deploiement;
   $("pbar").style.width=(count()/6*100)+"%";
   $("plabel").textContent=`${count()}/6 chantiers bouclés`;
@@ -1258,7 +1422,8 @@ function render(toTop){
     b.classList.toggle("on",on);
     if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
   });
-  app().innerHTML=S.view==="home"?homeView():S.view==="ch"?chView(S.chantier):S.view==="epi"?epiView():S.view==="simu"?simView():S.view==="trame"?trameView():journalView();
+  app().innerHTML=S.view==="home"?homeView():S.view==="ch"?chView(S.chantier):S.view==="epi"?epiView():S.view==="simu"?simView():S.view==="trame"?trameView():S.view==="intrusion"?intrusionView():journalView();
+  if($("tbar")&&!sortTimer)sortTimer=setInterval(sortTick,250);
   if(toTop)sc.scrollTo(0,0);else sc.scrollTo(0,y);
 }
 
@@ -1269,6 +1434,10 @@ const A={
   if(id==="epilogue"){
     if(count()<2){toast("Encore verrouillé : boucle deux chantiers d'abord. Difficile de parler d'ordre des étapes sans avoir vécu les étapes.");return;}
     S.view="epi";S.chantier=null;save();render(true);return;
+  }
+  if(id==="intrusion"){
+    if(count()<6){toast("Le mode intrusion se débloque à six chantiers bouclés : on n'audite pas une app qui n'existe pas encore.");return;}
+    S.view="intrusion";S.chantier=null;save();render(true);return;
   }
   S.view="ch";S.chantier=id;save();render(true);},
  intro(){S.introSeen=true;save();render();},
@@ -1345,6 +1514,7 @@ const A={
   const pred=PRED[id];
   if(pred&&!S.done[pred])toast(SNARK[id]);
   if(id==="deploiement"&&new Date().getDay()===5)toast("Détail piquant : nous sommes vendredi. Tu viens donc de déployer un vendredi. Ça reste entre nous.");
+  if(count()===6)toast("Nouvelle partie + débloquée : le mode intrusion t'attend en bas de l'accueil. Même app, regard d'attaquant.");
   save();render();
  },
  copy(){
@@ -1357,6 +1527,68 @@ const A={
   else{fallbackCopy(md)?ok():ko();}
  },
  md(){S.showMd=!S.showMd;render();},
+ sortstart(){
+  const c=chById(S.chantier);
+  S.inter[c.id]={idx:0,score:0,combo:0,bestCombo:0,deadline:Date.now()+30000,res:[],done:false,over:false};
+  clearInterval(sortTimer);sortTimer=setInterval(sortTick,250);
+  save();render();
+ },
+ sorta(id,t){
+  const c=chById(S.chantier),st=ist(c.id),it=c.inter;
+  if(st.done||!st.deadline)return;
+  if(Date.now()>st.deadline){sortTick();return;}
+  const i=parseInt(t.dataset.o,10),item=it.items[st.idx];
+  if(i===item.a){st.score++;st.combo++;st.bestCombo=Math.max(st.bestCombo,st.combo);}
+  else st.combo=0;
+  st.idx++;
+  if(st.idx>=it.items.length){st.done=true;clearInterval(sortTimer);sortTimer=null;}
+  save();render();
+ },
+ weld(id,t){
+  const c=chById(S.chantier),st=ist(c.id);
+  st.taps=(st.taps||0)+1;st.weld=true;st.msg=c.inter.weldWhy;
+  if(st.weld&&st.lego)st.done=true;
+  save();render();
+  const s=document.querySelector(".jset.soude");if(s)s.classList.add("shake");
+ },
+ lego(id,t){
+  const c=chById(S.chantier),st=ist(c.id);
+  const i=parseInt(t.dataset.o,10);
+  if(st.removed[i])return;
+  st.removed[i]=true;st.msg=c.inter.legoWhy;
+  if(Object.keys(st.removed).length>=3)st.lego=true;
+  if(st.weld&&st.lego)st.done=true;
+  save();render();
+ },
+ tri(id,t){
+  const c=chById(S.chantier),st=ist(c.id),it=c.inter;
+  if(st.done)return;
+  const i=parseInt(t.dataset.o,10),item=it.items[st.idx];
+  if(i===item.a){
+    (st.cols[i]=st.cols[i]||[]).push(st.idx);
+    st.msg="Rangé. "+item.why;st.idx++;
+    if(st.idx>=it.items.length){st.done=true;st.msg=null;}
+    save();render();
+  }else{
+    st.err++;st.msg="Pas cette colonne. "+item.why;
+    save();render();
+    const b=document.querySelector(".ticket.cur");if(b)b.classList.add("shake");
+  }
+ },
+ ibug(id,t){
+  const st=S.intru,i=parseInt(t.dataset.o,10),e=INTRU.els[i];
+  st.taps=st.taps||{};
+  if(e.kind==="bug"){
+    if(st.found[i])st.msg="Déjà consignée : "+e.why;
+    else{st.found[i]=true;st.msg="Faille confirmée : "+e.why;}
+  }else{st.msg="RAS. "+e.why;}
+  if(Object.keys(st.found).length>=INTRU.total&&!st.done){
+    st.done=true;
+    if(!st.logged){st.logged=true;S.log.push({h:hash(),m:"sec: audit d'intrusion, cinq failles corrigées, passage en v1.2.0",d:new Date().toLocaleString("fr-FR")});}
+    toast("Audit bouclé : cinq failles trouvées et corrigées. L'app passe en v1.2.0, et un futur épisode tient déjà sa matière.");
+  }
+  save();render();
+ },
  locked(){S.lockTaps=(S.lockTaps||0)+1;toast(LOCKMSG[Math.min(S.lockTaps-1,LOCKMSG.length-1)]);save();},
  title(){
   if(!S.done.besoins)toast("[[toast_non_redige : prévu pour la v0.2.0, promis]]");
@@ -1429,6 +1661,7 @@ document.addEventListener("click",e=>{
   await load();
   if(!S.debates)S.debates={};
   if(!S.sim)S.sim=freshSim(null,0);
+  if(!S.intru)S.intru={found:{},taps:{},done:false,msg:null,logged:false};
   ensureInitLog();
   render(true);
   if(count()>0||S.sim.plays>0)toast("Progression restaurée : "+count()+"/6 chantiers"+(S.sim.plays>0?", "+S.sim.plays+" partie"+(S.sim.plays>1?"s":"")+" de simulateur":"")+". Reprends où tu en étais.");

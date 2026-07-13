@@ -16,10 +16,10 @@
   --fm:ui-monospace,'SFMono-Regular',Menlo,monospace;
 }
 body.designed{
-  --bg:#f2ece2; --paper:#fdfaf4; --ink:#242038; --muted:#6d6782;
+  --bg:#f2ece2; --paper:#fdfaf4; --ink:#18375D; --muted:#6d6782;
   --primary:#006e7c; --accent:#ba0675; --good:#006e7c; --bad:#ba0675;
   --sauge:#7dcfb6; --lilas:#eca1ff; --cyan:#a3f8ff; --ambre:#f0a04c;
-  --bd:2px solid #242038; --shadow:4px 4px 0 #242038; --radius:3px;
+  --bd:2px solid #18375D; --shadow:4px 4px 0 #18375D; --radius:3px;
   --fd:'Fraunces',Georgia,serif;
   --fb:'Lora',Georgia,serif;
   --fm:'IBM Plex Mono',ui-monospace,Menlo,monospace;
@@ -35,7 +35,7 @@ body{
 }
 #scroller{grid-row:1;grid-column:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain}
 body.designed{
-  background-image:radial-gradient(circle at 1px 1px, rgba(36,32,56,.06) 1px, transparent 0);
+  background-image:radial-gradient(circle at 1px 1px, rgba(24,55,93,.06) 1px, transparent 0);
   background-size:22px 22px;
 }
 .wrap{max-width:520px;margin:0 auto;padding:0 14px}
@@ -72,7 +72,7 @@ body:not(.designed) .card h3{font-size:15px;font-weight:500}
 .chcard .num{font-family:var(--fm);font-size:12px;color:var(--muted)}
 .chcard .status{position:absolute;top:14px;right:14px;font-family:var(--fm);font-size:11px;padding:3px 7px;border:var(--bd)}
 .chcard .status.done{background:var(--primary);color:#fff;border-color:var(--primary)}
-body.anim .chcard:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #242038}
+body.anim .chcard:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #18375D}
 .card.epi{border:2px dashed var(--accent)}
 
 /* ---------- buttons ---------- */
@@ -144,7 +144,7 @@ body.anim .btn:not(:disabled):active{transform:translate(2px,2px)}
 .timage .tim-l{font-family:var(--fm);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:2px}
 body.designed .timage{border-left:none;padding-left:0;background:none}
 body.designed .timage{font-family:var(--fs);font-size:18px;line-height:1.3}
-body.designed .tmemo{background:#fbf6ee;border:2px solid #242038;box-shadow:3px 3px 0 rgba(36,32,56,.85);--ink:#242038;--muted:#6d6782;--accent:#ba0675;--primary:#006e7c;--good:#006e7c}
+body.designed .tmemo{background:#fbf6ee;border:2px solid #18375D;box-shadow:3px 3px 0 rgba(24,55,93,.85);--bg:#f2ece2;--paper:#fdfaf4;--ink:#18375D;--muted:#6a6480;--accent:#ba0675;--primary:#006e7c;--good:#006e7c}
 body.designed[data-view="trame"] .tmemo-l{color:#6d6782}
 body.designed[data-view="trame"] .timage .tim-l{color:var(--cyan)}
 pre{font-family:var(--fm);font-size:12px;white-space:pre-wrap;word-break:break-word;background:var(--bg);border:var(--bd);padding:12px;margin-top:10px;max-height:300px;overflow:auto}
@@ -231,13 +231,13 @@ body.anim .jbrick{transition:opacity .25s}
 .ticket.mini{font-size:10.5px;padding:5px 6px;margin-bottom:5px;line-height:1.35}
 
 /* ---------- mode intrusion ---------- */
-body.designed .chcard.intrus{background:#242038;color:#f2ece2;border-color:#242038}
+body.designed .chcard.intrus{background:#18375D;color:#f2ece2;border-color:#18375D}
 body.designed .chcard.intrus .num{color:rgba(242,236,226,.7)}
 body.designed .chcard.intrus .hook{color:var(--cyan)}
 body.designed .chcard.intrus .status{border-color:rgba(242,236,226,.45);color:#f2ece2;background:none}
 body.designed .chcard.intrus .status.done{background:var(--primary);border-color:var(--primary);color:#fff}
 body.designed[data-view="intrusion"]{
-  --bg:#242038; --paper:#2a2640; --ink:#f2ece2; --muted:rgba(242,236,226,.66);
+  --bg:#18375D; --paper:#1e3d63; --ink:#f2ece2; --muted:rgba(242,236,226,.66);
   --primary:#a3f8ff; --good:#a3f8ff;
   --bd:1.5px solid rgba(242,236,226,.28); --shadow:none;
   background-image:radial-gradient(85% 55% at 82% -8%, rgba(163,248,255,.07), transparent 60%);
@@ -248,7 +248,7 @@ body.designed[data-view="intrusion"] .melem.found::after{content:"FAILLE"}
 /* ---------- les trois mondes (DA Le Dernier Clic) ---------- */
 body.designed .hook{font-family:var(--fs);font-style:normal;font-size:20px;line-height:1.25}
 body.designed[data-view="journal"]{
-  --bg:#242038; --paper:#2a2640; --ink:#f2ece2; --muted:rgba(242,236,226,.66);
+  --bg:#18375D; --paper:#1e3d63; --ink:#f2ece2; --muted:rgba(242,236,226,.66);
   --primary:#a3f8ff; --good:#a3f8ff;
   --bd:1.5px solid rgba(242,236,226,.28); --shadow:none;
   background-image:radial-gradient(85% 55% at 82% -8%, rgba(125,207,182,.09), transparent 60%);

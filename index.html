@@ -147,6 +147,28 @@ body.designed .timage{font-family:var(--fs);font-size:18px;line-height:1.3}
 body.designed .tmemo{background:#fbf6ee;border:2px solid #18375D;box-shadow:3px 3px 0 rgba(24,55,93,.85);--bg:#f2ece2;--paper:#fdfaf4;--ink:#18375D;--muted:#6a6480;--accent:#ba0675;--primary:#006e7c;--good:#006e7c}
 body.designed[data-view="trame"] .tmemo-l{color:#6d6782}
 body.designed[data-view="trame"] .timage .tim-l{color:var(--cyan)}
+/* toggle version complète / essentielle */
+.tmode{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.tmode-l{font-family:var(--fm);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.tmodebtn{font-family:var(--fm);font-size:12px;border:var(--bd);background:var(--bg);color:var(--ink);padding:6px 12px}
+.tmodebtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tsec.ess .tmemo{margin-top:2px}
+/* easter egg captcha */
+.captcha{border:var(--bd)}
+.cap-head{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.cap-logo{font-family:var(--fm);font-weight:600;letter-spacing:1px;border:var(--bd);padding:2px 7px;font-size:13px}
+.cap-sub{font-family:var(--fm);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.cap-check{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:var(--bd);background:var(--paper);padding:14px 12px;font-family:var(--fb);font-size:15px;color:var(--ink)}
+.cap-box{width:24px;height:24px;flex-shrink:0;border:2px solid var(--ink);display:inline-flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:16px}
+.cap-check.ticked .cap-box{background:var(--good);border-color:var(--good);color:#fff}
+.cap-foot{font-family:var(--fm);font-size:10px;color:var(--muted);margin-top:8px;letter-spacing:.3px}
+/* pop-up de vérification */
+.modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(24,55,93,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.modalbox{background:var(--paper);border:var(--bd);box-shadow:var(--shadow);border-radius:var(--radius);padding:18px;max-width:440px;width:100%;max-height:82vh;overflow-y:auto}
+body.anim .modal{animation:mfade .25s ease}
+body.anim .modalbox{animation:mpop .28s cubic-bezier(.2,.8,.3,1.2)}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+@keyframes mpop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
 pre{font-family:var(--fm);font-size:12px;white-space:pre-wrap;word-break:break-word;background:var(--bg);border:var(--bd);padding:12px;margin-top:10px;max-height:300px;overflow:auto}
 
 /* ---------- journal ---------- */
@@ -555,6 +577,7 @@ const CH=[
 const TRAME=[
  {t:"Introduction",at:"0:00",dur:"4 min",ch:null,fig:"memo_cycle",
   desc:"Poser le décor : un logiciel se construit, se vérifie, s'habite et vieillit. Coder n'est qu'une pièce du chantier parmi six.",
+  key:["Rappel de l'épisode précédent : le portail, du problème à la prod.","Les promesses « en une heure » oublient tout le hors-code.","Un logiciel se construit, se vérifie, vit et vieillit."],
   points:[
    "Rappeler l'épisode précédent : le portail du Dernier Clic, du problème à la maquette, en prod depuis un mois et demi.",
    "Planter la tension du jour : on voit fleurir les « ton site en une heure », « ton SaaS en trois semaines ». On va montrer ce que ces promesses passent sous silence.",
@@ -563,6 +586,7 @@ const TRAME=[
   ]},
  {t:"Recueil des besoins",at:"0:04",dur:"7 min",ch:"besoins",fig:"cost",
   desc:"On part d'un problème à cerner, longtemps avant de parler solution. Et plus une erreur se découvre tard, plus elle coûte cher.",
+  key:["Une erreur trouvée tard, c'est la facture qui grimpe (jusqu'à ×200).","PRD et user stories : du génie logiciel en vocabulaire moderne.","Fonctionnel (le quoi) et non fonctionnel (le comment)."],
   points:[
    "Le principe qui commande tout le reste : une exigence corrigée au stade du besoin, c'est une phrase à réécrire ; découverte en production, elle coûte du code à défaire et des utilisateurs à rassurer.",
    "Le chiffre à citer : un défaut d'exigence trouvé tard coûte 50 à 200 fois plus qu'au moment où on l'a écrit (estimation McConnell).",
@@ -573,6 +597,7 @@ const TRAME=[
   ]},
  {t:"Conception",at:"0:11",dur:"7 min",ch:"conception",fig:"lego",
   desc:"Du quoi au comment, sans écrire une ligne de code. On dessine le plan de construction.",
+  key:["Cohésion forte, couplage faible : le réflexe Lego.","Les tests se préparent déjà ici, c'est le cycle en V.","Isoler ce qui bougera souvent (TVA, fournisseur d'emails)."],
   points:[
    "Traduire les besoins en architecture : quelles briques, comment elles se parlent, où vivent les données.",
    "Cohésion forte, couplage faible : chaque brique fait une seule chose, et dépend le moins possible des autres.",
@@ -582,6 +607,7 @@ const TRAME=[
   ]},
  {t:"Développement et versionnage",at:"0:18",dur:"9 min",ch:"dev",fig:"git",
   desc:"Coder, assembler, et surtout garder la trace de chaque geste.",
+  key:["Git, le journal de bord : on revient à n'importe quel commit.","Le conflit de merge : Git ne casse rien, il appelle un humain.","La revue de code : personne ne fusionne son travail seul."],
   points:[
    "Le codage traduit la conception, puis l'intégration assemble les briques et vérifie qu'elles se parlent vraiment.",
    "Git, le journal de bord : chaque commit est une photo datée et commentée, à laquelle on peut toujours revenir.",
@@ -592,6 +618,7 @@ const TRAME=[
   ]},
  {t:"Tests",at:"0:27",dur:"9 min",ch:"tests",fig:"pyramide",
   desc:"Partir à la chasse aux défauts, tant qu'ils coûtent encore trois fois rien.",
+  key:["Ariane 5 : 370 millions pour une variable trop petite.","Trois étages : unitaire, intégration, recette.","La régression : rejouer les tests d'hier, en automatique."],
   points:[
    "La chaîne à remonter : une erreur humaine glisse un défaut dans le code, qui dort jusqu'à la défaillance visible. Ariane 5, 1996 : 370 millions de dollars en quarante secondes.",
    "Trois étages : unitaire (chaque brique), intégration (l'assemblage), recette (le tout, avec de vrais yeux et de vraies données).",
@@ -602,6 +629,7 @@ const TRAME=[
   ]},
  {t:"Mise en production",at:"0:36",dur:"7 min",ch:"deploiement",fig:"pipeline",
   desc:"Le jour où le logiciel rencontre le monde réel.",
+  key:["Dev, staging, prod : on ne teste jamais direct en prod.","Le rollback : revenir en arrière en quelques minutes.","Versionnage sémantique : majeur.mineur.correctif."],
   points:[
    "Trois scènes : le développement (l'atelier), le staging (la répétition générale), la production (la scène, vrais utilisateurs). On ne teste jamais directement en prod.",
    "La checklist avant le bouton : recette validée, sauvegarde récente, et surtout un plan de retour arrière.",
@@ -611,6 +639,7 @@ const TRAME=[
   ]},
  {t:"Maintenance et vieillissement",at:"0:43",dur:"7 min",ch:"maintenance",fig:"cycle",
   desc:"Un logiciel qui sert se répare, s'adapte et s'améliore sans fin. Laissé à l'abandon, il se dégrade comme une maison qu'on n'entretient plus.",
+  key:["Corrective, adaptative, perfective : le jardinage.","La dette technique, un emprunt avec intérêts.","Le legacy : ce code que plus personne n'ose toucher."],
   points:[
    "Trois gestes : corrective (réparer), adaptative (suivre un monde qui change, nouveau taux de TVA), perfective (améliorer sans nouvelle fonction).",
    "Détail des manuels : la plupart des corrections introduisent de nouvelles erreurs. L'entretien n'est jamais fini.",
@@ -621,6 +650,7 @@ const TRAME=[
   ]},
  {t:"Et l'ordre dans tout ça ?",at:"0:50",dur:"6 min",ch:"epilogue",fig:"memo_models",
   desc:"Les mêmes six étapes, des ordres différents : voilà toute l'histoire des modèles.",
+  key:["Mêmes six étapes, ordres différents : voilà les modèles.","Cascade, V, itératif, agile : chacun son contexte.","Dunning-Kruger : le site en une heure, sommet du mont Stupide."],
   points:[
    "Un modèle, c'est un ordre et un rythme sur les mêmes six étapes. La question qui les départage : à quel point les besoins vont-ils bouger ?",
    "Cascade : chaque étape validée avant la suivante. Rassurant, mais l'effet tunnel guette, le client ne voit rien pendant des mois.",
@@ -632,6 +662,7 @@ const TRAME=[
   ]},
  {t:"Mot de la fin",at:"0:56",dur:"3 min",ch:null,fig:"dk",
   desc:"L'IA fait défiler les étapes plus vite, sans en effacer une seule.",
+  key:["Ces étapes existent parce que des fusées ont explosé.","L'IA accélère le parcours, elle n'efface aucune étape.","Teaser : le développement du portail, étape par étape."],
   points:[
    "Pourquoi tout ce cérémonial ? Parce que des fusées ont explosé et des week-ends ont brûlé.",
    "Ce qui reste entre nos mains : le problème à cadrer, les choix à assumer, la responsabilité de ce qu'on met entre les mains des gens.",
@@ -1411,20 +1442,50 @@ function trameMd(){
 
 function trameView(){
   const np=Object.keys(S.pinned).filter(k=>S.pinned[k]).length;
+  const done6=count()===6, ess=S.trameMode==="essentielle";
   let out=`<div class="card"><div class="eyebrow">La trame de l'épisode</div>
   <h2>59 minutes, 9 blocs</h2>
-  <p class="small">Le squelette est posé, avec un peu de marge : vos digressions ont une réputation. Chaque angle épinglé dans les chantiers vient nourrir sa section. ${np?`Pour l'instant : ${np} angle${np>1?"s":""} épinglé${np>1?"s":""}.`:"Rien d'épinglé pour l'instant : va explorer les chantiers."}</p>
-  <button class="btn" data-a="copy" style="margin-top:4px">Copier la trame (Markdown)</button>
+  <p class="small">Le squelette est posé, avec un peu de marge : vos digressions ont une réputation. Chaque angle épinglé dans les chantiers vient nourrir sa section. ${np?`Pour l'instant : ${np} angle${np>1?"s":""} épinglé${np>1?"s":""}.`:"Rien d'épinglé pour l'instant : va explorer les chantiers."}</p>`;
+  if(done6&&S.manuVerified){
+    out+=`<div class="tmode"><span class="tmode-l">Version</span>
+      <button class="tmodebtn ${ess?"":"on"}" data-a="tmode" data-id="complete">Complète</button>
+      <button class="tmodebtn ${ess?"on":""}" data-a="tmode" data-id="essentielle">Essentielle</button></div>
+      <p class="mut small" style="margin-top:2px">${ess?"Version direct : les points clés à dérouler, schémas gardés.":"Version détaillée : tout le contenu, pour la préparation."}</p>`;
+  }
+  out+=`<button class="btn" data-a="copy" style="margin-top:8px">Copier la trame (Markdown)</button>
   <button class="btn ghost" data-a="md" style="margin-top:4px">${S.showMd?"Masquer le texte":"Voir le texte"}</button>
   ${S.showMd?`<pre>${esc(trameMd())}</pre>`:""}</div>`;
   TRAME.forEach(sec=>{
     const memo=sec.fig&&SVGS[sec.fig]?`<div class="tmemo"><div class="tmemo-l">Mémo</div>${SVGS[sec.fig].svg}<div class="tmemo-c">${esc(SVGS[sec.fig].cap)}</div></div>`:"";
-    let pts="";
-    if(sec.points){
-      pts=`<ul class="tpoints">${sec.points.map(p=>typeof p==="string"?`<li>${esc(p)}</li>`:`<li class="timage"><span class="tim-l">l'image</span> ${esc(p.img)}</li>`).join("")}</ul>`;
+    const img=(sec.points||[]).find(p=>p&&p.img);
+    const an=img?`<div class="timage"><span class="tim-l">l'image</span> ${esc(img.img)}</div>`:"";
+    if(ess){
+      const keys=sec.key?`<ul class="tpoints">${sec.key.map(k=>`<li>${esc(k)}</li>`).join("")}</ul>`:"";
+      out+=`<div class="tsec ess"><div class="ttime">${sec.at} · ${sec.dur}</div><h3>${esc(sec.t)}</h3>${memo}${keys}${an}${trameLines(sec)}</div>`;
+    }else{
+      const pts=sec.points?`<ul class="tpoints">${sec.points.map(p=>typeof p==="string"?`<li>${esc(p)}</li>`:`<li class="timage"><span class="tim-l">l'image</span> ${esc(p.img)}</li>`).join("")}</ul>`:"";
+      out+=`<div class="tsec"><div class="ttime">${sec.at} · ${sec.dur}</div><h3>${esc(sec.t)}</h3><div class="tdesc">${esc(sec.desc)}</div>${memo}${pts}${trameLines(sec)}</div>`;
     }
-    out+=`<div class="tsec"><div class="ttime">${sec.at} · ${sec.dur}</div><h3>${esc(sec.t)}</h3><div class="tdesc">${esc(sec.desc)}</div>${memo}${pts}${trameLines(sec)}</div>`;
   });
+  if(done6&&!S.manuVerified){
+    out+=`<div class="card captcha">
+      <div class="cap-head"><span class="cap-logo">reCLIC</span><span class="cap-sub">vérification humaine · v2</span></div>
+      <button class="cap-check ${S.captchaChecked?"ticked":""}" data-a="mcaptcha"><span class="cap-box">${S.captchaChecked?"✓":""}</span><span>Je ne suis pas quelqu'un d'autre que Manu</span></button>
+      <div class="cap-foot">Protégé par le lapin. Confidentialité douteuse.</div>
+    </div>`;
+  }
+  if(done6&&S.captchaChecked&&!S.manuVerified){
+    out+=`<div class="modal" data-a="mclose"><div class="modalbox" data-a="keep">
+      <div class="eyebrow">Vérification supplémentaire</div>
+      <p style="font-weight:600;margin-bottom:12px">Si tu prétends vraiment être la personne que tu prétends être, qu'est-ce que le vrai Manu choisirait ici :</p>
+      <div class="opts">
+        <button class="opt" data-a="mverify" data-o="0">Un lion électrique</button>
+        <button class="opt" data-a="mverify" data-o="1">Un poulpe alien</button>
+        <button class="opt" data-a="mverify" data-o="2">Des insectes (histoire de montrer rapidos que ça existe)</button>
+      </div>
+      <div class="cap-foot" style="margin-top:12px">Une seule bonne réponse. Le lapin regarde.</div>
+    </div></div>`;
+  }
   return out;
 }
 
@@ -1708,6 +1769,20 @@ const A={
   else{fallbackCopy(md)?ok():ko();}
  },
  md(){S.showMd=!S.showMd;render();},
+ tmode(id){S.trameMode=id;save();render();},
+ mcaptcha(){S.captchaChecked=!S.captchaChecked;save();render();},
+ keep(){},
+ mclose(){S.captchaChecked=false;save();render();},
+ mverify(id,t){
+  const o=parseInt(t.dataset.o,10);
+  if(o===1){
+   S.manuVerified=true;S.captchaChecked=false;S.trameMode="essentielle";save();render();
+   toast("Identité confirmée : un poulpe alien, évidemment. Trame essentielle débloquée, à toi le mode direct.");
+  }else{
+   S.captchaChecked=false;save();render();
+   toast(o===0?"Un lion électrique ? Le vrai Manu n'a jamais dit ça. Recommence, imposteur.":"Des insectes, tentative notée. Mais non : le vrai Manu sait ce qu'il choisit.");
+  }
+ },
  sortstart(){
   const c=chById(S.chantier);
   S.inter[c.id]={idx:0,score:0,combo:0,bestCombo:0,deadline:Date.now()+30000,res:[],done:false,over:false};
@@ -1843,6 +1918,7 @@ document.addEventListener("click",e=>{
   if(!S.debates)S.debates={};
   if(!S.sim)S.sim=freshSim(null,0);
   if(!S.intru)S.intru={found:{},taps:{},done:false,msg:null,logged:false};
+  if(!S.trameMode)S.trameMode="complete";
   ensureInitLog();
   render(true);
   if(count()>0||S.sim.plays>0)toast("Progression restaurée : "+count()+"/6 chantiers"+(S.sim.plays>0?", "+S.sim.plays+" partie"+(S.sim.plays>1?"s":"")+" de simulateur":"")+". Reprends où tu en étais.");

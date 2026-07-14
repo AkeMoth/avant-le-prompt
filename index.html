@@ -554,70 +554,70 @@ const CH=[
 
 const TRAME=[
  {t:"Introduction",at:"0:00",dur:"4 min",ch:null,fig:"memo_cycle",
-  desc:"Poser le décor : un logiciel se construit, se vérifie, vit et vieillit. Le développement est une étape du cycle, pas le cycle.",
+  desc:"Poser le décor : un logiciel se construit, se vérifie, s'habite et vieillit. Coder n'est qu'une pièce du chantier parmi six.",
   points:[
    "Rappeler l'épisode précédent : le portail du Dernier Clic, du problème à la maquette, en prod depuis un mois et demi.",
    "Planter la tension du jour : on voit fleurir les « ton site en une heure », « ton SaaS en trois semaines ». On va montrer ce que ces promesses passent sous silence.",
-   "Le fil rouge : les mêmes grandes étapes tiennent dans une grande boîte comme avec une IA. L'outil change, la démarche reste.",
+   "Le fil rouge : les mêmes grandes étapes tiennent dans une grande boîte comme avec une IA. Quel que soit l'outil, la démarche reste la même.",
    {img:"Coder, c'est poser les briques. Mais personne ne juge une maison à la vitesse du maçon : restent les fondations, les plans, la plomberie et le contrôle avant d'emménager."}
   ]},
  {t:"Recueil des besoins",at:"0:04",dur:"7 min",ch:"besoins",fig:"cost",
-  desc:"Tout commence par un problème, jamais par une solution. Et plus une erreur est trouvée tard, plus elle coûte cher.",
+  desc:"On part d'un problème à cerner, longtemps avant de parler solution. Et plus une erreur se découvre tard, plus elle coûte cher.",
   points:[
-   "Le principe qui commande tout le reste : une exigence corrigée au stade du besoin, c'est une phrase à réécrire ; la même en production, c'est du code à défaire et des utilisateurs à rassurer.",
+   "Le principe qui commande tout le reste : une exigence corrigée au stade du besoin, c'est une phrase à réécrire ; découverte en production, elle coûte du code à défaire et des utilisateurs à rassurer.",
    "Le chiffre à citer : un défaut d'exigence trouvé tard coûte 50 à 200 fois plus qu'au moment où on l'a écrit (estimation McConnell).",
    "Relier au vécu : le PRD, les user stories et les critères d'acceptation de l'épisode précédent, c'est du génie logiciel classique avec un vocabulaire moderne.",
    "Le concret du recueil : entretiens, observation, étude de l'existant. Notre phase bricolage avant le portail en était, sans le nom.",
    "Séparer le fonctionnel (ce que le système fait) du non fonctionnel (comment : rapide, accessible, sécurisé, conforme).",
-   {img:"C'est le devis et les plans avant les travaux. Un trait qu'on déplace sur le plan coûte un coup de gomme ; un mur déjà monté qu'on abat coûte le mur."}
+   {img:"C'est le moment des plans, avant que la bétonnière tourne. Tant qu'on raisonne sur le papier, une cloison se déplace au crayon. Une fois les murs montés, la moindre reprise se paie en gravats et en jours perdus."}
   ]},
  {t:"Conception",at:"0:11",dur:"7 min",ch:"conception",fig:"lego",
   desc:"Du quoi au comment, sans écrire une ligne de code. On dessine le plan de construction.",
   points:[
    "Traduire les besoins en architecture : quelles briques, comment elles se parlent, où vivent les données.",
    "Cohésion forte, couplage faible : chaque brique fait une seule chose, et dépend le moins possible des autres.",
-   "La surprise du cycle en V : les plans de test s'écrivent dès la conception, pas après le code.",
+   "La surprise du cycle en V : les plans de test s'écrivent dès la conception, bien avant la première ligne de code.",
    "Le réflexe rentable : repérer ce qui changera souvent (le taux de TVA, le fournisseur d'emails) et l'isoler derrière une interface stable.",
-   {img:"Du Lego plutôt que de la soudure. Deux briques Lego se déclipsent et se remplacent ; deux pièces soudées, il faut le chalumeau, et on abîme les deux."}
+   {img:"Monte des cloisons qu'on peut déplacer, et garde les murs porteurs au strict minimum. Le jour où tu voudras changer la cuisine de place, tu seras content que le toit ne repose pas dessus."}
   ]},
  {t:"Développement et versionnage",at:"0:18",dur:"9 min",ch:"dev",fig:"git",
-  desc:"Coder, assembler, et surtout ne jamais perdre l'historique.",
+  desc:"Coder, assembler, et surtout garder la trace de chaque geste.",
   points:[
    "Le codage traduit la conception, puis l'intégration assemble les briques et vérifie qu'elles se parlent vraiment.",
    "Git, le journal de bord : chaque commit est une photo datée et commentée, à laquelle on peut toujours revenir.",
    "Branches et merge : chacun travaille sur sa copie, Git fusionne, et s'arrête poliment quand deux personnes touchent la même ligne.",
    "La revue de code : personne ne fusionne son propre travail en douce. Ça attrape des bugs et ça diffuse la connaissance, y compris face à une IA.",
    "Les pratiques qui valent dans tous les langages : des noms clairs, des petits pas, les erreurs pensées d'avance.",
-   {img:"Git, c'est la sauvegarde d'un jeu vidéo. Tu tentes un truc risqué, et si ça tourne mal tu recharges la dernière partie au lieu de tout recommencer depuis le début."}
+   {img:"Git, c'est photographier le chantier après chaque geste. Si le carrelage neuf sonne creux, tu retrouves l'état exact d'avant la pose et tu reprends là, sans tout casser autour."}
   ]},
  {t:"Tests",at:"0:27",dur:"9 min",ch:"tests",fig:"pyramide",
-  desc:"Chercher les défauts, pas prouver qu'il n'y en a pas.",
+  desc:"Partir à la chasse aux défauts, tant qu'ils coûtent encore trois fois rien.",
   points:[
    "La chaîne à remonter : une erreur humaine glisse un défaut dans le code, qui dort jusqu'à la défaillance visible. Ariane 5, 1996 : 370 millions de dollars en quarante secondes.",
    "Trois étages : unitaire (chaque brique), intégration (l'assemblage), recette (le tout, avec de vrais yeux et de vraies données).",
    "La régression, la plus utile pour un logiciel qui vit : rejouer après chaque changement les tests d'hier, et l'automatiser. Le filet permanent.",
    "Choisir ses cas de test : partitions d'équivalence et valeurs limites. Tester 0, 1, 100 et 101 couvre dix mille valeurs.",
-   "Vérification (construit-on correctement ?) face à validation (construit-on le bon produit ?). On peut réussir l'une et rater l'autre.",
-   {img:"Les utilisateurs sont ces joueurs qui cassent un jeu la semaine de sa sortie : ils cliqueront partout, dans le désordre, comme personne ne l'avait prévu. Tester, c'est jouer contre soi-même avant eux."}
+   "Vérification (construit-on correctement ?) et validation (construit-on le bon produit ?) : un logiciel peut réussir la première et manquer la seconde.",
+   {img:"C'est la visite avant de rendre les clés. Tu ouvres tous les robinets, tu allumes toutes les prises, tu secoues la rampe d'escalier. Les malfaçons se repèrent là, pendant qu'on peut encore les reprendre."}
   ]},
  {t:"Mise en production",at:"0:36",dur:"7 min",ch:"deploiement",fig:"pipeline",
   desc:"Le jour où le logiciel rencontre le monde réel.",
   points:[
    "Trois scènes : le développement (l'atelier), le staging (la répétition générale), la production (la scène, vrais utilisateurs). On ne teste jamais directement en prod.",
    "La checklist avant le bouton : recette validée, sauvegarde récente, et surtout un plan de retour arrière.",
-   "Le rollback : pouvoir revenir à la version d'avant en quelques minutes, pas en quelques heures.",
+   "Le rollback : pouvoir revenir à la version d'avant en quelques minutes, avant que les dégâts s'installent.",
    "Le versionnage sémantique : majeur.mineur.correctif. Le numéro raconte une histoire, les notes de release la commentent.",
-   {img:"Déployer sans rollback, c'est sauter en parachute sans vérifier le pliage. Et le vendredi à 18 h, c'est sauter quand le club vient de fermer : plus personne en bas pour t'aider."}
+   {img:"Garde les clés de l'ancien appartement une semaine après l'emménagement. Si la chaudière neuve lâche le premier soir, tu as encore un endroit où dormir : c'est ça, le retour arrière. Et livrer un vendredi soir, c'est déménager quand plus une entreprise ne décroche avant lundi."}
   ]},
  {t:"Maintenance et vieillissement",at:"0:43",dur:"7 min",ch:"maintenance",fig:"cycle",
-  desc:"Un logiciel vivant se jardine. Un logiciel figé pourrit.",
+  desc:"Un logiciel qui sert se répare, s'adapte et s'améliore sans fin. Laissé à l'abandon, il se dégrade comme une maison qu'on n'entretient plus.",
   points:[
    "Trois gestes : corrective (réparer), adaptative (suivre un monde qui change, nouveau taux de TVA), perfective (améliorer sans nouvelle fonction).",
-   "Détail des manuels : la plupart des corrections introduisent de nouvelles erreurs. Le jardinage n'est jamais fini.",
+   "Détail des manuels : la plupart des corrections introduisent de nouvelles erreurs. L'entretien n'est jamais fini.",
    "La dette technique, un emprunt avec intérêts : chaque raccourci d'aujourd'hui ralentit les évolutions de demain. Le seuil qui alerte : quand la maintenance dépasse le quart du coût du reste, on envisage de refaire.",
    "Le legacy et la migration : le code que plus personne n'ose toucher, et le déménagement des données sans rien casser.",
    "La retraite : un logiciel a une fin, et elle se planifie. Sinon il devient le legacy de quelqu'un d'autre.",
-   {img:"Un logiciel, c'est un jardin, pas une statue. Sans jardinier il ne reste pas figé, il se fait manger par les ronces."}
+   {img:"Une maison habitée demande un entretien sans fin : un joint qui sèche, une gouttière qui lâche, une norme qui change. Laisse filer, et ce qui se réglait avec un tube de mastic finit en réfection de toiture."}
   ]},
  {t:"Et l'ordre dans tout ça ?",at:"0:50",dur:"6 min",ch:"epilogue",fig:"memo_models",
   desc:"Les mêmes six étapes, des ordres différents : voilà toute l'histoire des modèles.",
@@ -628,15 +628,15 @@ const TRAME=[
    "Itératif et agile : on boucle, on livre, on ajuste. Vigilance sur l'agilité de façade, les rituels sans la posture.",
    "Le modèle qu'on pratique déjà : la V1 puis la V2 du portail, de l'itératif sans le nommer.",
    "Pour l'auditeur, la courbe de Dunning-Kruger : le site fait en une heure hisse au sommet du mont Stupide, le premier bug ouvre la vallée, et la remontée porte le nom de ces six étapes.",
-   {img:"Mêmes ingrédients, recettes différentes. La cascade, c'est le menu gastronomique commandé à l'avance ; l'agile, c'est les tapas, on goûte et on ajuste au fur et à mesure."}
+   {img:"La cascade, c'est bâtir toute la maison sur un plan validé d'avance et n'y toucher qu'à la remise des clés. L'agile, c'est emménager dès qu'une pièce est finie et réagencer les suivantes selon la vie qu'on y mène."}
   ]},
  {t:"Mot de la fin",at:"0:56",dur:"3 min",ch:null,fig:"dk",
-  desc:"L'IA ne supprime pas les étapes, elle les rend plus rapides à parcourir.",
+  desc:"L'IA fait défiler les étapes plus vite, sans en effacer une seule.",
   points:[
-   "La vraie raison d'être de tout ça : ces étapes existent parce que des fusées ont explosé et des week-ends ont brûlé.",
+   "Pourquoi tout ce cérémonial ? Parce que des fusées ont explosé et des week-ends ont brûlé.",
    "Ce qui reste entre nos mains : le problème à cadrer, les choix à assumer, la responsabilité de ce qu'on met entre les mains des gens.",
    "Teaser du prochain épisode : le développement du portail, étape par étape.",
-   {img:"L'IA, c'est le téléphérique posé sur la montagne. Il t'épargne la montée, mais c'est toujours à toi de savoir où tu vas, et de regarder le vide."}
+   {img:"L'IA, c'est l'outillage électrique du chantier. La visseuse et la scie sauteuse vont dix fois plus vite que le tournevis et l'égoïne, mais elles ne décident pas où percer, et elles ne tiennent pas le mur d'aplomb à ta place."}
   ]}
 ];
 

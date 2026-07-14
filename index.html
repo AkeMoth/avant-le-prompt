@@ -324,7 +324,7 @@ body.designed::after{content:"";position:fixed;inset:0;pointer-events:none;z-ind
 /* ---------- Contenu ---------- */
 const CH=[
 {id:"besoins",num:"Chantier 01",title:"Recueil des besoins",
- tag:"Tout commence par un problème, jamais par une solution.",
+ tag:"Tout part d'un problème à cerner, avant même de penser à la solution.",
  hook:"Où l'on découvre que le projet le plus rentable de l'année est parfois celui qu'on ne code jamais.",mins:5,
  lorem:"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
  notions:[
@@ -378,7 +378,7 @@ const CH=[
    "Le secret des logiciels qui vieillissent bien tient en quatre mots. Cohésion : chaque brique fait une seule chose, et la fait entièrement. Couplage : les briques dépendent le moins possible les unes des autres. Une fonction qui envoie un email, calcule la TVA et met à jour le stock coche toutes les mauvaises cases : impossible d'y toucher sans risquer de tout casser. Des briques cohérentes et peu couplées se remplacent, se testent et se comprennent une par une. Du Lego plutôt que de la soudure."
   ]},
   {t:"Les tests se préparent ici",body:[
-   "Surprise de la théorie : les plans de test s'écrivent pendant la conception, pas après le code. En dessinant chaque brique, on décrit déjà comment on vérifiera qu'elle fonctionne (le futur plan de tests unitaires) et comment on vérifiera que l'assemblage tient (le plan d'intégration). C'est l'idée du fameux cycle en V : chaque étape de construction prépare, en face d'elle, l'étape de vérification qui lui répondra."
+   "Surprise de la théorie : les plans de test s'écrivent pendant la conception, bien avant le code. En dessinant chaque brique, on décrit déjà comment on vérifiera qu'elle fonctionne (le futur plan de tests unitaires) et comment on vérifiera que l'assemblage tient (le plan d'intégration). C'est l'idée du fameux cycle en V : chaque étape de construction prépare, en face d'elle, l'étape de vérification qui lui répondra."
   ]}
  ],
  inter:{type:"jenga",title:"À toi de jouer : le jenga du couplage",
@@ -436,7 +436,7 @@ const CH=[
  ]},
 
 {id:"tests",num:"Chantier 04",title:"Tests",
- tag:"Chercher les défauts, pas prouver qu'il n'y en a pas.",
+ tag:"Partir à la chasse aux défauts, tant qu'ils coûtent encore trois fois rien.",
  hook:"Où une fusée à 370 millions de dollars explose pour une variable trop petite.",mins:8,
  lorem:"Duis aute irure dolor in reprehenderit in voluptate.",
  notions:[
@@ -493,7 +493,7 @@ const CH=[
    "Un logiciel sérieux vit dans plusieurs environnements. Le développement : l'atelier, où l'on casse tout sans conséquence. Le staging (ou préproduction) : la répétition générale, une copie conforme de la prod pour recetter dans les conditions du réel. La production : la scène, avec de vrais utilisateurs et de vraies données. La règle d'or coule de source : on ne teste jamais directement en production. Chaque équipe connaît pourtant une histoire où quelqu'un l'a fait."
   ]},
   {t:"Partir en prod, concrètement",ask:["La recette est-elle validée, avec de vraies données ?","Peut-on revenir en arrière en moins de dix minutes ?","Qui surveille pendant les premières heures ?","Que dit-on aux utilisateurs, et quand ?"],body:[
-   "La mise en production installe le logiciel dans son environnement réel : configuration, reprise des données, formation des utilisateurs si besoin. Avant d'appuyer sur le bouton, une checklist : recette validée, sauvegarde récente, et surtout un plan de retour arrière, le rollback. Si tout part de travers, on doit pouvoir revenir à la version précédente en quelques minutes, pas en quelques heures. Déployer sans rollback, c'est sauter sans vérifier le parachute."
+   "La mise en production installe le logiciel dans son environnement réel : configuration, reprise des données, formation des utilisateurs si besoin. Avant d'appuyer sur le bouton, une checklist : recette validée, sauvegarde récente, et surtout un plan de retour arrière, le rollback. Si tout part de travers, on doit pouvoir revenir à la version précédente en quelques minutes, avant que les dégâts s'installent. Déployer sans rollback, c'est sauter sans vérifier le parachute."
   ]},
   {t:"Versions et notes de release",body:[
    "v2.4.1 : ces numéros racontent une histoire. Le premier chiffre change pour une évolution majeure, le deuxième pour de nouvelles fonctionnalités, le troisième pour des corrections. Les notes de release listent ce qui change, à destination des humains. C'est aussi un contrat de confiance : dire ce qu'on livre, assumer ce qu'on corrige. Regarde l'en-tête de cette application : elle tient son propre décompte depuis le début."
@@ -517,7 +517,7 @@ const CH=[
  ]},
 
 {id:"maintenance",num:"Chantier 06",title:"Maintenance et vieillissement",
- tag:"Un logiciel vivant se jardine. Un logiciel figé pourrit.",
+ tag:"Un logiciel vivant se jardine sans fin, sous peine de se faire manger par les ronces.",
  hook:"Où le code devient legacy, et pourquoi ça n'arrive pas qu'aux autres.",mins:5,
  lorem:"Sunt in culpa qui officia deserunt mollit anim.",
  notions:[
@@ -578,7 +578,7 @@ const TRAME=[
    "Cohésion forte, couplage faible : chaque brique fait une seule chose, et dépend le moins possible des autres.",
    "La surprise du cycle en V : les plans de test s'écrivent dès la conception, bien avant la première ligne de code.",
    "Le réflexe rentable : repérer ce qui changera souvent (le taux de TVA, le fournisseur d'emails) et l'isoler derrière une interface stable.",
-   {img:"Monte des cloisons qu'on peut déplacer, et garde les murs porteurs au strict minimum. Le jour où tu voudras changer la cuisine de place, tu seras content que le toit ne repose pas dessus."}
+   {img:"Pense en briques Lego : chaque pièce se déclipse et se remplace sans toucher aux voisines. Une fois tout soudé, la moindre retouche réclame le chalumeau et abîme ce qu'il y a autour."}
   ]},
  {t:"Développement et versionnage",at:"0:18",dur:"9 min",ch:"dev",fig:"git",
   desc:"Coder, assembler, et surtout garder la trace de chaque geste.",
@@ -598,7 +598,7 @@ const TRAME=[
    "La régression, la plus utile pour un logiciel qui vit : rejouer après chaque changement les tests d'hier, et l'automatiser. Le filet permanent.",
    "Choisir ses cas de test : partitions d'équivalence et valeurs limites. Tester 0, 1, 100 et 101 couvre dix mille valeurs.",
    "Vérification (construit-on correctement ?) et validation (construit-on le bon produit ?) : un logiciel peut réussir la première et manquer la seconde.",
-   {img:"C'est la visite avant de rendre les clés. Tu ouvres tous les robinets, tu allumes toutes les prises, tu secoues la rampe d'escalier. Les malfaçons se repèrent là, pendant qu'on peut encore les reprendre."}
+   {img:"Les utilisateurs sont ces joueurs qui cassent un jeu la semaine de sa sortie : ils cliquent partout, dans le désordre, comme personne ne l'avait prévu. Tester, c'est jouer contre soi-même avant eux."}
   ]},
  {t:"Mise en production",at:"0:36",dur:"7 min",ch:"deploiement",fig:"pipeline",
   desc:"Le jour où le logiciel rencontre le monde réel.",
@@ -607,7 +607,7 @@ const TRAME=[
    "La checklist avant le bouton : recette validée, sauvegarde récente, et surtout un plan de retour arrière.",
    "Le rollback : pouvoir revenir à la version d'avant en quelques minutes, avant que les dégâts s'installent.",
    "Le versionnage sémantique : majeur.mineur.correctif. Le numéro raconte une histoire, les notes de release la commentent.",
-   {img:"Garde les clés de l'ancien appartement une semaine après l'emménagement. Si la chaudière neuve lâche le premier soir, tu as encore un endroit où dormir : c'est ça, le retour arrière. Et livrer un vendredi soir, c'est déménager quand plus une entreprise ne décroche avant lundi."}
+   {img:"Déployer sans plan de retour arrière, c'est sauter en parachute sans vérifier le pliage. Et lâcher ça un vendredi 18 h, c'est sauter quand le club vient de fermer : plus personne en bas pour t'aider."}
   ]},
  {t:"Maintenance et vieillissement",at:"0:43",dur:"7 min",ch:"maintenance",fig:"cycle",
   desc:"Un logiciel qui sert se répare, s'adapte et s'améliore sans fin. Laissé à l'abandon, il se dégrade comme une maison qu'on n'entretient plus.",
@@ -617,7 +617,7 @@ const TRAME=[
    "La dette technique, un emprunt avec intérêts : chaque raccourci d'aujourd'hui ralentit les évolutions de demain. Le seuil qui alerte : quand la maintenance dépasse le quart du coût du reste, on envisage de refaire.",
    "Le legacy et la migration : le code que plus personne n'ose toucher, et le déménagement des données sans rien casser.",
    "La retraite : un logiciel a une fin, et elle se planifie. Sinon il devient le legacy de quelqu'un d'autre.",
-   {img:"Une maison habitée demande un entretien sans fin : un joint qui sèche, une gouttière qui lâche, une norme qui change. Laisse filer, et ce qui se réglait avec un tube de mastic finit en réfection de toiture."}
+   {img:"Un logiciel, c'est un jardin : personne aux commandes, et les ronces reprennent le dessus en une saison. Ça se taille, ça se replante, ça ne s'arrête jamais."}
   ]},
  {t:"Et l'ordre dans tout ça ?",at:"0:50",dur:"6 min",ch:"epilogue",fig:"memo_models",
   desc:"Les mêmes six étapes, des ordres différents : voilà toute l'histoire des modèles.",

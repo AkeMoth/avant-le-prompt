@@ -1414,6 +1414,11 @@ function debCard(chid){
   ${sel!=null?`<div class="feedback">Position notée dans la trame, au nom de ${esc(playerName())}. L'antenne tranchera.</div>`:`<p class="mut small" style="margin-top:8px">Choisis un camp : ta position part dans la trame, et l'autre moitié du podcast la découvrira.</p>`}</div>`;
 }
 function anglesFor(id){return id==="epilogue"?EPI.angles:chById(id).angles;}
+function secUnlocked(sec){
+  if(sec.ch===null)return sec.t==="Introduction"?true:count()===6;
+  if(sec.ch==="epilogue")return count()>=2;
+  return !!S.done[sec.ch];
+}
 function trameLines(sec){
   let out="";
   if(sec.ch){
@@ -1434,6 +1439,7 @@ function trameMd(){
   let md="# Trame · Le cycle de vie d'un logiciel (60 min)\n";
   md+="Objectif : vulgariser les grandes étapes d'un développement logiciel, valables quel que soit l'outil (IA comprise).\n\n";
   TRAME.forEach(sec=>{
+    if(!secUnlocked(sec))return;
     md+=`## ${sec.at} · ${sec.t} (${sec.dur})\n${sec.desc}\n`;
     if(sec.fig&&SVGS[sec.fig])md+="Mémo : "+SVGS[sec.fig].cap+"\n";
     if(sec.points){
@@ -1458,9 +1464,10 @@ function trameMd(){
 function trameView(){
   const np=Object.keys(S.pinned).filter(k=>S.pinned[k]).length;
   const done6=count()===6, ess=S.trameMode==="essentielle";
+  const nUnlocked=TRAME.filter(secUnlocked).length;
   let out=`<div class="card"><div class="eyebrow">La trame de l'épisode</div>
   <h2>59 minutes, 9 blocs</h2>
-  <p class="small">Le squelette est posé, avec un peu de marge : vos digressions ont une réputation. Chaque angle épinglé dans les chantiers vient nourrir sa section. ${np?`Pour l'instant : ${np} angle${np>1?"s":""} épinglé${np>1?"s":""}.`:"Rien d'épinglé pour l'instant : va explorer les chantiers."}</p>`;
+  <p class="small">La trame se construit à mesure que tu boucles les chantiers. ${nUnlocked}/${TRAME.length} sections débloquées. ${np?`${np} angle${np>1?"s":""} épinglé${np>1?"s":""} pour l'instant.`:"Épingle des angles dans les chantiers pour nourrir chaque section."}</p>`;
   if(done6&&S.manuVerified){
     out+=`<div class="tmode"><span class="tmode-l">Version</span>
       <button class="tmodebtn ${ess?"":"on"}" data-a="tmode" data-id="complete">Complète</button>
@@ -1471,6 +1478,7 @@ function trameView(){
   <button class="btn ghost" data-a="md" style="margin-top:4px">${S.showMd?"Masquer le texte":"Voir le texte"}</button>
   ${S.showMd?`<pre>${esc(trameMd())}</pre>`:""}</div>`;
   TRAME.forEach(sec=>{
+    if(!secUnlocked(sec))return;
     const memo=sec.fig&&SVGS[sec.fig]?`<div class="tmemo"><div class="tmemo-l">Mémo</div>${SVGS[sec.fig].svg}<div class="tmemo-c">${esc(SVGS[sec.fig].cap)}</div></div>`:"";
     if(ess){
       const keys=sec.key?`<ul class="tpoints">${sec.key.map(k=>`<li>${esc(k)}</li>`).join("")}</ul>`:"";
@@ -1484,6 +1492,9 @@ function trameView(){
       out+=`<div class="tsec"><div class="ttime">${sec.at} · ${sec.dur}</div><h3>${esc(sec.t)}</h3><div class="tdesc">${esc(sec.desc)}</div>${memo}${pts}${trameLines(sec)}</div>`;
     }
   });
+  if(nUnlocked<TRAME.length){
+    out+=`<div class="card" style="text-align:center"><p class="mut small">La suite de la trame se débloque en bouclant les chantiers restants (${TRAME.length-nUnlocked} à venir).</p></div>`;
+  }
   if(done6&&!S.manuVerified){
     out+=`<div class="card captcha">
       <div class="cap-head"><span class="cap-logo">reCLIC</span><span class="cap-sub">vérification humaine · v2</span></div>

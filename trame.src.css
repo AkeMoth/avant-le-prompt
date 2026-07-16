@@ -1,0 +1,12 @@
+/* ---------- Export trame : ajustements propres au document ---------- */
+/* Le gros du style vient de index.html (injecté par build-trame.js). */
+
+/* Les angles de chaque chantier, sous les points de la section.
+   Cyan comme les autres micro-labels posés sur le sarcelle du monde Studio
+   (.eyebrow, .ttime, .tim-l) : le magenta n'y a pas assez de contraste. */
+.tang{margin-top:11px}
+.tang-l{font-family:var(--fm);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:5px}
+.tang li{font-size:13.5px;color:var(--muted);margin-bottom:5px}
+
+/* En-tête du document : pas de barre de progression ici, la trame est finie. */
+header .baseline{margin-top:6px}

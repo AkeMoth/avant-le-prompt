@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Trame · Le cycle de vie d'un logiciel · Le Dernier Clic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;0,900;1,600&family=Caveat:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e9e9e9; --paper:#f7f7f7; --ink:#3d3d3d; --muted:#696969;
+  --primary:#5f5f5f; --accent:#6a6a6a; --good:#5f5f5f; --bad:#6f6f6f;
+  --bd:2px dashed #a3a3a3; --shadow:none; --radius:2px;
+  --fd:ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --fb:ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --fm:ui-monospace,'SFMono-Regular',Menlo,monospace;
+}
+body.designed{
+  --bg:#f2ece2; --paper:#fdfaf4; --ink:#18375D; --muted:#6d6782;
+  --primary:#006e7c; --accent:#ba0675; --good:#006e7c; --bad:#ba0675;
+  --sauge:#7dcfb6; --lilas:#eca1ff; --cyan:#a3f8ff; --ambre:#f0a04c;
+  --bd:2px solid #18375D; --shadow:4px 4px 0 #18375D; --radius:3px;
+  --fd:'Fraunces',Georgia,serif;
+  --fb:'Lora',Georgia,serif;
+  --fm:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --fs:'Caveat','Bradley Hand',cursive;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;height:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:var(--fb); font-size:16px; line-height:1.55;
+  height:100%; overflow:hidden;
+  display:grid; grid-template-rows:1fr auto; grid-template-columns:100%;
+}
+#scroller{grid-row:1;grid-column:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain}
+body.designed{
+  background-image:radial-gradient(circle at 1px 1px, rgba(24,55,93,.06) 1px, transparent 0);
+  background-size:22px 22px;
+}
+.wrap{max-width:520px;margin:0 auto;padding:0 14px}
+
+/* ---------- header ---------- */
+header{border-bottom:var(--bd);background:var(--paper);padding:14px 0 12px}
+.hrow{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+h1{font-family:var(--fd);font-size:30px;line-height:1.05;font-weight:700;letter-spacing:.2px}
+body:not(.designed) h1{font-size:22px;font-weight:500}
+.chips{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.chip{font-family:var(--fm);font-size:11px;padding:3px 7px;border:var(--bd);background:var(--bg);white-space:nowrap}
+.chip.prod{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:500;letter-spacing:.5px}
+.baseline{font-family:var(--fm);font-size:12px;color:var(--muted);margin-top:5px}
+.progress{height:8px;border:var(--bd);margin-top:11px;background:var(--bg);overflow:hidden}
+.progress > div{height:100%;background:var(--primary);width:0%}
+body.anim .progress > div{transition:width .5s ease}
+.plabel{font-family:var(--fm);font-size:11px;color:var(--muted);margin-top:5px;display:flex;justify-content:space-between}
+
+/* ---------- cards ---------- */
+main{padding:16px 0 28px}
+.card{background:var(--paper);border:var(--bd);box-shadow:var(--shadow);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+.card h2{font-family:var(--fd);font-size:23px;line-height:1.15;margin-bottom:8px;font-weight:700}
+body:not(.designed) .card h2{font-size:17px;font-weight:500}
+.card h3{font-family:var(--fd);font-size:19px;margin-bottom:6px;font-weight:600}
+body:not(.designed) .card h3{font-size:15px;font-weight:500}
+.card p{margin-bottom:10px}
+.card p:last-child{margin-bottom:0}
+.eyebrow{font-family:var(--fm);font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.mut{color:var(--muted);font-size:14px}
+.small{font-size:14px}
+
+/* ---------- chantier list ---------- */
+.chcard{display:block;width:100%;text-align:left;cursor:pointer;position:relative}
+.chcard .num{font-family:var(--fm);font-size:12px;color:var(--muted)}
+.chcard .status{position:absolute;top:14px;right:14px;font-family:var(--fm);font-size:11px;padding:3px 7px;border:var(--bd)}
+.chcard .status.done{background:var(--primary);color:#fff;border-color:var(--primary)}
+body.anim .chcard:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #18375D}
+.card.epi{border:2px dashed var(--accent)}
+
+/* ---------- buttons ---------- */
+button{font-family:var(--fm);font-size:14px;cursor:pointer;border-radius:var(--radius);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.btn{display:inline-block;background:var(--primary);color:#fff;border:2px solid var(--primary);padding:11px 16px;font-weight:500}
+body:not(.designed) .btn{border-style:dashed}
+.btn.ghost{background:var(--paper);color:var(--ink);border:var(--bd)}
+.btn.wide{width:100%;text-align:center}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+body.anim .btn:not(:disabled):active{transform:translate(2px,2px)}
+.btn.acc{background:var(--accent);border-color:var(--accent)}
+.backbtn{background:none;border:none;color:var(--ink);font-family:var(--fm);font-size:13px;padding:6px 0;margin-bottom:8px;text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- quiz / interactions ---------- */
+.qbox{border:var(--bd);padding:13px;background:var(--bg);margin-top:10px;border-radius:var(--radius)}
+.qbox .qq{font-weight:600;margin-bottom:10px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{border:var(--bd);background:var(--paper);padding:11px 12px;text-align:left;font-family:var(--fb);font-size:15px;color:var(--ink)}
+.opt.correct{background:var(--primary);color:#fff;border-color:var(--primary)}
+.opt.wrong{background:var(--bad);color:#fff;border-color:var(--bad)}
+.feedback{margin-top:10px;padding:10px 12px;border:var(--bd);background:var(--paper);font-size:14px}
+.feedback::before{content:"AU DOS";display:block;font-family:var(--fm);font-size:9.5px;letter-spacing:1.4px;color:var(--muted);margin-bottom:4px}
+.score{font-family:var(--fm);font-size:12px;color:var(--muted);margin-bottom:8px}
+.donebox{border:var(--bd);background:var(--paper);padding:12px;margin-top:10px;font-size:14px}
+.shake{animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* ordering */
+.placed{margin:0 0 10px 0;list-style:none}
+.placed li{font-family:var(--fm);font-size:13px;padding:7px 10px;border:var(--bd);background:var(--paper);margin-bottom:6px}
+
+/* checklist */
+.ckitem{display:flex;gap:10px;align-items:flex-start;border:var(--bd);background:var(--paper);padding:11px 12px;width:100%;text-align:left;font-family:var(--fb);font-size:15px;color:var(--ink);margin-bottom:8px}
+.ckitem .box{width:20px;height:20px;border:2px solid var(--ink);flex-shrink:0;margin-top:1px;font-size:14px;line-height:16px;text-align:center;font-family:var(--fm)}
+.ckitem.sel .box{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* bug hunt */
+.mock{border:var(--bd);background:var(--paper);padding:12px;margin-top:10px}
+.mock .mtitle{font-family:var(--fm);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:9px;border-bottom:var(--bd);padding-bottom:7px}
+.melem{display:block;width:100%;text-align:left;border:1px solid transparent;background:none;padding:8px 9px;font-family:var(--fb);font-size:15px;color:var(--ink);border-radius:var(--radius)}
+.melem:not(:last-child){margin-bottom:2px}
+.melem.btnish{border:var(--bd);background:var(--bg);font-family:var(--fm);font-size:13px;text-align:center;margin-top:6px;padding:10px}
+.melem.big{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:500}
+.melem.found{outline:3px solid var(--bad);outline-offset:-1px;position:relative}
+.melem.found::after{content:"BUG";position:absolute;top:-9px;right:6px;background:var(--bad);color:#fff;font-family:var(--fm);font-size:10px;padding:1px 6px;letter-spacing:1px}
+
+/* ---------- angles ---------- */
+.angle{border:var(--bd);background:var(--paper);padding:12px;margin-bottom:10px}
+.angle p{font-size:15px;margin-bottom:9px}
+.pinbtn{font-family:var(--fm);font-size:12px;border:var(--bd);background:var(--bg);padding:6px 10px;color:var(--ink)}
+.pinbtn.pinned{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ---------- trame ---------- */
+.tsec{border:var(--bd);background:var(--paper);padding:13px;margin-bottom:12px;box-shadow:var(--shadow);border-radius:var(--radius)}
+.tsec .ttime{font-family:var(--fm);font-size:11px;color:var(--accent);letter-spacing:.5px;margin-bottom:3px}
+.tsec h3{margin-bottom:5px}
+.tsec .tdesc{font-size:14px;color:var(--muted);margin-bottom:8px}
+.tsec ul{margin-left:18px}
+.tsec li{font-size:14px;margin-bottom:6px}
+.tsec .none{font-family:var(--fm);font-size:12px;color:var(--muted)}
+/* mémo visuel : encart clair, lisible dans les trois mondes */
+.tmemo{border:var(--bd);background:var(--bg);border-radius:var(--radius);padding:11px 12px 8px;margin:4px 0 12px}
+.tmemo-l{font-family:var(--fm);font-size:9.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.tmemo svg{width:100%;height:auto;display:block}
+.tmemo-c{font-family:var(--fm);font-size:11px;color:var(--muted);margin-top:6px}
+.tpoints{margin-left:18px;margin-bottom:2px}
+.tpoints li{font-size:14px;margin-bottom:7px;line-height:1.5}
+.timage{list-style:none;margin-left:-18px;margin-top:9px;border-left:3px solid var(--accent);padding:2px 0 2px 11px}
+.timage .tim-l{font-family:var(--fm);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:2px}
+body.designed .timage{border-left:none;padding-left:0;background:none}
+body.designed .timage{font-family:var(--fs);font-size:18px;line-height:1.3}
+body.designed .tmemo{background:#fbf6ee;border:2px solid #18375D;box-shadow:3px 3px 0 rgba(24,55,93,.85);--bg:#f2ece2;--paper:#fdfaf4;--ink:#18375D;--muted:#6a6480;--accent:#ba0675;--primary:#006e7c;--good:#006e7c}
+body.designed[data-view="trame"] .tmemo-l{color:#6d6782}
+body.designed[data-view="trame"] .timage .tim-l{color:var(--cyan)}
+/* toggle version complète / essentielle */
+.tmode{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.tmode-l{font-family:var(--fm);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.tmodebtn{font-family:var(--fm);font-size:12px;border:var(--bd);background:var(--bg);color:var(--ink);padding:6px 12px}
+.tmodebtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tsec.ess .tmemo{margin-top:2px}
+/* exemples concrets (mode essentielle) */
+.tex{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.tex-row{font-size:13.5px;line-height:1.45;border:var(--bd);border-radius:var(--radius);padding:9px 11px}
+.tex-l{display:block;font-family:var(--fm);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px}
+.tex-row.ko .tex-l{color:var(--ambre)}
+.tex-row.ok .tex-l{color:var(--good)}
+/* easter egg captcha */
+.captcha{border:var(--bd)}
+.cap-head{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+.cap-logo{font-family:var(--fm);font-weight:600;letter-spacing:1px;border:var(--bd);padding:2px 7px;font-size:13px}
+.cap-sub{font-family:var(--fm);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.cap-check{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:var(--bd);background:var(--paper);padding:14px 12px;font-family:var(--fb);font-size:15px;color:var(--ink)}
+.cap-box{width:24px;height:24px;flex-shrink:0;border:2px solid var(--ink);display:inline-flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:16px}
+.cap-check.ticked .cap-box{background:var(--good);border-color:var(--good);color:#fff}
+.cap-foot{font-family:var(--fm);font-size:10px;color:var(--muted);margin-top:8px;letter-spacing:.3px}
+/* pop-up de vérification */
+.modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(24,55,93,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.modalbox{background:var(--paper);border:var(--bd);box-shadow:var(--shadow);border-radius:var(--radius);padding:18px;max-width:440px;width:100%;max-height:82vh;overflow-y:auto}
+body.anim .modal{animation:mfade .25s ease}
+body.anim .modalbox{animation:mpop .28s cubic-bezier(.2,.8,.3,1.2)}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+@keyframes mpop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+pre{font-family:var(--fm);font-size:12px;white-space:pre-wrap;word-break:break-word;background:var(--bg);border:var(--bd);padding:12px;margin-top:10px;max-height:300px;overflow:auto}
+
+/* ---------- journal ---------- */
+.logline{font-family:var(--fm);font-size:12.5px;border-bottom:1px dashed var(--muted);padding:9px 0;line-height:1.5}
+.logline .hash{color:var(--accent)}
+.logline .lmsg{color:var(--ink)}
+.logline .ldate{color:var(--muted);font-size:11px}
+.ticket{border:var(--bd);background:var(--paper);padding:10px 12px;margin-bottom:8px;font-size:14px}
+.ticket .tid{display:block;font-family:var(--fm);font-size:11px;color:var(--accent);margin-bottom:3px}
+
+/* ---------- nav ---------- */
+nav{grid-row:2;grid-column:1;background:var(--paper);border-top:var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:none;padding:13px 4px 11px;font-family:var(--fm);font-size:12px;color:var(--muted);border-top:3px solid transparent}
+nav button.on{color:var(--ink);border-top-color:var(--accent);font-weight:500}
+nav .badge{display:inline-block;min-width:17px;padding:1px 4px;background:var(--accent);color:#fff;font-size:10px;margin-left:3px;border-radius:8px}
+nav .badge[hidden]{display:none}
+
+/* ---------- toast ---------- */
+#toasts{grid-row:1;grid-column:1;align-self:end;z-index:99;margin:0 12px 10px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--ink);color:var(--paper);font-family:var(--fm);font-size:13px;padding:12px 14px;border-radius:var(--radius);box-shadow:var(--shadow);opacity:0;transform:translateY(8px)}
+.toast.show{opacity:1;transform:translateY(0)}
+body.anim .toast{transition:opacity .3s,transform .3s}
+
+.stampdone{display:inline-block;font-family:var(--fm);font-size:12px;letter-spacing:1.5px;border:2px solid var(--primary);color:var(--primary);padding:4px 10px;transform:rotate(-2deg);text-transform:uppercase;font-weight:500}
+#apptitle,#version{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.meters{display:flex;flex-direction:column;gap:9px}
+.meter{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:11px}
+.meter .ml{width:128px;flex-shrink:0;color:var(--muted)}
+.meter .mbar{flex:1;height:10px;border:var(--bd);background:var(--bg);overflow:hidden}
+.meter .mbar>div{height:100%}
+body.anim .meter .mbar>div{transition:width .4s ease}
+.meter b{width:30px;text-align:right}
+.gitfile{font-family:var(--fm);font-size:12px;border:var(--bd);background:var(--bg);padding:10px 12px;line-height:1.75;overflow-x:auto}
+.gl-file{color:var(--muted);font-size:10px;letter-spacing:.5px;margin-bottom:6px;border-bottom:1px dashed var(--muted);padding-bottom:4px}
+.gl-marker{color:var(--accent);font-weight:500}
+.gl-lulu{border-left:3px solid var(--primary);padding-left:7px}
+.gl-manu{border-left:3px solid var(--accent);padding-left:7px}
+.opt.sel{background:var(--primary);color:#fff;border-color:var(--primary)}
+.deltas{font-family:var(--fm);font-size:11px;color:var(--accent)}
+.hook{font-style:italic;color:var(--accent);font-size:14px;margin-top:3px}
+body:not(.designed) .hook{color:var(--muted)}
+.nextchip{font-family:var(--fm);font-size:10px;border:1px solid var(--primary);color:var(--primary);padding:1px 6px;margin-left:7px;letter-spacing:.6px;text-transform:uppercase;vertical-align:1px}
+.nextchip .cur{width:9px;height:12px;vertical-align:-2px;margin-right:4px}
+.btn.soft{opacity:.55}
+.fig{margin:13px 0 0}
+.fig svg{width:100%;height:auto;display:block}
+.figcap{font-family:var(--fm);font-size:11px;color:var(--muted);margin-top:6px}
+.askbox{border:var(--bd);background:var(--bg);padding:10px 12px;margin-top:11px}
+.askt{font-family:var(--fm);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--primary);margin-bottom:6px}
+.askbox ul{margin-left:16px}
+.askbox li{font-size:14px;margin-bottom:5px}
+.askbox li:last-child{margin-bottom:0}
+hr.sep{border:none;border-top:var(--bd);margin:14px 0}
+
+/* ---------- tri à chaud ---------- */
+.sorthead{display:flex;align-items:baseline;gap:10px}
+.combo{font-family:var(--fm);font-size:11px;color:var(--accent);font-weight:500}
+.tleft{margin-left:auto;font-family:var(--fm);font-size:12px;color:var(--ink)}
+.timerbar{height:8px;border:var(--bd);background:var(--bg);margin-top:8px;overflow:hidden}
+.timerbar>div{height:100%;width:100%;background:var(--accent)}
+.opt.big{text-align:center;font-family:var(--fm);font-size:16px;padding:16px 12px}
+.sortrecap{margin-top:10px}
+.recapline{border:var(--bd);background:var(--paper);padding:8px 10px;margin-top:6px;font-size:13px}
+
+/* ---------- jenga du couplage ---------- */
+.jenga{display:flex;flex-direction:column;gap:14px;margin-top:4px}
+.jlbl{font-family:var(--fm);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.jset{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
+.jbrick{border:var(--bd);background:var(--paper);padding:12px 4px;font-family:var(--fm);font-size:11px;color:var(--ink);min-height:44px}
+.jset.soude .jbrick{transform:rotate(-.6deg)}
+.jset.soude .jbrick:nth-child(2n){transform:rotate(.8deg)}
+.weldnet{position:absolute;inset:2px;width:calc(100% - 4px);height:calc(100% - 4px);pointer-events:none}
+.jbrick.out{opacity:.25}
+body.anim .jbrick{transition:opacity .25s}
+.jset.shake{animation:shake .3s}
+
+/* ---------- triage du backlog ---------- */
+.ticket.cur{border-width:2px;font-size:15px}
+.cols{display:flex;gap:6px;margin-top:12px}
+.col{flex:1;border:var(--bd);background:var(--bg);padding:6px;min-height:74px}
+.collbl{display:block;font-family:var(--fm);font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:6px}
+.ticket.mini{font-size:10.5px;padding:5px 6px;margin-bottom:5px;line-height:1.35}
+
+/* ---------- mode intrusion ---------- */
+body.designed .chcard.intrus{background:#18375D;color:#f2ece2;border-color:#18375D}
+body.designed .chcard.intrus .num{color:rgba(242,236,226,.7)}
+body.designed .chcard.intrus .hook{color:var(--cyan)}
+body.designed .chcard.intrus .status{border-color:rgba(242,236,226,.45);color:#f2ece2;background:none}
+body.designed .chcard.intrus .status.done{background:var(--primary);border-color:var(--primary);color:#fff}
+body.designed[data-view="intrusion"]{
+  --bg:#18375D; --paper:#1e3d63; --ink:#f2ece2; --muted:rgba(242,236,226,.66);
+  --primary:#a3f8ff; --good:#a3f8ff;
+  --bd:1.5px solid rgba(242,236,226,.28); --shadow:none;
+  background-image:radial-gradient(85% 55% at 82% -8%, rgba(163,248,255,.07), transparent 60%);
+}
+body.designed[data-view="intrusion"] .eyebrow{color:var(--cyan)}
+body.designed[data-view="intrusion"] .melem.found::after{content:"FAILLE"}
+
+/* ---------- les trois mondes (DA Le Dernier Clic) ---------- */
+body.designed .hook{font-family:var(--fs);font-style:normal;font-size:20px;line-height:1.25}
+body.designed[data-view="journal"]{
+  --bg:#18375D; --paper:#1e3d63; --ink:#f2ece2; --muted:rgba(242,236,226,.66);
+  --primary:#a3f8ff; --good:#a3f8ff;
+  --bd:1.5px solid rgba(242,236,226,.28); --shadow:none;
+  background-image:radial-gradient(85% 55% at 82% -8%, rgba(125,207,182,.09), transparent 60%);
+}
+body.designed[data-view="journal"] .logline .hash{color:var(--cyan)}
+body.designed[data-view="journal"] .logline .ldate{color:var(--ambre)}
+body.designed[data-view="journal"] .ticket .tid{color:var(--cyan)}
+body.designed[data-view="simu"],body.designed[data-view="trame"]{
+  --bg:#006e7c; --paper:#00616d; --ink:#f2ece2; --muted:rgba(242,236,226,.75);
+  --primary:#a3f8ff; --good:#a3f8ff;
+  --bd:1.5px solid rgba(242,236,226,.3); --shadow:none;
+}
+body.designed[data-view="simu"]{background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 4px)}
+body.designed[data-view="simu"] .btn:not(.ghost),body.designed[data-view="trame"] .btn:not(.ghost){background:var(--accent);border-color:var(--accent);color:#fff}
+body.designed[data-view="simu"] .opt.sel,body.designed[data-view="trame"] .opt.sel{color:#0d3a41}
+body.designed[data-view="simu"] .deltas,body.designed[data-view="trame"] .ttime{color:var(--cyan)}
+body.designed[data-view="simu"] .eyebrow,body.designed[data-view="trame"] .eyebrow{color:var(--cyan)}
+body.designed[data-view="journal"] .eyebrow{color:var(--cyan)}
+body.designed[data-view="journal"] .logline{border-bottom-color:rgba(242,236,226,.35)}
+body.designed hr.sep{border:none;height:14px;margin:16px 0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='14'%3E%3Cg fill='%236d6782'%3E%3Crect x='2' y='5' width='2' height='4'/%3E%3Crect x='8' y='3' width='2' height='8'/%3E%3Crect x='14' y='1' width='2' height='12'/%3E%3Crect x='20' y='4' width='2' height='6'/%3E%3Crect x='26' y='2' width='2' height='10'/%3E%3Crect x='32' y='5' width='2' height='4'/%3E%3Crect x='38' y='3' width='2' height='8'/%3E%3C/g%3E%3C/svg%3E") repeat-x center/auto 14px}
+body.designed::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:98;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* ---------- animation des schémas (après le chantier Développement) ---------- */
+@media (prefers-reduced-motion: no-preference){
+  body.anim .fig svg,body.anim .tmemo svg{opacity:0;transform:translateY(10px);transition:opacity .55s ease,transform .55s ease}
+  body.anim .fig svg.drawn,body.anim .tmemo svg.drawn{opacity:1;transform:none}
+  body.anim .fig svg .dr,body.anim .tmemo svg .dr{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.05s ease .25s}
+  body.anim .fig svg.drawn .dr,body.anim .tmemo svg.drawn .dr{stroke-dashoffset:0}
+  /* boucles ambiantes, lancees une fois le schema revele */
+  body.anim .drawn .ants{animation:svgants 2.6s linear infinite}
+  body.anim .drawn .pulse{animation:svgpulse 2.9s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+  body.anim .drawn .breathe{animation:svgbreathe 3.6s ease-in-out infinite}
+  body.anim .drawn .blink{animation:svgblink 1.9s steps(1,end) infinite}
+  body.anim .drawn .spin{animation:svgspin 16s linear infinite;transform-box:fill-box;transform-origin:center}
+  body.anim .drawn .wob{animation:svgwob 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+  @keyframes svgants{to{stroke-dashoffset:-18}}
+  @keyframes svgpulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.55);opacity:.45}}
+  @keyframes svgbreathe{0%,100%{opacity:1}50%{opacity:.5}}
+  @keyframes svgblink{0%,55%{opacity:1}56%,100%{opacity:.2}}
+  @keyframes svgspin{to{transform:rotate(360deg)}}
+  @keyframes svgwob{0%,100%{transform:rotate(0)}25%{transform:rotate(-1.6deg)}75%{transform:rotate(1.6deg)}}
+}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+/* ---------- Export trame : ajustements propres au document ---------- */
+/* Le gros du style vient de index.html (injecté par build-trame.js). */
+
+/* Les angles de chaque chantier, sous les points de la section.
+   Cyan comme les autres micro-labels posés sur le sarcelle du monde Studio
+   (.eyebrow, .ttime, .tim-l) : le magenta n'y a pas assez de contraste. */
+.tang{margin-top:11px}
+.tang-l{font-family:var(--fm);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:5px}
+.tang li{font-size:13.5px;color:var(--muted);margin-bottom:5px}
+
+/* En-tête du document : pas de barre de progression ici, la trame est finie. */
+header .baseline{margin-top:6px}
+</style>
+</head>
+<!-- Fichier généré par build-trame.js. Ne pas modifier à la main : éditer
+     index.html (contenu) ou trame.src.js / trame.src.css (export), puis relancer. -->
+<body class="designed anim" data-view="trame">
+<div id="scroller">
+<header>
+  <div class="wrap">
+    <div class="hrow">
+      <h1>Trame de l'épisode</h1>
+      <div class="chips"><span class="chip">59 min</span><span class="chip prod">FINALE</span></div>
+    </div>
+    <div class="baseline">Le cycle de vie d'un logiciel · Le Dernier Clic</div>
+  </div>
+</header>
+<main><div class="wrap" id="app"></div></main>
+</div>
+<div id="toasts" role="status" aria-live="polite"></div>
+<script>
+const CH=[
+{id:"besoins",num:"Chantier 01",title:"Recueil des besoins",
+ tag:"Tout part d'un problème à cerner, avant même de penser à la solution.",
+ hook:"Où l'on découvre que le projet le plus rentable de l'année est parfois celui qu'on ne code jamais.",mins:5,
+ lorem:"Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+ notions:[
+  {t:"Pourquoi tout commence là",fig:"cost",body:[
+   "Le principe fondateur du génie logiciel tient en une phrase : plus une erreur est détectée tard, plus elle coûte cher. Une exigence mal comprise et corrigée au stade du besoin, c'est une phrase à réécrire. La même erreur découverte en production, c'est du code à défaire, des données à réparer et des utilisateurs à rassurer. Tout le cycle de vie existe pour attraper les problèmes au plus tôt. Pour donner un ordre de grandeur, une étude Tricentis a chiffré les défaillances logicielles à 1 700 milliards de dollars de pertes sur une seule année.",
+   "Et avant même le premier besoin, la théorie prévoit une étude d'opportunité qui pose une question délicieusement frugale : faut-il vraiment développer ce logiciel ? Parfois la réponse est non, et c'est alors le projet le plus rentable de l'année."
+  ]},
+  {t:"Recueillir, concrètement",ask:["Qui va utiliser le système, et pour faire quoi ?","Quelles données entrent, quelles données sortent ?","Que se passe-t-il quand ça échoue ou qu'on annule ?","Qu'est-ce qui doit rester vrai dans deux ans ?"],body:[
+   "Le recueil a ses techniques, toutes fondées sur la même logique : les gens décrivent mal ce qu'ils font vraiment, il faut donc croiser les sources. Les manuels en listent quatre : étudier l'existant (l'ancien logiciel, le tableur bricolé, le cahier papier), mener des entretiens avec les futurs utilisateurs, observer le travail réel sur le terrain, et envoyer des questionnaires quand les gens sont nombreux. Votre phase « bricolage » avant le portail était exactement de l'étude de l'existant, en version vécue.",
+   "Les exigences récoltées se valident ensuite, avant d'aller plus loin, sur trois critères : réalisme (faisable dans les contraintes), cohérence (aucune exigence n'en contredit une autre) et exhaustivité (rien d'essentiel n'a été oublié). Une exigence floue détectée ici coûte une conversation. La même, détectée en production, coûte une version."
+  ]},
+  {t:"Fonctionnel ou non fonctionnel",body:[
+   "Un besoin fonctionnel décrit ce que le système doit faire : acheter un ticket, créer un épisode, déposer un fichier. Un besoin non fonctionnel décrit comment il doit le faire : être disponible, rapide, simple à prendre en main, conforme au RGPD. Les deux se travaillent dès le départ. L'accessibilité ou la sécurité rajoutées à la fin pour faire joli, on sait déjà comment ça se termine."
+  ]},
+  {t:"Le cahier des charges (vous connaissez déjà)",body:[
+   "Dans l'épisode précédent, on a parlé PRD, user stories, critères d'acceptation, cas limites. Bonne nouvelle : tout ça correspond à du génie logiciel classique, avec un vocabulaire moderne. Le PRD est la spécification fonctionnelle, le fameux cahier des charges. Une user story est une exigence exprimée du point de vue de l'utilisateur. Et les critères d'acceptation servent de base directe aux futurs tests. La théorie ajoute une règle d'or : aucune décision technique à ce stade. Le quoi d'abord, le comment ensuite.",
+   "Autre point que les cours martèlent : les besoins changent inévitablement. Un cahier des charges se conçoit donc pour être modifié, jamais gravé dans le marbre."
+  ]}
+ ],
+ inter:{type:"sort",title:"À toi de jouer : le tri à chaud",
+  intro:"Gérard est au téléphone et il énumère. Trente secondes, six exigences d'un distributeur de tickets : fonctionnel ou non fonctionnel, tranche à la volée.",
+  opts:["Fonctionnel","Non fonctionnel"],
+  items:[
+   {q:"Permettre aux voyageurs d'acheter des coupons",a:0,why:"Une action que le système doit rendre possible : fonctionnel."},
+   {q:"Le code doit être écrit en Java",a:1,why:"Une contrainte de réalisation, qui ne décrit aucune action pour l'utilisateur : non fonctionnel."},
+   {q:"Être facile à utiliser",a:1,why:"L'ergonomie qualifie le comment, pas le quoi : non fonctionnel."},
+   {q:"Permettre d'imprimer son ticket",a:0,why:"Le système doit faire quelque chose de concret : fonctionnel."},
+   {q:"Être disponible en permanence",a:1,why:"La disponibilité est un critère de qualité : non fonctionnel."},
+   {q:"Interdire tout accès non autorisé",a:0,why:"Piège classique : le système doit activement contrôler les accès. C'est une fonction à part entière."}
+  ]},
+ angles:[
+  {id:"a-b1",txt:"Corriger une erreur au stade du besoin coûte 1, la même erreur en production coûte 100. Toute la discipline du cycle de vie découle de cette courbe."},
+  {id:"a-b2",txt:"L'étude d'opportunité, ou l'art de se demander s'il faut développer. La sobriété numérique commence avant la première ligne de code."},
+  {id:"a-b3",txt:"PRD, user stories, critères d'acceptation : dans l'épisode précédent, on faisait du génie logiciel des années 70 sans le savoir."},
+  {id:"a-b4",txt:"Recueillir, c'est croiser les sources : entretiens, observation, étude de l'existant. Votre phase bricolage avant le portail en était, sans le nom."}
+ ]},
+
+{id:"conception",num:"Chantier 02",title:"Conception",
+ tag:"Du quoi au comment, sans écrire une ligne de code.",
+ hook:"Où l'on apprend à distinguer le Lego de la soudure, sans écrire une seule ligne de code.",mins:5,
+ lorem:"Sed do eiusmod tempor incididunt ut labore et dolore.",
+ notions:[
+  {t:"L'architecture avant les murs",body:[
+   "La conception traduit le cahier des charges en plan de construction. La conception générale dessine l'architecture : quelles grandes briques composent le système, comment elles se parlent, où vivent les données. La conception détaillée zoome ensuite sur chaque brique, jusqu'à ce qu'elle soit assez petite pour être codée et testée. Détail notable : cette phase ne produit aucune ligne de code, et c'est précisément son intérêt. Modifier un schéma coûte infiniment moins cher que modifier un système en production."
+  ]},
+  {t:"Concevoir, concrètement",ask:["Où vivent les données, et qui a le droit d'y toucher ?","Quelles briques se parlent, et par quelle porte ?","Qu'est-ce qui changera dans six mois, et est-ce isolé ?","Comment vérifiera-t-on que chaque brique fonctionne ?"],body:[
+   "La démarche des manuels tient en une phrase : esquisser plusieurs variantes de solution, choisir celle qui offre le meilleur rapport entre coûts et avantages, puis la figer et la détailler. On descend ensuite par niveaux : l'architecture d'ensemble, les interfaces entre les briques (décrites sans ambiguïté, pour qu'on puisse utiliser une brique sans connaître son intérieur), puis chaque brique, ses données et ses algorithmes.",
+   "Le réflexe le plus rentable : identifier ce qui changera le plus souvent, et l'isoler derrière une interface stable. Le taux de TVA, le fournisseur d'envoi d'emails, la charte graphique : tout ce qui bouge se range dans une brique remplaçable."
+  ]},
+  {t:"Cohésion forte, couplage faible",fig:"lego",body:[
+   "Le secret des logiciels qui vieillissent bien tient en quatre mots. Cohésion : chaque brique fait une seule chose, et la fait entièrement. Couplage : les briques dépendent le moins possible les unes des autres. Une fonction qui envoie un email, calcule la TVA et met à jour le stock coche toutes les mauvaises cases : impossible d'y toucher sans risquer de tout casser. Des briques cohérentes et peu couplées se remplacent, se testent et se comprennent une par une. Du Lego plutôt que de la soudure."
+  ]},
+  {t:"Les tests se préparent ici",body:[
+   "Surprise de la théorie : les plans de test s'écrivent pendant la conception, bien avant le code. En dessinant chaque brique, on décrit déjà comment on vérifiera qu'elle fonctionne (le futur plan de tests unitaires) et comment on vérifiera que l'assemblage tient (le plan d'intégration). C'est l'idée du fameux cycle en V : chaque étape de construction prépare, en face d'elle, l'étape de vérification qui lui répondra."
+  ]}
+ ],
+ inter:{type:"jenga",title:"À toi de jouer : le jenga du couplage",
+  intro:"Deux versions du même portail, six briques chacune. Tape les briques et regarde ce qui bouge : la leçon passe par les doigts.",
+  soude:["toutFaire()","newsletter","site web","stock","TVA","emails"],
+  lego:["Réservations","Clients","Planning","Paiement","Stats","Emails"],
+  weldWhy:"Tu visais une brique, tout l'ensemble a tremblé. Une fonction toutFaire() qui publie, envoie la newsletter et régénère le site coche toutes les mauvaises cases : le jour où la newsletter change, la publication casse avec. Cohésion faible, couplage fort.",
+  legoWhy:"La brique sort seule et les autres ne bronchent pas : des portes d'entrée claires, aucune fouille dans les fichiers internes des voisines. Couplage faible, modifications sans sueur."},
+ angles:[
+  {id:"a-c1",txt:"Cohésion forte, couplage faible : quatre mots qui expliquent pourquoi certaines apps évoluent sans douleur et d'autres cassent dès qu'on les touche."},
+  {id:"a-c2",txt:"La conception ne produit aucune ligne de code, et c'est sa force : modifier un schéma coûte cent fois moins cher que modifier la prod."},
+  {id:"a-c3",txt:"Les plans de test s'écrivent pendant la conception : le principe du cycle en V, qu'on applique déjà sans le savoir avec les critères d'acceptation."},
+  {id:"a-c4",txt:"Isoler ce qui change : le taux de TVA, le fournisseur d'emails, la charte graphique. La question de conception qui sauve toutes les évolutions futures."}
+ ]},
+
+{id:"dev",num:"Chantier 03",title:"Développement et versionnage",
+ tag:"Coder, assembler, et surtout ne jamais perdre l'historique.",
+ hook:"Où Git sauve trois jours de travail et une amitié professionnelle.",mins:6,
+ lorem:"Ut enim ad minim veniam, quis nostrud exercitation.",
+ notions:[
+  {t:"Le code, enfin (et l'assemblage)",body:[
+   "Le codage traduit la conception détaillée en langage de programmation. C'est souvent la phase la plus longue, rarement la plus décisive : à ce stade, toutes les vraies questions sont censées avoir trouvé réponse. Vient ensuite l'intégration : assembler les briques codées séparément et vérifier qu'elles tiennent ensemble. Deux briques parfaites isolément peuvent très bien refuser de se parler une fois réunies, et c'est exactement pour ça que l'intégration a ses propres tests."
+  ]},
+  {t:"Bien développer, sans citer un seul langage",ask:["Quelqu'un d'autre comprendrait-il ce code sans moi ?","Que se passe-t-il si l'entrée est vide, énorme ou absurde ?","Cette fonction fait-elle une seule chose ?","Puis-je tester ce morceau isolément ?"],body:[
+   "Les bonnes pratiques du développement tiennent sans nommer un langage, parce qu'elles parlent de lecture : un code s'écrit une fois et se relit des dizaines de fois, par d'autres et par soi-même dans six mois. D'où des règles universelles : des noms qui disent ce que les choses font, des fonctions courtes qui font une seule chose (la cohésion, encore elle), des commentaires qui expliquent le pourquoi plutôt que le comment, et le traitement des erreurs pensé dès l'écriture, jamais rajouté après.",
+   "Et l'on avance par petits pas : une petite modification, un commit, une vérification, et on recommence. Les gros chantiers d'un seul bloc produisent les gros conflits et les longues soirées."
+  ]},
+  {t:"Git, la machine à remonter le temps",body:[
+   "Git est un système de gestion de versions : un journal de bord qui enregistre chaque état du code. Chaque enregistrement s'appelle un commit, une photo datée, signée et commentée du projet. On peut revenir à n'importe quelle photo, comparer deux états, comprendre qui a changé quoi et pourquoi. Sans versionnage, une mauvaise manipulation efface trois jours de travail. Avec, la question devient simplement : à quel commit revient-on ?"
+  ]},
+  {t:"Branches, merge et conflits",fig:"git",body:[
+   "Travailler à plusieurs sur le même code sans s'écraser mutuellement, voilà le vrai superpouvoir de Git. Chacun travaille sur une branche, une copie parallèle du projet. Quand le travail est prêt, on fusionne (merge) sa branche dans la version commune. Si deux personnes ont modifié la même ligne, Git s'arrête et déclare un conflit : à un humain de décider quelle version garder. Pas de panique devant un conflit, rien n'est cassé. Git refuse simplement de trancher à la place des humains."
+  ]},
+  {t:"La revue de code, ou personne ne merge seul",body:[
+   "Dans une équipe, on ne fusionne pas son propre travail en douce. On ouvre une pull request : une demande de fusion que quelqu'un d'autre relit avant de l'approuver. La revue de code attrape des bugs, mais elle fait mieux : elle diffuse la connaissance. Si une seule personne comprend une partie du code, l'équipe a un problème qui attend son jour. Dans les grandes boîtes, ce garde-fou est tout simplement obligatoire."
+  ]}
+ ],
+ inter:{type:"conflict",title:"À toi de jouer : résous le conflit",
+  intro:"Lulu et Manu ont modifié la même ligne du fichier titre_episode.md. Git s'est arrêté net et attend un humain. C'est toi.",
+  file:"titre_episode.md",
+  ours:{who:"branche-de-lulu",txt:"Le cycle de vie d'un logiciel, sans le jargon"},
+  theirs:{who:"branche-de-manu",txt:"Du besoin à la prod : la vie secrète des applis"},
+  merged:"Du besoin à la prod : le cycle de vie d'un logiciel, sans le jargon",
+  opts:[
+   {t:"Garder la version de Lulu",ok:true,res:"lulu",why:"Choix net. Git enregistre la résolution, et la version de Manu reste dans l'historique : un commit n'oublie rien."},
+   {t:"Garder la version de Manu",ok:true,res:"manu",why:"Choix net. La version de Lulu reste dans l'historique, consultable pour toujours : rien ne se perd."},
+   {t:"Fusionner les deux à la main",ok:true,res:"merge",why:"La voie royale : un conflit est souvent l'occasion d'écrire une version meilleure que les deux d'origine."},
+   {t:"Effacer les lignes bizarres avec les chevrons et garder tout",ok:false,why:"Le fichier contiendrait les deux titres collés l'un à l'autre. Les marqueurs signalent un choix à rendre, pas du bruit à nettoyer."}
+  ]},
+ angles:[
+  {id:"a-d1",txt:"Git, le journal de bord du code : chaque commit est une photo datée et commentée, à laquelle on peut toujours revenir."},
+  {id:"a-d2",txt:"Le conflit de merge démystifié : Git ne casse rien, il refuse juste poliment de choisir entre deux humains qui ont modifié la même ligne."},
+  {id:"a-d3",txt:"La revue de code : dans une vraie boîte, personne ne fusionne son propre travail sans un deuxième regard. Et ça change tout, y compris avec une IA."},
+  {id:"a-d4",txt:"Un code s'écrit une fois et se relit cent : toutes les bonnes pratiques de développement découlent de cette asymétrie."}
+ ]},
+
+{id:"tests",num:"Chantier 04",title:"Tests",
+ tag:"Partir à la chasse aux défauts, tant qu'ils coûtent encore trois fois rien.",
+ hook:"Où une fusée à 370 millions de dollars explose pour une variable trop petite.",mins:8,
+ lorem:"Duis aute irure dolor in reprehenderit in voluptate.",
+ notions:[
+  {t:"De l'erreur humaine à la défaillance",fig:"chain",body:[
+   "La théorie distingue toute une chaîne. Une erreur humaine (une formule mal retranscrite, par exemple) introduit un défaut dans le code. Ce défaut peut rester invisible des années, jusqu'au jour où il provoque une défaillance : le comportement observable qui plante. En 1996, Ariane 5 a explosé quarante secondes après le décollage pour un dépassement de capacité dans un calcul, 370 millions de dollars. En 1962, la sonde Mariner 1 a dévié de sa trajectoire pour une formule mal transcrite. Tester, c'est remonter cette chaîne avant qu'elle n'arrive au bout."
+  ]},
+  {t:"Trois étages de tests",fig:"pyramide",body:[
+   "Les tests unitaires vérifient chaque brique isolément : cette fonction rend-elle le bon résultat ? Les tests d'intégration vérifient l'assemblage : les briques se parlent-elles correctement ? Et la recette (les tests d'acceptation) vérifie le tout avec de vraies données et de vrais yeux : le logiciel répond-il au besoin ? Le cahier de recettes reprend chaque user story et lui associe des scénarios de test concrets. Rien de mystérieux là-dedans : c'est la traduction directe du cahier des charges en vérifications."
+  ]},
+  {t:"La grande famille des tests (dont la régression)",fig:"regression",body:[
+   "Au-delà des trois étages, les tests se déclinent par intention. Les tests fonctionnels vérifient ce que fait le logiciel ; les tests non fonctionnels vérifient comment il le fait : performance et tenue en charge, sécurité, compatibilité entre navigateurs et appareils, accessibilité. Et l'on distingue la boîte noire (tester depuis l'extérieur, comme un utilisateur, sans regarder le code) de la boîte blanche (tester en connaissant l'intérieur).",
+   "Le smoke test mérite son histoire : le terme vient de l'électronique, où l'on met la carte sous tension avant toute chose. Si de la fumée s'en échappe, on arrête tout, inutile de tester plus loin. En logiciel, même idée : une poignée de vérifications vitales, passées en quelques minutes sur chaque nouvelle version. L'application démarre, on peut se connecter, l'écran principal s'affiche. Si l'une échoue, la version est rejetée sur-le-champ : le smoke test est un portier, il évite de gaspiller une journée de recette complète sur un produit qui ne tient même pas debout.",
+   "Puis il y a le plus important pour un logiciel qui vit : le test de régression. Puisque la plupart des corrections introduisent de nouvelles erreurs, on rejoue après chaque modification les tests qui passaient hier, pour vérifier que rien n'a reculé ailleurs. C'est répétitif, donc c'est exactement ce qu'on automatise : une suite de tests qui se relance seule à chaque changement, le filet de sécurité permanent du projet. Sans elle, chaque correction est un pari."
+  ]},
+  {t:"Écrire un bon cas de test",ask:["Quel est le résultat attendu, écrit avant d'exécuter ?","Quelles sont les frontières, et que se passe-t-il juste au-delà ?","Ce test échouerait-il vraiment si le code cassait ?","Sera-t-il rejoué à la prochaine modification ?"],body:[
+   "Un cas de test a une anatomie fixe : une situation de départ, une action, un résultat attendu. On exécute, on compare le résultat obtenu à l'attendu, et l'écart se consigne. Tout part des critères d'acceptation des user stories : chaque critère devient au moins un cas de test.",
+   "Comme le test exhaustif est impossible, deux techniques classiques aident à choisir les bonnes valeurs. Les partitions d'équivalence : si un champ accepte de 1 à 100, inutile de tester 47 puis 48 puis 49, une valeur par famille suffit (une valide, une trop petite, une trop grande). Et les valeurs limites : les bugs adorent les frontières, on teste donc 0, 1, 100 et 101. Quatre valeurs qui en représentent dix mille."
+  ]},
+  {t:"Vérification et validation",body:[
+   "Deux questions qui se ressemblent et ne se remplacent pas. Vérification : construit-on le produit correctement, conformément aux spécifications ? Validation : construit-on le bon produit, celui qui répond au besoin réel ? Métaphore des cours : vérifier, c'est contrôler le plan de la maison avant de la construire. Valider, c'est s'assurer qu'on y vit bien une fois construite. Un logiciel peut réussir brillamment la première et rater la seconde."
+  ]},
+  {t:"Trois principes qui décoiffent",body:[
+   "Les manuels de test posent des principes contre-intuitifs. Un : tester montre la présence de défauts, jamais leur absence. Deux : le test exhaustif est impossible, on priorise donc les zones critiques. Trois : zéro défaut trouvé ne signifie pas logiciel utile. Une application techniquement parfaite qui ne répond pas au besoin reste un échec. La qualité se joue donc bien avant les tests."
+  ]}
+ ],
+ inter:{type:"bugs",title:"À toi de jouer : la recette",
+  intro:"Cette fiche d'épisode contient 4 anomalies. Trouve-les toutes en tapant dessus. Indice : tout ce qui se voit se teste, y compris les libellés et l'ergonomie.",
+  els:[
+   {label:"Épisode 42 · Le cycle de vie d'un logiciel",kind:"ok",cls:"",why:"Rien à signaler. Beau titre, d'ailleurs."},
+   {label:"Statut : en préparation",kind:"ok",cls:"",why:"Rien à signaler."},
+   {label:"Publié le 32/02/2026",kind:"bug",cls:"",why:"Le 32 février n'existe dans aucun calendrier connu : défaut de validation des entrées."},
+   {label:"Durée estimée : 45 min",kind:"ok",cls:"",why:"Techniquement, pas un bug. Statistiquement improbable chez vous, mais pas un bug."},
+   {label:"Sources : -3",kind:"bug",cls:"",why:"Un compteur négatif : quelque part, le code soustrait ce qu'il devrait additionner."},
+   {label:"Invité : (aucun)",kind:"ok",cls:"",why:"Rien à signaler. Pour l'instant."},
+   {label:"Enregisrter",kind:"bug",cls:"btnish",why:"Coquille dans le libellé du bouton. Petite, visible, et personne ne l'a relue."},
+   {label:"TOUT SUPPRIMER",kind:"bug",cls:"btnish big",why:"Le bouton le plus destructeur mis en avant comme action principale, sans confirmation. Un défaut d'expérience utilisateur est aussi un défaut."}
+  ],total:4},
+ angles:[
+  {id:"a-t1",txt:"Tester montre la présence de bugs, jamais leur absence : la phrase qui recadre toutes les promesses de qualité."},
+  {id:"a-t2",txt:"Ariane 5, 1996 : 370 millions de dollars partis en fumée pour un dépassement de capacité. Le prix d'un défaut détecté trop tard."},
+  {id:"a-t3",txt:"Le cahier de recettes : chaque user story devient un scénario de test, et la boucle se referme sur le cahier des charges."},
+  {id:"a-t4",txt:"Zéro bug ne veut pas dire logiciel utile : on peut construire parfaitement le mauvais produit."},
+  {id:"a-t5",txt:"La régression : chaque correction peut casser ailleurs, alors on rejoue les tests d'hier à chaque modification. Le filet qu'on finit par automatiser."},
+  {id:"a-t6",txt:"0, 1, 100, 101 : l'art de choisir quatre valeurs qui en testent dix mille. Partitions d'équivalence et valeurs limites, avec un simple champ de formulaire."},
+  {id:"a-t7",txt:"Le smoke test, héritage de l'électronique : si de la fumée sort à l'allumage, on arrête tout. En logiciel, cinq minutes de vérifications vitales avant d'investir dans la vraie recette."}
+ ]},
+
+{id:"deploiement",num:"Chantier 05",title:"Mise en production",
+ tag:"Le jour où le logiciel rencontre le monde réel.",
+ hook:"Où l'on comprend pourquoi personne ne déploie un vendredi à 18 h.",mins:4,
+ lorem:"Excepteur sint occaecat cupidatat non proident.",
+ notions:[
+  {t:"Dev, staging, prod : les trois scènes",fig:"pipeline",body:[
+   "Un logiciel sérieux vit dans plusieurs environnements. Le développement : l'atelier, où l'on casse tout sans conséquence. Le staging (ou préproduction) : la répétition générale, une copie conforme de la prod pour recetter dans les conditions du réel. La production : la scène, avec de vrais utilisateurs et de vraies données. La règle d'or coule de source : on ne teste jamais directement en production. Chaque équipe connaît pourtant une histoire où quelqu'un l'a fait."
+  ]},
+  {t:"Partir en prod, concrètement",ask:["La recette est-elle validée, avec de vraies données ?","Peut-on revenir en arrière en moins de dix minutes ?","Qui surveille pendant les premières heures ?","Que dit-on aux utilisateurs, et quand ?"],body:[
+   "La mise en production installe le logiciel dans son environnement réel : configuration, reprise des données, formation des utilisateurs si besoin. Avant d'appuyer sur le bouton, une checklist : recette validée, sauvegarde récente, et surtout un plan de retour arrière, le rollback. Si tout part de travers, on doit pouvoir revenir à la version précédente en quelques minutes, avant que les dégâts s'installent. Déployer sans rollback, c'est sauter sans vérifier le parachute."
+  ]},
+  {t:"Versions et notes de release",body:[
+   "v2.4.1 : ces numéros racontent une histoire. Le premier chiffre change pour une évolution majeure, le deuxième pour de nouvelles fonctionnalités, le troisième pour des corrections. Les notes de release listent ce qui change, à destination des humains. C'est aussi un contrat de confiance : dire ce qu'on livre, assumer ce qu'on corrige. Regarde l'en-tête de cette application : elle tient son propre décompte depuis le début."
+  ]}
+ ],
+ inter:{type:"check",title:"À toi de jouer : prêt pour la prod ?",
+  intro:"Coche uniquement ce qui doit être vrai avant de déployer, puis valide.",
+  items:[
+   {txt:"Le cahier de recettes est validé",good:true,why:"Indispensable : la recette est le feu vert."},
+   {txt:"On corrigera les bugs directement en prod, ça ira plus vite",good:false,why:"Tester en production : la recette du week-end brûlé."},
+   {txt:"Une sauvegarde récente existe",good:true,why:"Indispensable : sans sauvegarde, pas de retour possible."},
+   {txt:"Vendredi 18h, le créneau idéal pour déployer",good:false,why:"Déployer juste avant le week-end : personne pour surveiller, tout le monde pour regretter."},
+   {txt:"Le plan de retour arrière (rollback) est prêt",good:true,why:"Indispensable : le parachute se vérifie avant le saut."},
+   {txt:"Les tests ? Ça marchait sur la machine de Manu",good:false,why:"La phrase qui a inventé le staging : ça marche sur ma machine."},
+   {txt:"La version est numérotée et les notes de release rédigées",good:true,why:"Indispensable : savoir ce qu'on livre, pouvoir le raconter."}
+  ]},
+ angles:[
+  {id:"a-p1",txt:"Dev, staging, prod : pourquoi on ne teste jamais en production, et pourquoi tout le monde connaît quelqu'un qui l'a fait."},
+  {id:"a-p2",txt:"Le rollback : déployer sans plan de retour arrière, c'est sauter sans vérifier le parachute."},
+  {id:"a-p3",txt:"« C'est en prod » : trois mots qui engagent. De vraies données, de vrais utilisateurs, de vraies responsabilités."}
+ ]},
+
+{id:"maintenance",num:"Chantier 06",title:"Maintenance et vieillissement",
+ tag:"Un logiciel vivant se jardine sans fin, sous peine de se faire manger par les ronces.",
+ hook:"Où le code devient legacy, et pourquoi ça n'arrive pas qu'aux autres.",mins:5,
+ lorem:"Sunt in culpa qui officia deserunt mollit anim.",
+ notions:[
+  {t:"Les trois familles de maintenance",fig:"cycle",ask:["Ce changement corrige, adapte ou améliore ?","Quels tests de régression le couvrent ?","Quelle dette rembourse-t-on au passage ?","Faut-il une nouvelle version, et laquelle ?"],body:[
+   "La théorie distingue trois gestes. Corrective : réparer les défauts découverts en production. Adaptative : ajuster le logiciel à un monde qui change (nouvelle réglementation, nouvel environnement, nouveau taux de TVA). Perfective : améliorer sans ajouter de fonction majeure, rendre plus rapide, plus agréable, plus lisible. Détail savoureux relevé par les cours : la plupart des corrections introduisent de nouvelles erreurs. Le jardinage n'est jamais fini, et c'est normal."
+  ]},
+  {t:"La dette technique",body:[
+   "Chaque raccourci pris pour aller plus vite (code dupliqué, test sauté, rustine posée en urgence) constitue un emprunt. Comme tout emprunt, il a des intérêts : chaque évolution future devient un peu plus lente, un peu plus risquée. Un peu de dette est un choix légitime et assumé. Une dette jamais remboursée finit par coûter plus cher que le logiciel lui-même. On la rembourse en refactorant : réécrire proprement, sans changer le comportement."
+  ]},
+  {t:"Legacy et migration",body:[
+   "Le code legacy, littéralement le code hérité : il fonctionne, il est souvent critique, et plus personne n'ose y toucher, parce que celles et ceux qui le comprenaient sont partis ou que les tests manquent pour modifier sans trembler. La migration, elle, consiste à déménager : changer de base de données, d'hébergeur, de technologie, en transportant données et usages sans rien casser. Les deux mots font transpirer les équipes, et les deux se préparent comme un projet à part entière : besoins, conception, tests, rollback."
+  ]},
+  {t:"Un logiciel meurt aussi",body:[
+   "Le cycle de vie inclut une phase dont personne ne parle : le retrait. Prévenir les utilisateurs, archiver les données, faire tourner l'ancien et le nouveau en parallèle le temps de la transition, puis éteindre. Un logiciel dont on ne planifie jamais la fin devient le legacy de quelqu'un d'autre."
+  ]}
+ ],
+ inter:{type:"triage",title:"À toi de jouer : le triage du backlog",
+  intro:"Cinq tickets viennent d'arriver. Range chacun dans la bonne colonne ; un ticket mal rangé revient avec son explication.",
+  opts:["Corrective","Adaptative","Perfective"],
+  items:[
+   {q:"Un bug fait planter l'export audio : on le corrige",a:0,why:"Réparer un défaut constaté : corrective."},
+   {q:"Nouveau taux de TVA au 1er janvier : on met à jour le calcul",a:1,why:"Le monde change, le logiciel suit : adaptative. L'exemple vient tel quel des manuels."},
+   {q:"L'interface met quatre secondes à charger : on l'optimise",a:2,why:"Améliorer sans nouvelle fonction : perfective."},
+   {q:"L'hébergeur change son API : on adapte la connexion",a:1,why:"L'environnement technique évolue : adaptative."},
+   {q:"On réécrit un module confus pour le rendre lisible, sans changer son comportement",a:2,why:"Le refactoring est un geste perfectif : on rembourse la dette technique."}
+  ]},
+ angles:[
+  {id:"a-m1",txt:"La plupart des corrections introduisent de nouvelles erreurs : la phrase des manuels qui justifie le jardinage permanent."},
+  {id:"a-m2",txt:"La dette technique, un emprunt avec intérêts : chaque raccourci d'aujourd'hui ralentit toutes les évolutions de demain."},
+  {id:"a-m3",txt:"Le legacy : ce code critique que plus personne n'ose toucher. Comment on en arrive là, comment on en sort."},
+  {id:"a-m4",txt:"Un logiciel meurt aussi : la phase de retrait, grande absente des discours tech."}
+ ]}
+];
+const TRAME=[
+ {t:"Introduction",at:"0:00",dur:"4 min",ch:null,fig:"memo_cycle",
+  desc:"Poser le décor : un logiciel se construit, se vérifie, s'habite et vieillit. Coder n'est qu'une pièce du chantier parmi six.",
+  ex:{ko:"Site vendu « en une heure » : livré sans contenu pensé, sans version mobile, sans mentions légales. Refonte complète deux semaines plus tard.",ok:"Même site en une journée : contenu cadré, testé sur téléphone, RGPD en règle. Il tient dans le temps."},
+  key:["Rappel de l'épisode précédent : le portail, du problème à la prod.","Les promesses « en une heure » oublient tout le hors-code.","Un logiciel se construit, se vérifie, vit et vieillit."],
+  points:[
+   "Rappeler l'épisode précédent : le portail du Dernier Clic, du problème à la maquette, en prod depuis un mois et demi.",
+   "Planter la tension du jour : on voit fleurir les « ton site en une heure », « ton SaaS en trois semaines ». On va montrer ce que ces promesses passent sous silence.",
+   "Le fil rouge : les mêmes grandes étapes tiennent dans une grande boîte comme avec une IA. Quel que soit l'outil, la démarche reste la même.",
+   {img:"Coder, c'est poser les briques. Mais personne ne juge une maison à la vitesse du maçon : restent les fondations, les plans, la plomberie et le contrôle avant d'emménager."}
+  ]},
+ {t:"Recueil des besoins",at:"0:04",dur:"7 min",ch:"besoins",fig:"cost",
+  desc:"On part d'un problème à cerner, longtemps avant de parler solution. Et plus une erreur se découvre tard, plus elle coûte cher.",
+  ex:{ko:"Le besoin « annuler une résa » oublié au cadrage. Repéré en prod : il faut retoucher la base, l'API et l'écran. Trois jours perdus.",ok:"Le même besoin listé dès le recueil : une ligne dans le PRD, prévu à la conception. Zéro reprise."},
+  key:["Une erreur trouvée tard, c'est la facture qui grimpe (jusqu'à ×200).","PRD et user stories : du génie logiciel en vocabulaire moderne.","Fonctionnel (le quoi) et non fonctionnel (le comment)."],
+  points:[
+   "Le principe qui commande tout le reste : une exigence corrigée au stade du besoin, c'est une phrase à réécrire ; découverte en production, elle coûte du code à défaire et des utilisateurs à rassurer.",
+   "Le chiffre à citer : un défaut d'exigence trouvé tard coûte 50 à 200 fois plus qu'au moment où on l'a écrit (estimation McConnell).",
+   "Relier au vécu : le PRD, les user stories et les critères d'acceptation de l'épisode précédent, c'est du génie logiciel classique avec un vocabulaire moderne.",
+   "Le concret du recueil : entretiens, observation, étude de l'existant. Notre phase bricolage avant le portail en était, sans le nom.",
+   "Séparer le fonctionnel (ce que le système fait) du non fonctionnel (comment : rapide, accessible, sécurisé, conforme).",
+   {img:"C'est le moment des plans, avant que la bétonnière tourne. Tant qu'on raisonne sur le papier, une cloison se déplace au crayon. Une fois les murs montés, la moindre reprise se paie en gravats et en jours perdus."}
+  ]},
+ {t:"Conception",at:"0:11",dur:"7 min",ch:"conception",fig:"lego",
+  desc:"Du quoi au comment, sans écrire une ligne de code. On dessine le plan de construction.",
+  ex:{ko:"Une fonction toutFaire() qui publie l'épisode, envoie la newsletter et régénère le site. Le jour où la newsletter change, la publication tombe avec.",ok:"Trois briques séparées : publication, newsletter, site. On modifie la newsletter sans que le reste bronche."},
+  key:["Cohésion forte, couplage faible : le réflexe Lego.","Les tests se préparent déjà ici, c'est le cycle en V.","Isoler ce qui bougera souvent (TVA, fournisseur d'emails)."],
+  points:[
+   "Traduire les besoins en architecture : quelles briques, comment elles se parlent, où vivent les données.",
+   "Cohésion forte, couplage faible : chaque brique fait une seule chose, et dépend le moins possible des autres.",
+   "La surprise du cycle en V : les plans de test s'écrivent dès la conception, bien avant la première ligne de code.",
+   "Le réflexe rentable : repérer ce qui changera souvent (le taux de TVA, le fournisseur d'emails) et l'isoler derrière une interface stable.",
+   {img:"Pense en briques Lego : chaque pièce se déclipse et se remplace sans toucher aux voisines. Une fois tout soudé, la moindre retouche réclame le chalumeau et abîme ce qu'il y a autour."}
+  ]},
+ {t:"Développement et versionnage",at:"0:18",dur:"9 min",ch:"dev",fig:"git",
+  desc:"Coder, assembler, et surtout garder la trace de chaque geste.",
+  ex:{ko:"Jimmy code direct sur la version principale, sans branche. Il écrase le planning de Josiane un mardi soir, impossible de revenir en arrière.",ok:"Jimmy sur sa branche, revue avant fusion : un commit qui aurait effacé la table clients est attrapé à temps."},
+  key:["Git, le journal de bord : on revient à n'importe quel commit.","Le conflit de merge : Git ne casse rien, il appelle un humain.","La revue de code : personne ne fusionne son travail seul."],
+  points:[
+   "Le codage traduit la conception, puis l'intégration assemble les briques et vérifie qu'elles se parlent vraiment.",
+   "Git, le journal de bord : chaque commit est une photo datée et commentée, à laquelle on peut toujours revenir.",
+   "Branches et merge : chacun travaille sur sa copie, Git fusionne, et s'arrête poliment quand deux personnes touchent la même ligne.",
+   "La revue de code : personne ne fusionne son propre travail en douce. Ça attrape des bugs et ça diffuse la connaissance, y compris face à une IA.",
+   "Les pratiques qui valent dans tous les langages : des noms clairs, des petits pas, les erreurs pensées d'avance.",
+   {img:"Git, c'est photographier le chantier après chaque geste. Si le carrelage neuf sonne creux, tu retrouves l'état exact d'avant la pose et tu reprends là, sans tout casser autour."}
+  ]},
+ {t:"Tests",at:"0:27",dur:"9 min",ch:"tests",fig:"pyramide",
+  desc:"Partir à la chasse aux défauts, tant qu'ils coûtent encore trois fois rien.",
+  ex:{ko:"On corrige l'export audio, on livre. La correction a cassé le flux RSS, que personne n'a re-testé. Un auditeur le découvre à notre place.",ok:"Suite de régression automatisée : le test du flux RSS repasse à chaque changement, la casse saute aux yeux en trente secondes."},
+  key:["Ariane 5 : 370 millions pour une variable trop petite.","Trois étages : unitaire, intégration, recette.","La régression : rejouer les tests d'hier, en automatique."],
+  points:[
+   "La chaîne à remonter : une erreur humaine glisse un défaut dans le code, qui dort jusqu'à la défaillance visible. Ariane 5, 1996 : 370 millions de dollars en quarante secondes.",
+   "Trois étages : unitaire (chaque brique), intégration (l'assemblage), recette (le tout, avec de vrais yeux et de vraies données).",
+   "La régression, la plus utile pour un logiciel qui vit : rejouer après chaque changement les tests d'hier, et l'automatiser. Le filet permanent.",
+   "Choisir ses cas de test : partitions d'équivalence et valeurs limites. Tester 0, 1, 100 et 101 couvre dix mille valeurs.",
+   "Vérification (construit-on correctement ?) et validation (construit-on le bon produit ?) : un logiciel peut réussir la première et manquer la seconde.",
+   {img:"Les utilisateurs sont ces joueurs qui cassent un jeu la semaine de sa sortie : ils cliquent partout, dans le désordre, comme personne ne l'avait prévu. Tester, c'est jouer contre soi-même avant eux."}
+  ]},
+ {t:"Mise en production",at:"0:36",dur:"7 min",ch:"deploiement",fig:"pipeline",
+  desc:"Le jour où le logiciel rencontre le monde réel.",
+  ex:{ko:"Déploiement direct en prod un vendredi 18 h, sans sauvegarde. Un bug de créneau double les réservations, personne pour corriger avant lundi.",ok:"Passage par le staging, sauvegarde faite, rollback prêt : l'accroc de 10 h est annulé en quatre minutes."},
+  key:["Dev, staging, prod : on ne teste jamais direct en prod.","Le rollback : revenir en arrière en quelques minutes.","Versionnage sémantique : majeur.mineur.correctif."],
+  points:[
+   "Trois scènes : le développement (l'atelier), le staging (la répétition générale), la production (la scène, vrais utilisateurs). On ne teste jamais directement en prod.",
+   "La checklist avant le bouton : recette validée, sauvegarde récente, et surtout un plan de retour arrière.",
+   "Le rollback : pouvoir revenir à la version d'avant en quelques minutes, avant que les dégâts s'installent.",
+   "Le versionnage sémantique : majeur.mineur.correctif. Le numéro raconte une histoire, les notes de release la commentent.",
+   {img:"Déployer sans plan de retour arrière, c'est sauter en parachute sans vérifier le pliage. Et lâcher ça un vendredi 18 h, c'est sauter quand le club vient de fermer : plus personne en bas pour t'aider."}
+  ]},
+ {t:"Maintenance et vieillissement",at:"0:43",dur:"7 min",ch:"maintenance",fig:"cycle",
+  desc:"Un logiciel qui sert se répare, s'adapte et s'améliore sans fin. Laissé à l'abandon, il se dégrade comme une maison qu'on n'entretient plus.",
+  ex:{ko:"Rustine posée en urgence sur le calcul de TVA. Six mois plus tard le taux change, la rustine lâche, toute la facturation tombe.",ok:"TVA isolée derrière une variable de config : le changement de taux, c'est une ligne, testée, en cinq minutes."},
+  key:["Corrective, adaptative, perfective : le jardinage.","La dette technique, un emprunt avec intérêts.","Le legacy : ce code que plus personne n'ose toucher."],
+  points:[
+   "Trois gestes : corrective (réparer), adaptative (suivre un monde qui change, nouveau taux de TVA), perfective (améliorer sans nouvelle fonction).",
+   "Détail des manuels : la plupart des corrections introduisent de nouvelles erreurs. L'entretien n'est jamais fini.",
+   "La dette technique, un emprunt avec intérêts : chaque raccourci d'aujourd'hui ralentit les évolutions de demain. Le seuil qui alerte : quand la maintenance dépasse le quart du coût du reste, on envisage de refaire.",
+   "Le legacy et la migration : le code que plus personne n'ose toucher, et le déménagement des données sans rien casser.",
+   "La retraite : un logiciel a une fin, et elle se planifie. Sinon il devient le legacy de quelqu'un d'autre.",
+   {img:"Un logiciel, c'est un jardin : personne aux commandes, et les ronces reprennent le dessus en une saison. Ça se taille, ça se replante, ça ne s'arrête jamais."}
+  ]},
+ {t:"Et l'ordre dans tout ça ?",at:"0:50",dur:"6 min",ch:"epilogue",fig:"memo_models",
+  desc:"Les mêmes six étapes, des ordres différents : voilà toute l'histoire des modèles.",
+  ex:{ko:"Cascade sur une appli web aux besoins flous : six mois d'effet tunnel, une livraison à côté de la plaque, un client qui n'avait rien vu.",ok:"Itératif sur la même appli : une V1 en trois semaines, ajustée à chaque retour. Le portail du Dernier Clic, en vrai."},
+  key:["Mêmes six étapes, ordres différents : voilà les modèles.","Cascade, V, itératif, agile : chacun son contexte.","Dunning-Kruger : le site en une heure, sommet du mont Stupide."],
+  points:[
+   "Un modèle, c'est un ordre et un rythme sur les mêmes six étapes. La question qui les départage : à quel point les besoins vont-ils bouger ?",
+   "Cascade : chaque étape validée avant la suivante. Rassurant, mais l'effet tunnel guette, le client ne voit rien pendant des mois.",
+   "Cycle en V : la cascade repliée, chaque étape de construction prépare le test qui lui répond.",
+   "Itératif et agile : on boucle, on livre, on ajuste. Vigilance sur l'agilité de façade, les rituels sans la posture.",
+   "Le modèle qu'on pratique déjà : la V1 puis la V2 du portail, de l'itératif sans le nommer.",
+   "Pour l'auditeur, la courbe de Dunning-Kruger : le site fait en une heure hisse au sommet du mont Stupide, le premier bug ouvre la vallée, et la remontée porte le nom de ces six étapes.",
+   {img:"La cascade, c'est bâtir toute la maison sur un plan validé d'avance et n'y toucher qu'à la remise des clés. L'agile, c'est emménager dès qu'une pièce est finie et réagencer les suivantes selon la vie qu'on y mène."}
+  ]},
+ {t:"Mot de la fin",at:"0:56",dur:"3 min",ch:null,fig:"dk",
+  desc:"L'IA fait défiler les étapes plus vite, sans en effacer une seule.",
+  ex:{ko:"Prompt « fais-moi un SaaS » sans cadrage : du code qui tourne, une clé API en clair, aucune reprise possible ensuite.",ok:"Même IA, cadrage d'abord : problème posé, périmètre V1, sécurité vérifiée. Ça part en prod sereinement."},
+  key:["Ces étapes existent parce que des fusées ont explosé.","L'IA accélère le parcours, elle n'efface aucune étape.","Teaser : le développement du portail, étape par étape."],
+  points:[
+   "Pourquoi tout ce cérémonial ? Parce que des fusées ont explosé et des week-ends ont brûlé.",
+   "Ce qui reste entre nos mains : le problème à cadrer, les choix à assumer, la responsabilité de ce qu'on met entre les mains des gens.",
+   "Teaser du prochain épisode : le développement du portail, étape par étape.",
+   {img:"L'IA, c'est l'outillage électrique du chantier. La visseuse et la scie sauteuse vont dix fois plus vite que le tournevis et l'égoïne, mais elles ne décident pas où percer, et elles ne tiennent pas le mur d'aplomb à ta place."}
+  ]}
+];
+const INTRU={
+ els:[
+  {label:"Cadenas https sur toutes les pages",kind:"ok",why:"Le transport est chiffré : personne ne lit les échanges au passage. Un point pour Jimmy."},
+  {label:"Clé API sk_live_gerard51 visible dans le code de la page",kind:"bug",why:"Un secret en clair côté navigateur : n'importe qui la copie et consomme le compte de Gérard. Les secrets vivent côté serveur. C'est la carte bancaire posée sur la boîte aux lettres. (OWASP : défaillances cryptographiques)"},
+  {label:"Recherche : taper <script> exécute le script",kind:"bug",why:"Entrée non validée : le champ avale du code et le rejoue chez les prochains visiteurs. Toute entrée utilisateur se vérifie et s'assainit. (OWASP : injection)"},
+  {label:"Bouton se déconnecter, session fermée derrière",kind:"ok",why:"Une session qui se termine vraiment : rien à signaler."},
+  {label:"/client/17 affiche la fiche de Josiane, et /client/18 marche aussi sans connexion",kind:"bug",why:"Contrôle d'accès cassé : changer un numéro dans l'adresse suffit à lire les données des autres. Chaque requête doit vérifier qui demande, pas seulement quoi. (OWASP : broken access control, numéro 1 du classement)"},
+  {label:"Mot de passe stocké tel quel : gerard123",kind:"bug",why:"Stockage en clair : à la première fuite de la base, tous les comptes tombent. Un mot de passe se hache. Et gerard123 mériterait de toute façon une conversation. (OWASP : défaillances cryptographiques)"},
+  {label:"jimmy-utils.js, dernière mise à jour il y a six ans",kind:"bug",why:"Dépendance à l'abandon : 70 à 90 % du code d'une app moderne vient de tiers, et chaque brique oubliée est une porte connue des attaquants. (OWASP : composants vulnérables et obsolètes)"}
+ ],total:5,
+ angles:[
+  {id:"a-s1",txt:"La sécurité se joue à chaque étape du cycle, jamais en couche finale : le Secure SDLC raconté avec le portail de Gérard."},
+  {id:"a-s2",txt:"La clé API en clair, faille signature de l'ère du vibe coding : la carte bancaire posée sur la boîte aux lettres."},
+  {id:"a-s3",txt:"L'OWASP Top 10, le palmarès des failles web : vulgarisable de bout en bout avec un salon de coiffure."}
+ ]};
+const SVGS={
+cost:{cap:"La même erreur, cinq moments pour la trouver : la courbe qui justifie tout le reste.",svg:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Courbe du coût de correction selon la phase">
+<text x="44" y="24" font-family="var(--fm)" font-size="11" fill="var(--muted)">coût de correction d'une même erreur</text>
+<line x1="44" y1="34" x2="44" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+<line x1="44" y1="160" x2="444" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+<path class="dr" pathLength="1" d="M74,152 C120,150 140,148 164,146 C210,142 230,136 254,130 C290,120 320,108 344,96 C375,81 400,66 424,52" fill="none" stroke="var(--accent)" stroke-width="3"/>
+<circle cx="74" cy="152" r="4.5" fill="var(--accent)"/><circle cx="164" cy="146" r="4.5" fill="var(--accent)"/><circle cx="254" cy="130" r="4.5" fill="var(--accent)"/><circle cx="344" cy="96" r="4.5" fill="var(--accent)"/><circle class="pulse" cx="424" cy="52" r="4.5" fill="var(--accent)"/>
+<text x="74" y="140" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">×1</text>
+<text x="164" y="134" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">×5</text>
+<text x="254" y="118" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">×10</text>
+<text x="344" y="84" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">×50</text>
+<text x="424" y="40" text-anchor="middle" font-family="var(--fm)" font-size="10" font-weight="bold" fill="var(--ink)">×100</text>
+<text x="74" y="178" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--muted)">Besoins</text>
+<text x="164" y="178" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--muted)">Conception</text>
+<text x="254" y="178" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--muted)">Dév.</text>
+<text x="344" y="178" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--muted)">Tests</text>
+<text x="424" y="178" text-anchor="middle" font-family="var(--fm)" font-size="10" font-weight="bold" fill="var(--accent)">Prod</text>
+</svg>`},
+lego:{cap:"Deux façons d'assembler les mêmes briques. Une seule se laisse modifier sans trembler.",svg:`<svg viewBox="0 0 460 205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Couplage fort contre couplage faible">
+<line x1="230" y1="14" x2="230" y2="196" stroke="var(--muted)" stroke-dasharray="4 4"/>
+<text x="110" y="26" text-anchor="middle" font-family="var(--fm)" font-size="12" fill="var(--ink)">La soudure</text>
+<g class="wob"><line x1="75" y1="66" x2="165" y2="88" stroke="var(--accent)" stroke-width="1.5"/>
+<line x1="75" y1="66" x2="107" y2="136" stroke="var(--accent)" stroke-width="1.5"/>
+<line x1="165" y1="88" x2="107" y2="136" stroke="var(--accent)" stroke-width="1.5"/>
+<line x1="45" y1="70" x2="195" y2="130" stroke="var(--accent)" stroke-width="1.5"/>
+<line x1="150" y1="58" x2="60" y2="148" stroke="var(--accent)" stroke-width="1.5"/>
+<line x1="110" y1="82" x2="140" y2="120" stroke="var(--accent)" stroke-width="1.5"/>
+<rect x="40" y="50" width="70" height="32" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<rect x="130" y="72" width="70" height="32" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<rect x="72" y="120" width="70" height="32" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/></g>
+<text x="110" y="190" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--accent)">couplage fort · tout tient à tout</text>
+<text x="350" y="26" text-anchor="middle" font-family="var(--fm)" font-size="12" fill="var(--ink)">Le Lego</text>
+<line x1="360" y1="76" x2="360" y2="96" stroke="var(--primary)" stroke-width="2"/>
+<line x1="360" y1="126" x2="360" y2="146" stroke="var(--primary)" stroke-width="2"/>
+<rect x="305" y="46" width="110" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<rect x="305" y="96" width="110" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<rect x="305" y="146" width="110" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="360" y="65" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Épisodes</text>
+<text x="360" y="115" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Fichiers</text>
+<text x="360" y="165" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Stats</text>
+<text x="350" y="190" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--primary)">couplage faible · un rôle par brique</text>
+</svg>`},
+git:{cap:"Deux branches, deux merges : le second touche la même ligne, un humain tranche.",svg:`<svg viewBox="0 0 460 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Branches Git et résolution de conflit">
+<text x="440" y="24" text-anchor="end" font-family="var(--fm)" font-size="10" fill="var(--accent)">au 2e merge : conflit, tranché par un humain</text>
+<line x1="402" y1="30" x2="388" y2="104" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
+<line class="dr" pathLength="1" x1="26" y1="115" x2="440" y2="115" stroke="var(--ink)" stroke-width="2.5"/>
+<text x="26" y="103" font-family="var(--fm)" font-size="10" fill="var(--muted)">main</text>
+<path class="dr" pathLength="1" d="M110,115 C130,115 138,55 168,55 L232,55 C268,55 284,115 310,115" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path class="dr" pathLength="1" d="M150,115 C170,115 178,175 208,175 L292,175 C330,175 352,115 385,115" fill="none" stroke="var(--primary)" stroke-width="2.5"/>
+<circle cx="60" cy="115" r="4.5" fill="var(--ink)"/><circle cx="110" cy="115" r="4.5" fill="var(--ink)"/><circle cx="150" cy="115" r="4.5" fill="var(--ink)"/><circle cx="310" cy="115" r="4.5" fill="var(--ink)"/><circle cx="430" cy="115" r="4.5" fill="var(--ink)"/>
+<circle cx="185" cy="55" r="4.5" fill="var(--accent)"/><circle cx="220" cy="55" r="4.5" fill="var(--accent)"/>
+<circle cx="230" cy="175" r="4.5" fill="var(--primary)"/><circle cx="265" cy="175" r="4.5" fill="var(--primary)"/>
+<circle class="pulse" cx="385" cy="115" r="8" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="385" cy="115" r="4.5" fill="var(--ink)"/>
+<text x="200" y="42" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--accent)">branche de Lulu</text>
+<text x="308" y="100" text-anchor="end" font-family="var(--fm)" font-size="9" fill="var(--muted)">merge</text>
+<text x="250" y="196" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--primary)">branche de Manu</text>
+</svg>`},
+chain:{cap:"Toute défaillance remonte à une erreur humaine. Les tests existent pour couper la chaîne avant la production.",svg:`<svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chaîne de l'erreur humaine à la défaillance">
+<defs><marker id="ah-ch" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
+<text x="310" y="20" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--primary)">les tests coupent la chaîne ici</text>
+<line class="ants" x1="310" y1="28" x2="310" y2="100" stroke="var(--primary)" stroke-width="2" stroke-dasharray="5 4"/>
+<rect x="16" y="44" width="108" height="46" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="70" y="63" text-anchor="middle" font-family="var(--fm)" font-size="11" fill="var(--ink)">Erreur</text>
+<text x="70" y="78" text-anchor="middle" font-family="var(--fm)" font-size="11" fill="var(--ink)">humaine</text>
+<text x="70" y="110" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">formule mal transcrite</text>
+<line class="dr" pathLength="1" x1="124" y1="67" x2="150" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ch)"/>
+<rect x="156" y="44" width="126" height="46" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="219" y="63" text-anchor="middle" font-family="var(--fm)" font-size="11" fill="var(--ink)">Défaut</text>
+<text x="219" y="78" text-anchor="middle" font-family="var(--fm)" font-size="11" fill="var(--ink)">dans le code</text>
+<text x="219" y="110" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">invisible des années</text>
+<line class="dr" pathLength="1" x1="282" y1="67" x2="332" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ch)"/>
+<rect x="338" y="44" width="106" height="46" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+<text x="391" y="72" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="#fff">Défaillance</text>
+<text x="391" y="110" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">Ariane 5 · 370 M$</text>
+</svg>`},
+pyramide:{cap:"Trois étages : on teste beaucoup de petites choses, un peu d'assemblage, et le besoin en dernier.",svg:`<svg viewBox="0 0 460 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pyramide des trois niveaux de tests">
+<polygon points="60,170 400,170 340,126 120,126" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<polygon points="120,122 340,122 290,78 170,78" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<polygon class="breathe" points="170,74 290,74 258,30 202,30" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+<text x="230" y="147" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">Tests unitaires</text>
+<text x="230" y="161" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">chaque brique isolément</text>
+<text x="230" y="97" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">Intégration</text>
+<text x="230" y="111" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">l'assemblage</text>
+<text x="230" y="52" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="#fff">Recette</text>
+<text x="230" y="65" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="#fff">le besoin réel</text>
+</svg>`},
+pipeline:{cap:"Trois scènes pour un même logiciel. La flèche en pointillés est celle qu'on espère ne jamais suivre.",svg:`<svg viewBox="0 0 460 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Environnements dev, staging et prod avec rollback">
+<defs><marker id="ah-pi" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker><marker id="ah-rb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--primary)"/></marker></defs>
+<rect x="18" y="36" width="120" height="62" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="78" y="62" text-anchor="middle" font-family="var(--fm)" font-size="13" font-weight="bold" fill="var(--ink)">DEV</text>
+<text x="78" y="80" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">l'atelier</text>
+<text x="78" y="116" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">on peut tout casser</text>
+<line class="dr" pathLength="1" x1="138" y1="67" x2="162" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-pi)"/>
+<rect x="168" y="36" width="124" height="62" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="230" y="62" text-anchor="middle" font-family="var(--fm)" font-size="13" font-weight="bold" fill="var(--ink)">STAGING</text>
+<text x="230" y="80" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">la répétition</text>
+<text x="230" y="116" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">copie conforme de la prod</text>
+<line class="dr" pathLength="1" x1="292" y1="67" x2="314" y2="67" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-pi)"/>
+<rect x="320" y="36" width="122" height="62" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+<text x="381" y="62" text-anchor="middle" font-family="var(--fm)" font-size="13" font-weight="bold" fill="#fff">PROD</text>
+<text x="381" y="80" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="#fff">la scène</text>
+<text x="381" y="116" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">vraies données, vrais gens</text>
+<path class="ants" d="M366,100 C 366,150 252,156 218,106" fill="none" stroke="var(--primary)" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah-rb)"/>
+<text x="296" y="168" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--primary)">rollback : retour arrière en minutes</text>
+</svg>`},
+cycle:{cap:"Trois gestes qui tournent en boucle autour du même logiciel : le jardinage.",svg:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cycle des trois maintenances">
+<defs><marker id="ah-cy" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
+<path class="ants" stroke-dasharray="7 5" d="M304,44 C352,54 378,86 374,122" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
+<line class="ants" stroke-dasharray="7 5" x1="280" y1="151" x2="180" y2="151" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
+<path class="ants" stroke-dasharray="7 5" d="M84,122 C80,70 110,40 152,30" fill="none" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-cy)"/>
+<rect x="160" y="14" width="140" height="44" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="230" y="33" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">CORRECTIVE</text>
+<text x="230" y="49" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">réparer les défauts</text>
+<rect x="288" y="128" width="158" height="46" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="367" y="148" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">ADAPTATIVE</text>
+<text x="367" y="164" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">suivre le monde qui change</text>
+<rect x="14" y="128" width="158" height="46" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="93" y="148" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">PERFECTIVE</text>
+<text x="93" y="164" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">améliorer, payer la dette</text>
+<text x="230" y="96" text-anchor="middle" font-family="var(--fm)" font-size="11" font-style="italic" fill="var(--muted)">le logiciel en production</text>
+<text x="230" y="111" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">(jamais terminé, et c'est normal)</text>
+</svg>`},
+regression:{cap:"Le même jeu de tests, rejoué après chaque changement : quand un test d'hier casse aujourd'hui, on vient d'attraper une régression.",svg:`<svg viewBox="0 0 460 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Principe du test de régression">
+<defs><marker id="ah-rg" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
+<rect x="24" y="30" width="150" height="114" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="38" y="50" font-family="var(--fm)" font-size="10" font-weight="bold" fill="var(--muted)">v1.0 · hier</text>
+<text x="38" y="72" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ réserver</text>
+<text x="38" y="92" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ annuler</text>
+<text x="38" y="112" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ payer</text>
+<text x="38" y="132" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ planning</text>
+<line class="dr" pathLength="1" x1="182" y1="87" x2="266" y2="87" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-rg)"/>
+<text x="224" y="76" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--muted)">une modification</text>
+<rect x="276" y="30" width="160" height="114" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="290" y="50" font-family="var(--fm)" font-size="10" font-weight="bold" fill="var(--muted)">v1.1 · aujourd'hui</text>
+<text x="290" y="72" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ réserver</text>
+<text class="blink" x="290" y="92" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--accent)">✗ annuler</text>
+<text x="290" y="112" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ payer</text>
+<text x="290" y="132" font-family="var(--fm)" font-size="11" fill="var(--primary)">✓ planning</text>
+<text x="230" y="170" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--accent)">la régression : personne n'a touché à « annuler », et pourtant</text>
+</svg>`},
+agiletree:{cap:"La confusion la plus répandue, démêlée : agile désigne la posture, Scrum et les autres sont des méthodes qui l'incarnent.",svg:`<svg viewBox="0 0 460 195" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agile et les méthodes qui l'incarnent">
+<defs><marker id="ah-ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
+<rect class="breathe" x="110" y="14" width="240" height="52" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+<text x="230" y="36" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="#fff">MANIFESTE AGILE · 2001</text>
+<text x="230" y="53" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="#fff">quatre valeurs, une posture</text>
+<line class="dr" pathLength="1" x1="230" y1="66" x2="88" y2="114" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ag)"/>
+<line class="dr" pathLength="1" x1="230" y1="66" x2="230" y2="114" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ag)"/>
+<line class="dr" pathLength="1" x1="230" y1="66" x2="372" y2="114" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ag)"/>
+<rect x="16" y="120" width="140" height="44" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="86" y="139" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">SCRUM</text>
+<text x="86" y="155" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">sprints, rituels, backlog</text>
+<rect x="160" y="120" width="140" height="44" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="230" y="139" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">KANBAN</text>
+<text x="230" y="155" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">flux continu</text>
+<rect x="304" y="120" width="140" height="44" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="374" y="139" text-anchor="middle" font-family="var(--fm)" font-size="11" font-weight="bold" fill="var(--ink)">XP</text>
+<text x="374" y="155" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">qualité du code d'abord</text>
+<text x="230" y="186" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--primary)">des méthodes qui incarnent la posture</text>
+</svg>`},
+cascade:{cap:"Chaque marche se valide avant la suivante. Entre la première et la dernière, le client attend.",svg:`<svg viewBox="0 0 460 205" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modèle en cascade">
+<defs><marker id="ah-ca" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--ink)"/></marker></defs>
+<rect x="16" y="16" width="78" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="55" y="35" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Besoins</text>
+<line class="dr" pathLength="1" x1="94" y1="40" x2="112" y2="54" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
+<rect x="96" y="50" width="78" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="135" y="69" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Conception</text>
+<line class="dr" pathLength="1" x1="174" y1="74" x2="192" y2="88" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
+<rect x="176" y="84" width="78" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="215" y="103" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Code</text>
+<line class="dr" pathLength="1" x1="254" y1="108" x2="272" y2="122" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
+<rect x="256" y="118" width="78" height="30" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="295" y="137" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Tests</text>
+<line class="dr" pathLength="1" x1="334" y1="142" x2="352" y2="156" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-ca)"/>
+<rect x="336" y="152" width="78" height="30" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+<text x="375" y="171" text-anchor="middle" font-family="var(--fm)" font-size="10" font-weight="bold" fill="#fff">Prod</text>
+<line class="ants" x1="30" y1="192" x2="330" y2="192" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="230" y="203" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--accent)">effet tunnel : le client ne voit rien pendant tout ce temps</text>
+</svg>`},
+vmodel:{cap:"La cascade repliée : chaque étape de gauche prépare le test qui lui répond à droite.",svg:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cycle en V">
+<defs><marker id="ah-vm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--primary)"/></marker></defs>
+<rect x="26" y="18" width="130" height="34" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="91" y="39" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Besoins</text>
+<rect x="78" y="72" width="130" height="34" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="143" y="93" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Conception</text>
+<rect x="180" y="152" width="100" height="34" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="230" y="173" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Code</text>
+<rect x="252" y="72" width="130" height="34" fill="var(--paper)" stroke="var(--primary)" stroke-width="2"/>
+<text x="317" y="93" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Intégration</text>
+<rect x="304" y="18" width="130" height="34" fill="var(--paper)" stroke="var(--primary)" stroke-width="2"/>
+<text x="369" y="39" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">Recette</text>
+<line class="dr" pathLength="1" x1="108" y1="52" x2="132" y2="72" stroke="var(--ink)" stroke-width="2"/>
+<line class="dr" pathLength="1" x1="162" y1="106" x2="212" y2="152" stroke="var(--ink)" stroke-width="2"/>
+<line class="dr" pathLength="1" x1="248" y1="152" x2="298" y2="106" stroke="var(--ink)" stroke-width="2"/>
+<line class="dr" pathLength="1" x1="328" y1="72" x2="352" y2="52" stroke="var(--ink)" stroke-width="2"/>
+<line class="ants" x1="160" y1="35" x2="298" y2="35" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-vm)"/>
+<text x="229" y="28" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--primary)">prépare</text>
+<line class="ants" x1="212" y1="89" x2="246" y2="89" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-vm)"/>
+</svg>`},
+iteratif:{cap:"Un tour complet, une livraison, des retours, on repart. La V1 puis la V2 du portail, c'est ce dessin.",svg:`<svg viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modèle itératif">
+<defs><marker id="ah-it" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="var(--primary)"/></marker></defs>
+<g class="spin"><circle cx="130" cy="95" r="56" fill="none" stroke="var(--ink)" stroke-width="2"/>
+<polygon points="124,33 124,45 138,39" fill="var(--ink)"/>
+<polygon points="182,88 194,88 188,101" fill="var(--ink)"/>
+<polygon points="136,145 136,157 122,151" fill="var(--ink)"/></g>
+<text x="130" y="24" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">besoins</text>
+<text x="196" y="112" font-family="var(--fm)" font-size="9" fill="var(--muted)">code</text>
+<text x="130" y="172" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">recette</text>
+<text x="68" y="112" text-anchor="end" font-family="var(--fm)" font-size="9" fill="var(--muted)">conception</text>
+<line x1="184" y1="70" x2="232" y2="70" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah-it)"/>
+<rect x="238" y="50" width="58" height="40" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="267" y="70" text-anchor="middle" font-family="var(--fm)" font-size="12" font-weight="bold" fill="var(--ink)">V1</text>
+<text x="267" y="84" text-anchor="middle" font-family="var(--fm)" font-size="8" fill="var(--muted)">utilisable</text>
+<line x1="296" y1="70" x2="312" y2="70" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-it)"/>
+<rect x="316" y="50" width="58" height="40" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>
+<text x="345" y="74" text-anchor="middle" font-family="var(--fm)" font-size="12" font-weight="bold" fill="var(--ink)">V2</text>
+<line x1="374" y1="70" x2="390" y2="70" stroke="var(--ink)" stroke-width="2" marker-end="url(#ah-it)"/>
+<rect x="394" y="50" width="52" height="40" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+<text x="420" y="74" text-anchor="middle" font-family="var(--fm)" font-size="12" font-weight="bold" fill="var(--accent)">V3</text>
+<text x="330" y="130" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--primary)">chaque tour livre un produit qui marche</text>
+</svg>`},
+dk:{cap:"La confiance grimpe avant l'expérience : la courbe qui répond aux promesses du site en une heure.",svg:`<svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Courbe de Dunning-Kruger appliquée au vibe coding">
+<line x1="44" y1="34" x2="44" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+<line x1="44" y1="160" x2="444" y2="160" stroke="var(--muted)" stroke-width="1.5"/>
+<text x="52" y="28" font-family="var(--fm)" font-size="10" fill="var(--muted)">confiance</text>
+<text x="444" y="178" text-anchor="end" font-family="var(--fm)" font-size="10" fill="var(--muted)">expérience</text>
+<path class="dr" pathLength="1" d="M54,150 C80,80 100,44 122,44 C150,44 162,98 198,128 C222,148 242,152 264,148 C322,138 382,96 430,62" fill="none" stroke="var(--accent)" stroke-width="3"/>
+<circle class="pulse" cx="122" cy="44" r="4.5" fill="var(--accent)"/>
+<circle cx="254" cy="149" r="4.5" fill="var(--ink)"/>
+<circle cx="430" cy="62" r="4.5" fill="var(--good)"/>
+<text x="134" y="32" text-anchor="start" font-family="var(--fm)" font-size="10" fill="var(--ink)">« mon site en une heure »</text>
+<text x="254" y="176" text-anchor="middle" font-family="var(--fm)" font-size="10" fill="var(--ink)">premier bug en prod</text>
+<text x="430" y="48" text-anchor="end" font-family="var(--fm)" font-size="10" fill="var(--ink)">le cycle de vie</text>
+</svg>`},
+memo_cycle:{cap:"Six étapes, un cycle. Le développement n'en est qu'une.",svg:`<svg viewBox="0 0 460 128" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Les six étapes du cycle, le développement surligné">
+<path class="ants" d="M40,34 C40,14 420,14 420,34" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<path d="M420,34 l-6,-7 M420,34 l-9,-1" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
+<text x="230" y="12" text-anchor="middle" font-family="var(--fm)" font-size="9.5" fill="var(--muted)">et ça recommence</text>
+<line class="dr" pathLength="1" x1="40" y1="60" x2="420" y2="60" stroke="var(--muted)" stroke-width="1.5"/>
+<g font-family="var(--fm)" font-size="10" fill="var(--ink)" text-anchor="middle">
+<circle cx="40" cy="60" r="4" fill="var(--muted)"/><text x="40" y="82">Besoins</text>
+<circle cx="116" cy="60" r="4" fill="var(--muted)"/><text x="116" y="82">Concep.</text>
+<circle cx="192" cy="60" r="7" fill="var(--accent)"/><text x="192" y="84" font-weight="bold" fill="var(--accent)">Dév.</text>
+<circle cx="268" cy="60" r="4" fill="var(--muted)"/><text x="268" y="82">Tests</text>
+<circle cx="344" cy="60" r="4" fill="var(--muted)"/><text x="344" y="82">Prod</text>
+<circle cx="420" cy="60" r="4" fill="var(--muted)"/><text x="420" y="82">Maint.</text>
+</g>
+<text x="192" y="108" text-anchor="middle" font-family="var(--fm)" font-size="9.5" fill="var(--accent)">une étape parmi six</text>
+</svg>`},
+memo_models:{cap:"Mêmes étapes, ordres différents : trois façons d'enchaîner.",svg:`<svg viewBox="0 0 460 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cascade, cycle en V et itératif comparés">
+<text x="14" y="20" font-family="var(--fm)" font-size="11" fill="var(--ink)">Cascade</text>
+<path class="dr" pathLength="1" d="M150,14 h50 v11 h50 v11 h50 v11 h50 v11 h46" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<text x="300" y="60" text-anchor="end" font-family="var(--fm)" font-size="9" fill="var(--muted)">l'effet tunnel</text>
+<line x1="14" y1="70" x2="446" y2="70" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="14" y="92" font-family="var(--fm)" font-size="11" fill="var(--ink)">Cycle en V</text>
+<path class="dr" pathLength="1" d="M170,84 L215,120 L260,84" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path class="dr" pathLength="1" d="M290,84 L335,120 L380,84" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".4"/>
+<text x="215" y="134" text-anchor="middle" font-family="var(--fm)" font-size="9" fill="var(--muted)">construire, vérifier</text>
+<line x1="14" y1="146" x2="446" y2="146" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="14" y="164" font-family="var(--fm)" font-size="11" fill="var(--ink)">Itératif</text>
+<circle cx="215" cy="160" r="0" fill="none"/>
+<path class="breathe" d="M200,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path d="M206,163 l-5,1 l2,-5" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+<path class="breathe" d="M255,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".6"/>
+<path class="breathe" d="M310,157 a15,7 0 1 1 6,6" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity=".35"/>
+<text x="446" y="164" text-anchor="end" font-family="var(--fm)" font-size="9" fill="var(--muted)">on boucle, on ajuste</text>
+</svg>`}
+};
+const EPI={id:"epilogue",
+ tag:"Les mêmes six étapes, des ordres différents : voilà toute l'histoire des modèles de développement.",
+ notions:[
+  {t:"Un modèle, c'est un ordre",body:[
+   "Les six chantiers que tu viens de parcourir sont les mêmes partout, dans une startup comme dans une banque. Ce qui change d'une équipe à l'autre, c'est l'ordre et le rythme dans lesquels on les enchaîne. C'est exactement ça, un modèle de cycle de vie. Il en existe des dizaines (cascade, V, incrémental, spirale, prototypage, et toute la famille agile), et aucun n'est moderne ou ringard : chacun répond à un contexte.",
+   "Trois paramètres orientent le choix : à quel point les besoins vont bouger, ce que coûte une erreur, et à quelle distance se tient le client. Selon leurs réponses, tel modèle devient le bon. Aucun ne gagne dans l'absolu, et les exemples qui suivent le montrent."
+  ]},
+  {t:"La cascade",fig:"cascade",body:[
+   "Le plus ancien et le plus intuitif : chaque étape se termine et se valide avant que la suivante démarre, comme l'eau descend. Idéal quand les besoins sont stables et le terrain connu. Sa limite porte un nom : l'effet tunnel. Le client ne voit rien pendant des mois, puis découvre à la livraison un logiciel parfaitement conforme au cahier des charges... d'il y a un an."
+  ],cases:[
+   "Un logiciel déjà construit dix fois, sur un terrain connu : migration de paie, portage d'un système maîtrisé. La cascade brille quand on est quasi certain que les besoins ne bougeront pas.",
+   "Un cahier des charges figé par contrat ou par la loi : marché public, sous-traitance à prix fixe, où la trace écrite de chaque étape fait foi.",
+   "L'embarqué à spécification gelée : la puce d'une machine à laver ne se corrige pas après la sortie d'usine."
+  ]},
+  {t:"Le cycle en V",fig:"vmodel",body:[
+   "Une cascade repliée sur elle-même : chaque étape de construction, en descendant, prépare l'étape de vérification qui lui répondra en remontant. Les besoins préparent la recette, la conception prépare les tests d'intégration. Tu l'as déjà croisé au chantier Conception : des critères d'acceptation qui deviennent des scénarios de test, c'est très exactement cet esprit."
+  ],cases:[
+   "Le critique et le réglementé, où une erreur coûte des vies ou une lourde amende : dispositif médical, avionique, ferroviaire, cœur d'un système bancaire.",
+   "Tout contexte où chaque exigence doit rester traçable jusqu'à un test, pour passer les audits et la validation réglementaire.",
+   "Plutôt les grandes structures, avec une assurance qualité formelle et des rôles de test dédiés."
+  ]},
+  {t:"L'itératif",fig:"iteratif",body:[
+   "Plutôt que tout construire d'un coup, on boucle : un petit tour complet (besoins, conception, code, recette), une livraison utilisable, des retours d'usage, et on repart. Chaque tour livre un produit qui marche, chaque usage affine le suivant. La spirale de Boehm en est une variante pilotée par les risques. Et la V1 puis la V2 du portail suivent ce modèle à la lettre : de l'itératif au sens des manuels, pratiqué sans le nommer."
+  ],cases:[
+   "Un outil interne qu'on affine à l'usage : votre portail, V1 puis V2, en est l'exemple direct.",
+   "Le MVP d'une startup : livrer un cœur utilisable, puis laisser les retours décider de la suite. Peu de risque à se tromper tôt, beaucoup à trop attendre.",
+   "La spirale de Boehm pour les gros projets chers et risqués (défense, grande plateforme) : à chaque tour, on analyse les risques avant d'avancer."
+  ]},
+  {t:"Agile, Scrum et compagnie",fig:"agiletree",body:[
+   "D'abord lever le malentendu le plus répandu : agile est une posture avant d'être une méthode. Le mot naît en 2001, quand dix-sept développeurs publient un manifeste de quatre valeurs : les individus et leurs interactions plutôt que les processus et les outils, un logiciel qui fonctionne plutôt qu'une documentation exhaustive, la collaboration avec le client plutôt que la négociation de contrat, et la réponse au changement plutôt que le suivi d'un plan. La nuance qui change tout : « plutôt que » ne signifie pas « à la place de ». Le plan et la documentation gardent leur valeur, ils cèdent juste la priorité.",
+   "Les méthodes viennent ensuite, pour incarner cette posture. Scrum, la plus connue : le travail se découpe en sprints, des tours de une à quatre semaines qui livrent chacun un incrément utilisable (l'itératif du schéma précédent, avec un métronome), autour d'un backlog priorisé, d'un point quotidien de quinze minutes et d'une rétrospective à chaque fin de sprint pour améliorer la façon de travailler elle-même. Kanban préfère le flux continu : tout le travail visible en colonnes (à faire, en cours, fait) et l'en-cours limité, pour finir avant de commencer. XP, enfin, pousse l'exigence côté code : écrire le test avant le code, relire en permanence.",
+   "Et le piège que tout le monde a croisé : adopter les rituels sans la posture. Des réunions debout tous les matins ne rendent personne agile, pas plus qu'un backlog ne remplace l'écoute du client. Ce travers a des noms (agilité de façade, culte du cargo), et un antidote simple, trois questions : livre-t-on souvent, apprend-on de chaque livraison, et le plan a-t-il le droit de changer ?"
+  ],cases:[
+   "Produits web et mobile, startups et scale-ups : les besoins évoluent vite et le client reste dans la boucle.",
+   "Scrum quand l'équipe gagne à avoir un rythme (des sprints) et une vision produit qui s'ajuste ; Kanban quand le travail arrive au fil de l'eau (support, maintenance, exploitation).",
+   "XP quand la qualité du code est vitale et que ça change beaucoup : le test avant le code, la relecture en continu."
+  ]},
+  {t:"La réponse aux promesses en une heure",fig:"dk",body:[
+   "« Ton site en une heure », « ton SaaS en trois semaines » : ces promesses reposent, sans le savoir, sur une courbe décrite par Dunning et Kruger en 1999. Le premier résultat arrive vite et la confiance monte en flèche, précisément parce qu'on ignore encore l'étendue de ce qu'on ignore. Puis le monde réel répond : un premier bug chez un vrai utilisateur, une question de sécurité, une donnée perdue. La confiance dégringole : bienvenue dans la vallée.",
+   "La remontée porte un nom : toutes les étapes de cet épisode. C'est ainsi qu'on fait du logiciel à l'échelle, en entreprise, avec ou sans IA. L'IA raccourcit le premier kilomètre et rend le sommet du mont Stupide plus accessible que jamais. La montagne, elle, garde sa taille."
+  ]}
+ ],
+ angles:[
+  {id:"a-e6",txt:"La courbe de Dunning-Kruger du vibe coding : le site fait en une heure installe au sommet du mont Stupide, et chaque étape du cycle sert de sentier de remontée."},
+  {id:"a-e1",txt:"Cascade, V, itératif : les mêmes six étapes, des ordres différents. Aucun modèle n'est ringard, chacun répond à un contexte."},
+  {id:"a-e2",txt:"L'effet tunnel de la cascade : des mois sans rien montrer, puis un logiciel conforme au cahier des charges... d'il y a un an."},
+  {id:"a-e3",txt:"La V1 puis la V2 du portail : de l'itératif au sens strict des manuels, pratiqué sans le nommer."},
+  {id:"a-e4",txt:"Même en vibe coding, on choisit un modèle sans le dire : des micro-itérations avec recette permanente. La théorie était déjà là."},
+  {id:"a-e5",txt:"Agile est une posture, Scrum une méthode : quatre valeurs de 2001, souvent réduites à des réunions debout. L'agilité de façade mérite son quart d'heure."}
+ ]};
+
+const tq=[];let tOn=false;
+function toast(msg){tq.push(msg);if(!tOn)nextToast();}
+function nextToast(){
+  const msg=tq.shift();if(!msg){tOn=false;return;}
+  tOn=true;
+  const d=document.createElement("div");d.className="toast";d.textContent=msg;
+  $("toasts").appendChild(d);
+  requestAnimationFrame(()=>d.classList.add("show"));
+  setTimeout(()=>{d.classList.remove("show");setTimeout(()=>{d.remove();nextToast();},350);},4200);
+}
+
+/* ============ TRAME · export autonome · Le Dernier Clic ============ */
+/* Les données (CH, TRAME, INTRU, SVGS, EPI) et les toasts sont injectés
+   depuis index.html par build-trame.js : ne pas les redéfinir ici. */
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const anglesFor=id=>id==="epilogue"?EPI.angles:(CH.find(c=>c.id===id)||{angles:[]}).angles;
+
+/* ---------- État ---------- */
+/* Clé distincte de "alp-state" : l'export ne touche pas à la partie en cours. */
+const EKEY="alp-trame-export";
+let E={mode:"complete",verified:false,checked:false};
+let saveT=null;
+function save(){
+  clearTimeout(saveT);
+  saveT=setTimeout(async()=>{
+    const data=JSON.stringify(E);
+    if(window.storage&&window.storage.set){try{await window.storage.set(EKEY,data);}catch(e){}}
+    try{localStorage.setItem(EKEY,data);}catch(e){}
+  },400);
+}
+async function load(){
+  let raw=null;
+  if(window.storage&&window.storage.get){
+    try{const r=await window.storage.get(EKEY);if(r&&r.value)raw=r.value;}catch(e){}
+  }
+  if(!raw){try{raw=localStorage.getItem(EKEY);}catch(e){}}
+  if(raw){try{const p=JSON.parse(raw);if(p&&typeof p==="object")E=Object.assign(E,p);}catch(e){}}
+}
+
+/* ---------- Rendu ---------- */
+function angleList(label,arr){
+  if(!arr||!arr.length)return "";
+  return `<div class="tang"><span class="tang-l">${esc(label)}</span><ul>${arr.map(a=>`<li>${esc(a.txt)}</li>`).join("")}</ul></div>`;
+}
+/* Les angles nourrissent la préparation, pas le direct : en essentielle on ne
+   garde que le teaser sécurité, qui est un vrai segment de fin d'épisode. */
+function trameLines(sec,ess){
+  let out="";
+  if(sec.ch&&!ess)out+=angleList("Angles à dérouler",anglesFor(sec.ch));
+  if(sec.t==="Mot de la fin")out+=angleList("Teaser sécurité (épisode à venir)",INTRU.angles);
+  return out;
+}
+function memoOf(sec){
+  if(!sec.fig||!SVGS[sec.fig])return "";
+  return `<div class="tmemo"><div class="tmemo-l">Mémo</div>${SVGS[sec.fig].svg}<div class="tmemo-c">${esc(SVGS[sec.fig].cap)}</div></div>`;
+}
+function trameView(){
+  const ess=E.mode==="essentielle";
+  let out=`<div class="card"><div class="eyebrow">La trame de l'épisode</div>
+  <h2>59 minutes, 9 blocs</h2>
+  <p class="small">Version finale, prête pour l'antenne. Les ${TRAME.length} sections sont là, schémas compris.</p>`;
+  if(E.verified){
+    out+=`<div class="tmode"><span class="tmode-l">Version</span>
+      <button class="tmodebtn ${ess?"":"on"}" data-a="tmode" data-id="complete">Complète</button>
+      <button class="tmodebtn ${ess?"on":""}" data-a="tmode" data-id="essentielle">Essentielle</button></div>
+      <p class="mut small" style="margin-top:2px">${ess?"Version direct : les points clés à dérouler, schémas gardés.":"Version détaillée : tout le contenu, pour la préparation."}</p>`;
+  }
+  out+=`</div>`;
+  TRAME.forEach(sec=>{
+    const memo=memoOf(sec);
+    if(ess){
+      const keys=sec.key?`<ul class="tpoints">${sec.key.map(k=>`<li>${esc(k)}</li>`).join("")}</ul>`:"";
+      const exb=sec.ex?`<div class="tex">
+        <div class="tex-row ko"><span class="tex-l">mal fait</span>${esc(sec.ex.ko)}</div>
+        <div class="tex-row ok"><span class="tex-l">bien fait</span>${esc(sec.ex.ok)}</div>
+      </div>`:"";
+      out+=`<div class="tsec ess"><div class="ttime">${sec.at} · ${sec.dur}</div><h3>${esc(sec.t)}</h3>${memo}${keys}${exb}${trameLines(sec,true)}</div>`;
+    }else{
+      const pts=sec.points?`<ul class="tpoints">${sec.points.map(p=>typeof p==="string"?`<li>${esc(p)}</li>`:`<li class="timage"><span class="tim-l">l'image</span> ${esc(p.img)}</li>`).join("")}</ul>`:"";
+      out+=`<div class="tsec"><div class="ttime">${sec.at} · ${sec.dur}</div><h3>${esc(sec.t)}</h3><div class="tdesc">${esc(sec.desc)}</div>${memo}${pts}${trameLines(sec,false)}</div>`;
+    }
+  });
+  if(!E.verified){
+    out+=`<div class="card captcha">
+      <div class="cap-head"><span class="cap-logo">reCLIC</span><span class="cap-sub">vérification humaine · v2</span></div>
+      <button class="cap-check ${E.checked?"ticked":""}" data-a="mcaptcha"><span class="cap-box">${E.checked?"✓":""}</span><span>Je ne suis pas quelqu'un d'autre que Manu</span></button>
+      <div class="cap-foot">Protégé par le lapin. Confidentialité douteuse.</div>
+    </div>`;
+  }
+  if(E.checked&&!E.verified){
+    out+=`<div class="modal" data-a="mclose"><div class="modalbox" data-a="keep">
+      <div class="eyebrow">Vérification supplémentaire</div>
+      <p style="font-weight:600;margin-bottom:12px">Si tu prétends vraiment être la personne que tu prétends être, qu'est-ce que le vrai Manu choisirait ici :</p>
+      <div class="opts">
+        <button class="opt" data-a="mverify" data-o="0">Un lion électrique</button>
+        <button class="opt" data-a="mverify" data-o="1">Un poulpe alien</button>
+        <button class="opt" data-a="mverify" data-o="2">Des insectes (juste histoire de montrer que ça existe)</button>
+      </div>
+      <div class="cap-foot" style="margin-top:12px">Une seule bonne réponse. Le lapin adulte regarde.</div>
+    </div></div>`;
+  }
+  return out;
+}
+function render(){
+  const sc=$("scroller");
+  const y=sc?sc.scrollTop:0;
+  $("app").innerHTML=trameView();
+  if(sc)sc.scrollTo(0,y);
+  armSchemaAnim();
+}
+
+/* ---------- Animation des schémas ---------- */
+/* Écouteur de scroll plutôt qu'IntersectionObserver : l'observer ne se
+   déclenche pas dans tous les navigateurs de prévisualisation. Les relances
+   après fonts.ready rattrapent le reflow des polices web. */
+let schemaScrollBound=false;
+function revealSchemas(){
+  const sc=$("scroller");if(!sc)return;
+  const h=sc.clientHeight;
+  document.querySelectorAll(".tmemo svg:not(.drawn)").forEach(s=>{
+    if(s.getBoundingClientRect().top<h*0.9)s.classList.add("drawn");
+  });
+}
+function armSchemaAnim(){
+  const sc=$("scroller");if(!sc)return;
+  if(!schemaScrollBound){
+    sc.addEventListener("scroll",revealSchemas,{passive:true});
+    window.addEventListener("load",revealSchemas);
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(revealSchemas);
+    schemaScrollBound=true;
+  }
+  requestAnimationFrame(revealSchemas);
+  setTimeout(revealSchemas,160);setTimeout(revealSchemas,520);
+}
+
+/* ---------- Actions ---------- */
+const A={
+ tmode(id){E.mode=id;save();render();},
+ mcaptcha(){E.checked=!E.checked;save();render();},
+ keep(){},
+ mclose(){E.checked=false;save();render();},
+ mverify(id,t){
+  const o=parseInt(t.dataset.o,10);
+  if(o===1){
+   E.verified=true;E.checked=false;E.mode="essentielle";save();render();
+   toast("Identité confirmée : un poulpe alien, évidemment. Trame essentielle débloquée, à toi le mode direct.");
+  }else{
+   E.checked=false;save();render();
+   toast(o===0?"Un lion électrique ? Le vrai Manu n'a jamais dit ça. Recommence, imposteur.":"Des insectes, tentative notée. Mais non : le vrai Manu sait ce qu'il choisit.");
+  }
+ }
+};
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-a]");if(!t)return;
+  const ds=t.dataset,hadFocus=document.activeElement===t;
+  const fn=A[ds.a];if(fn)fn(ds.id,t);
+  if(hadFocus&&document.activeElement===document.body){
+    let q='[data-a="'+ds.a+'"]';
+    if(ds.id)q+='[data-id="'+ds.id+'"]';
+    if(ds.o!=null)q+='[data-o="'+ds.o+'"]';
+    const el=document.querySelector(q);
+    if(el&&!el.disabled)el.focus({preventScroll:true});
+  }
+});
+
+/* ---------- Init ---------- */
+(async()=>{await load();render();})();
+
+</script>
+</body>
+</html>
